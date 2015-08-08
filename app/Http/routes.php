@@ -10,6 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('/pro', function () {
+    return view('profile.edit');
+});
 
 //entrada al sitio
 Route::get('/', function () {
@@ -27,5 +30,4 @@ Route::resource('home','HomeController');//todos los eventos que saen "visibles"
 Route::resource('event','EventController');//todos los events de 1 usuario {{Auth::user()->id}}
 Route::resource('log','LogController');
 Route::resource('genero','GeneroController');
-
 Route::get('/generos','GeneroController@listing');

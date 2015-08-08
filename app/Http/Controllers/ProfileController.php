@@ -14,7 +14,7 @@ use Auth;
 use Session;
 use Redirect;
 use App\User;
-//use Auth;
+use HTML;
 
 
 class ProfileController extends Controller
@@ -25,10 +25,16 @@ class ProfileController extends Controller
      * @return Response
      */
     public function index()
-    {
-        
+    {  
+        // $id = Auth::user()->id;
+        // $profile = DB::select('SELECT * FROM `users` WHERE `id` = '.$id.' ;');
+        // return view('profile.index',['profile'=>$profile]);
+
         $id = Auth::user()->id;
-        $profile = DB::select('SELECT * FROM `users` WHERE `id` = '.$id.' ;');
+        $profile = User::where('id', $id)->get();
+        /*foreach ($users as $user) {
+            echo $user->us_name;
+        }*/
         return view('profile.index',['profile'=>$profile]);
     }
     public function dameMasa()
@@ -51,7 +57,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -73,7 +79,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -84,7 +90,17 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        //
+       // $id = Auth::user()->id;
+        //$profile = User::where('id', $id)->get();
+        
+        //usando with
+        //$profile = Profile::find($id);
+        //return view('profile.edit')->with('profile', $profile);
+
+
+
+        $profile = User::find($id);
+        return view('profile.edit')->with('profile',$profile);
     }
 
     /**
@@ -96,7 +112,12 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $profile = User::find($id);
+        $profile->fill($request->all());
+        $profile->save();
+
+        Session::flash('message','profile editado correctamente');
+        return Redirect::to('/profile');
     }
 
     /**

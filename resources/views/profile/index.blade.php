@@ -2,54 +2,50 @@
 
 @section('content')
 
-
-Esto es el profile de 1 usuario logeado
+{{-- //me llega profile --}}
 <div class="container">
-<p>{{ Auth::user()->us_name }} </p>
+<H1><p align="center">Perfil de usuario</p></H1>
+
+{!!Form::open()!!}
+	@foreach($profile as $u)
+	<div class="form-group" >
+				{!!Form::label('us_name','Nombre: ')!!}<em>   {{Auth::user()->us_name }}</em>
+{{-- 				{!!Form::label('email',Auth::user()->us_name)!!} --}}
+	</div>
+	<div class="form-group" >
+				{!!Form::label('us_user','Nombre de Usuario: ')!!} <em>   {{Auth::user()->us_user }}</em>
+{{-- 				{!!Form::label('email', Auth::user()->us_user)!!}
+				{!!Form::text('email', 'example@gmail.com')!!} --}}
+	</div>
+
+	<div class="form-group" >
+				{!!Form::label('us_mail','Mail: ')!!}
+				<em>{{Auth::user()->us_mail }}</em>
+
+	</div>
+	<div class="form-group" >
+				{!!Form::label('us_adre','Direccion: ')!!}<em>   {{Auth::user()->us_adre }}</em>
+{{-- 				{!!Form::label('email', $u->us_user)!!}
+				{!!Form::text('us_adre',Auth::user()->us_adre,['class'=>'form-control'])!!} --}}
+	</div>
+	<div class="form-group" >
+				{!!Form::label('us_tele','Telefono: ')!!}<em>   {{Auth::user()->us_tele }}</em>
+{{-- 				{!!Form::label('email', $u->us_user)!!}
+				{!!Form::text('us_tele',Auth::user()->us_tele,['class'=>'form-control'])!!} --}}
+	</div>
+	<div class="form-group" >
+				{!!Form::label('photolink','Fotolink: ')!!}<em>   {{Auth::user()->photolink }}</em>
+{{-- 				{!!Form::label('email', $u->us_user)!!}
+				{!!Form::text('photolink',Auth::user()->photolink,['class'=>'form-control'])!!} --}}
+
+	</div>
+
+	@endforeach
+
+{!!link_to_route('profile.edit', $title = 'Editar', $parameters = Auth::user()->id , $attributes = ['class'=>'btn btn-primary'])!!}
 </div>
-<div class="container">
-	
-	<table class="table">
-		<thead>
-			<th width="100px">id</th>
-			<th width="100px">Name</th>
-			<th width="100px">User Name</th>
-			<th width="100px">Email</th>
-			<th width="100px">Direccion</th>
-			<th width="100px">Telefono</th>
-			<th width="100px">Pic</th>
-			<th width="100px">Operaciones</th>
-		</thead>
-		@foreach ($profile as $u)
-		<tbody>
-			<td>{{$u->id}}</td>
-			<td>{{$u->us_name}}</td>
-			<td>{{$u->us_user}}</td>
-			<td>{{$u->us_mail}}</td>
-			<td>{{$u->us_adre}}</td>
-			<td>{{$u->us_tele}}</td>
-			<td>{{$u->photolink}}</td>
-			<td>
-			{!!link_to_route('profile.index', $title = 'Editar', $parameters = $u->id, $attributes = ['class'=>'btn btn-primary'])!!}
-			
-			<!-- ya me hace de una la indexacion del us con su id corresp, y eso se lo paso a usuario.editar -->
-		</td>
-		</tbody>
-		@endforeach
 
-	</table>
-</div>
-
-{{-- 
-<div class="container" >
-	<p>{{ Auth::user()->id }} </p>
-	<p>{{ Auth::user()->name }} </p>
-	<p>{{ Auth::user()->username }} </p>
-</div>
- --}}
-
-
-<hr>
-</br>
-
+{!!Html::linkRoute('profile.edit','Edit',array(Auth::user()->id))!!}
+{!!Form::close()!!}
 @endsection
+

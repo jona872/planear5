@@ -26,6 +26,17 @@ name	{!!Form::text('event_name',null,['id'=> 'event_', 'class'=> 'form-control',
 	{!!Form::label('event_priv','event_priv: ')!!}
 	{!!Form::text('event_priv',null,['id'=> 'event_priv', 'class'=> 'form-control', 'placeholder'=>'event_priv aca'])!!}
 </div>
+{!!Form::select('size', array('def' => 'Select Type','L' => 'Large', 'S' => 'Small'), 'def')!!}
+{!!Form::select('size', array('L' => 'Large', 'S' => 'Small'))!!}
+
+
+
+{!!Form::select('animal', array(
+    'Cats' => array('leopard' => 'Leopard'),
+    'Dogs' => array('spaniel' => 'Spaniel'),
+))!!}
+
+
 <div class="form-group">
 <h2>event type</h2>
             <li class="field">
