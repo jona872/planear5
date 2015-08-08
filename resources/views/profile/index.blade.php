@@ -46,6 +46,7 @@
 </div>
 
 {!!Html::linkRoute('profile.edit','Edit',array(Auth::user()->id))!!}
+
 {!!Form::close()!!}
 @endsection
 
