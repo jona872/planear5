@@ -4,7 +4,7 @@
 </div> --}}
 <div class="form-group" >
 	{!!Form::label('event_name','Name: ')!!}
-name	{!!Form::text('event_name',null,['id'=> 'event_', 'class'=> 'form-control', 'placeholder'=>'event_name aca'])!!}
+	{!!Form::text('event_name',null,['id'=> 'event_name', 'class'=> 'form-control', 'placeholder'=>'event_name aca'])!!}
 </div>
 <div class="form-group" >
 	{!!Form::label('event_desc','Description: ')!!}

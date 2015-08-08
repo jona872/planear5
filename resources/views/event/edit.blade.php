@@ -8,11 +8,11 @@
 		{!!Form::model($event,['route'=>['event.update', $event->id],'method'=>'PUT'] )!!}
 			@include('event.form.event')
 		<div class="row">
-  			<div class="col-md-1">
+  			<div class="col-md-2">
 		{!!Form::submit('Actualizar',['class'=>'btn btn-primary']) !!}
 		{!!Form::close()!!}
 			</div>
-			<div class="col-md-1">
+			<div class="col-md-2">
 		{!!Form::open(['route'=>['event.destroy', $event->id],'method'=>'DELETE'] )!!}
 		{!!Form::submit('Eliminar',['class'=>'btn btn-danger']) !!}
 		{!!Form::close()!!}

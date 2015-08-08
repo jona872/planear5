@@ -1,0 +1,8 @@
+Cosas a ver->
+[Importante]
+Agregar BD Amigos...
+
+
+
+[Secundario]
+Los eventos muestran created by (event_owner), poner el nombre en lugar del id
