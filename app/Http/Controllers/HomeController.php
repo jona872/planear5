@@ -18,7 +18,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $home = Event::all();
+        //aca listo todos los eventos que tengan event_priv = 0
+        //y paso una variable mas "datito" con el nombre del user corresp.
+        $home = Event::where('event_priv', 0)->get();
+        //$home = DB::select('SELECT * FROM `event` WHERE `event_priv` = 0 ;');
+        //$datito=User::where()
+
+
+        //return view('home.index',['home'=>$home]);
         return view('home.index',compact('home'));
     }
 

@@ -28,6 +28,3 @@ Route::controllers([
 Route::resource('profile','ProfileController');//profile existe?//tienen otros campos como fotos etc..
 Route::resource('home','HomeController');//todos los eventos que saen "visibles" no privados
 Route::resource('event','EventController');//todos los events de 1 usuario {{Auth::user()->id}}
-Route::resource('log','LogController');
-Route::resource('genero','GeneroController');
-Route::get('/generos','GeneroController@listing');
