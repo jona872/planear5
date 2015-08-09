@@ -18,7 +18,7 @@
                      </a>
                      {{-- event tendria q tener owner, y que se complete con el nobre del us q lo creo
                      asi aca abajo llamo a {{$u->event_owner}} --}}
-                     <p class="post-meta">Created by <a>{{$u->event_owner}}</a> on September 24, 2014</p>
+                     <p class="post-meta">Created by <a>{{$u->us_name}}</a> on September 24, 2014</p>
 {!!link_to_route('event.show', $title = 'Ver mas ->', $parameters = $u->id , $attributes = ['class'=>'btn btn-default'])!!}
                  </div>
                  <hr>
