@@ -18,7 +18,7 @@ Route::get('/pro', function () {
 Route::get('/', function () {
     return view('auth/login');
 });
-
+ 
 //Controles de logueo y registro
 Route::controllers([
 	'auth' => 'Auth\AuthController',
