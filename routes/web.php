@@ -19,4 +19,9 @@ Route::get('/', function () {
 
 Auth::routes(['password.request' => false, 'password.reset' => false]);
 
+Route::group(['middleware' => 'api'], function () {
+    Route::get('api', 'APIController@postList');
+    //other routes 
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
