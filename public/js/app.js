@@ -70435,7 +70435,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  // axios.defaults.baseURL = 'http://127.0.0.1:8000/api'; //artisan serve
 // axios.defaults.baseURL = 'http://localhost/laravel-reactjs-crud/public/api'; //lampp
 
-axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'http://planear5.herokuapp.com/api'; //heroku
+axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'http://planear5.herokuapp.com/api'; //heroku 
 
 var Header = /*#__PURE__*/function (_Component) {
   _inherits(Header, _Component);
