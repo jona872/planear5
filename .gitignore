@@ -4,6 +4,7 @@
 /vendor
 .idea/
 .env
+/config/database.php
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
