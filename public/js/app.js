@@ -70433,8 +70433,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
  // axios.defaults.baseURL = 'http://127.0.0.1:8000/api'; //artisan serve
+// axios.defaults.baseURL = 'http://localhost/laravel-reactjs-crud/public/api'; //lampp
 
-axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'http://localhost/laravel-reactjs-crud/public/api'; //lampp
+axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.baseURL = 'http://planear5.herokuapp.com/api'; //heroku
 
 var Header = /*#__PURE__*/function (_Component) {
   _inherits(Header, _Component);
@@ -70653,8 +70654,8 @@ if (document.getElementById('react-js')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /opt/lampp/htdocs/laravel-reactjs-crud/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /opt/lampp/htdocs/laravel-reactjs-crud/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /opt/lampp/htdocs/planear5/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/planear5/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
