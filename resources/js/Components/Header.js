@@ -6,7 +6,9 @@ import CreateBlog from './Blog/BlogCreate';
 import BlogDetail from "./Blog/BlogList/BlogDetail";
 
 // axios.defaults.baseURL = 'http://127.0.0.1:8000/api'; //artisan serve
-axios.defaults.baseURL = 'http://localhost/laravel-reactjs-crud/public/api'; //lampp
+// axios.defaults.baseURL = 'http://localhost/laravel-reactjs-crud/public/api'; //lampp
+axios.defaults.baseURL = 'http://planear5.herokuapp.com/api'; //heroku
+
 
 
 class Header extends Component{
