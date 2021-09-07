@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         if (!Schema::hasTable('posts')) {
             Schema::create('posts', function (Blueprint $table) {
                 $table->id();
-                $table->text('image')->default('default.png');
+                $table->text('image')->nullable();
                 $table->string('title');
                 $table->text('description');
                 $table->timestamps();
