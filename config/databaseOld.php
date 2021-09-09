@@ -57,7 +57,6 @@ return [
             // 'database' => env('DB_DATABASE'),
             // 'username' => env('DB_USERNAME'),
             // 'password' => env('DB_PASSWORD'),
-            //test ignored
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
