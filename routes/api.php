@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\HerramientaController;
+use App\Http\Controllers\RelevamientoController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,4 +24,15 @@ Route::post('/createPost', 'APIController@createPost');
 Route::get('/remove/post/{id}', 'APIController@removePost');
 Route::get('/post/{id}', 'APIController@postDetail');
 
-// Route::get('/proyectos', 'APIController@index');
+
+Route::get('/proyectos', 'APIController@index');
+Route::post('/proyecto', 'APIController@crearProyecto');
+
+//UPDATE->PUT-> Form/url encoded postman
+Route::put('/proyecto-editar/{id}', 'ProyectoController@update');
+// //PROYECTOS API
+Route::apiResources([
+    'proyectos' => 'ProyectoController',
+    'herramientas' => 'HerramientaController',
+    'relevamientos' => 'RelevamientoController',
+]);

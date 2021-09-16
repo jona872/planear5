@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    use HasFactory;
-    protected $table = 'proyecto';
-    protected $fileable = [
+    protected $table = 'proyectos';
+    protected $fillable = [
         'nombre',
-        'creador'
+        'creador',
+        'descripcion'
     ];
 }
