@@ -10,7 +10,10 @@ class Proyecto extends Model
     protected $table = 'proyectos';
     protected $fillable = [
         'nombre',
-        'creador',
-        'descripcion'
+        'id_ciudad',
+        'id_creador',
+        'latitud',
+        'longitud',
+        'created_at'
     ];
 }

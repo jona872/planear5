@@ -17,7 +17,12 @@ class CreateProyectosTable extends Migration
             Schema::create('proyectos', function (Blueprint $table) {
                 $table->id();
                 $table->string('nombre');
-                $table->string('creador')->nullable();
+                $table->integer('id_ciudad')->unsigned(); //testing unsigned
+                $table->foreign('id_ciudad')->references('id')->on('ciudad');
+                $table->integer('id_creador');
+                $table->foreign('id_creador')->references('id')->on('users');
+                $table->string('latitud')->nullable();
+                $table->string('longitud')->nullable();
                 $table->timestamps();
             });
         }
