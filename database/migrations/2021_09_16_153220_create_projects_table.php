@@ -18,11 +18,16 @@ class CreateProjectsTable extends Migration
                 $table->id();
                 $table->string('nombre');
 
-                $table->integer('id_ciudad'); //testing unsigned
-                $table->foreign('id_ciudad')->references('id')->on('cities');
+                // $table->integer('id_ciudad'); //testing unsigned
+                // $table->foreign('id_ciudad')->references('id')->on('cities');
+                $table->bigInteger('city_id')->unsigned()->index()->nullable();
+                $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
 
-                $table->integer('id_creador');
-                $table->foreign('id_creador')->references('id')->on('users');
+
+                // $table->integer('id_creador');
+                // $table->foreign('id_creador')->references('id')->on('users');
+                $table->bigInteger('id_creador')->unsigned()->index()->nullable();
+                $table->foreign('id_creador')->references('id')->on('users')->onDelete('cascade');
 
                 $table->string('latitud')->nullable();
                 $table->string('longitud')->nullable();

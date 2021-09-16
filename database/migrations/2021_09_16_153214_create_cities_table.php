@@ -18,8 +18,11 @@ class CreateCitiesTable extends Migration
                 $table->id();
                 $table->string('nombre');
 
-                $table->integer('id_provincia'); //testing unsigned
-                $table->foreign('id_provincia')->references('id')->on('provinces');
+                $table->bigInteger('province_id')->unsigned()->index()->nullable();
+                $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+
+                // $table->unsignedInteger('province_id'); //testing unsigned
+                // $table->foreign('province_id')->references('id')->on('provinces');
                 
                 $table->timestamps();
             });

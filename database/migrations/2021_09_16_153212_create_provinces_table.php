@@ -18,9 +18,12 @@ class CreateProvincesTable extends Migration
                 $table->id();
                 $table->string('nombre');
 
-                $table->integer('id_pais'); //testing unsigned
-                $table->foreign('id_pais')->references('id')->on('countries');
-                
+                $table->bigInteger('country_id')->unsigned()->index()->nullable();
+                $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+
+                // $table->integer('country_id')->unsigned(); //testing unsigned
+                // $table->foreign('country_id')->references('id')->on('countries');
+
                 $table->timestamps();
             });
         }
