@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCitiesTable extends Migration
+class CreateToolsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('cities')) {
-            Schema::create('cities', function (Blueprint $table) {
+        if (!Schema::hasTable('tools')) {
+            Schema::create('tools', function (Blueprint $table) {
                 $table->id();
                 $table->string('nombre');
-
-                $table->integer('id_provincia')->unsigned(); //testing unsigned
-                $table->foreign('id_provincia')->references('id')->on('provinces');
-                
+                $table->integer('id_creador')->unsigned();
+                $table->foreign('id_creador')->references('id')->on('users');
                 $table->timestamps();
             });
         }
@@ -33,6 +31,6 @@ class CreateCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('tools');
     }
 }
