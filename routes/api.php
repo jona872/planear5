@@ -3,8 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProyectoController;
-use App\Http\Controllers\HerramientaController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RelevamientoController;
 
 /*
@@ -32,7 +31,6 @@ Route::post('/proyecto', 'APIController@crearProyecto');
 Route::put('/proyecto-editar/{id}', 'ProyectoController@update');
 // //PROYECTOS API
 Route::apiResources([
-    'proyectos' => 'ProyectoController',
-    'herramientas' => 'HerramientaController',
+    'proyectos' => 'ProjectController',
     'relevamientos' => 'RelevamientoController',
 ]);

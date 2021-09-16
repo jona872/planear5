@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Herramienta;
+use App\City;
 use Illuminate\Http\Request;
 
-class HerramientaController extends Controller
+class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class HerramientaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Herramienta  $herramienta
+     * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function show(Herramienta $herramienta)
+    public function show(City $city)
     {
         //
     }
@@ -52,10 +52,10 @@ class HerramientaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Herramienta  $herramienta
+     * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function edit(Herramienta $herramienta)
+    public function edit(City $city)
     {
         //
     }
@@ -64,10 +64,10 @@ class HerramientaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Herramienta  $herramienta
+     * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Herramienta $herramienta)
+    public function update(Request $request, City $city)
     {
         //
     }
@@ -75,10 +75,10 @@ class HerramientaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Herramienta  $herramienta
+     * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Herramienta $herramienta)
+    public function destroy(City $city)
     {
         //
     }
