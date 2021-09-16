@@ -17,10 +17,10 @@ class CreateProjectsRelevamientosTable extends Migration
             Schema::create('projects_relevamientos', function (Blueprint $table) {
                 $table->id();
 
-                $table->integer('id_proyecto')->unsigned();
-                $table->foreign('id_proyecto')->references('id')->on('projects');
+                $table->integer('id_proyecto');
+                $table->foreign('id_proyecto_relevamiento')->references('id')->on('projects');
 
-                $table->integer('id_relevamiento')->unsigned();
+                $table->integer('id_relevamiento');
                 $table->foreign('id_relevamiento')->references('id')->on('relevamientos');
 
                 $table->timestamps();

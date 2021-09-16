@@ -16,11 +16,11 @@ class CreateRelevamientosTable extends Migration
         if (!Schema::hasTable('relevamientos')) {
             Schema::create('relevamientos', function (Blueprint $table) {
                 $table->id();
-                
-                $table->integer('id_responsable')->unsigned();
+
+                $table->integer('id_responsable');
                 $table->foreign('id_responsable')->references('id')->on('users');
 
-                $table->integer('id_herramienta')->unsigned();
+                $table->integer('id_herramienta');
                 $table->foreign('id_herramienta')->references('id')->on('tools');
 
                 $table->timestamps();

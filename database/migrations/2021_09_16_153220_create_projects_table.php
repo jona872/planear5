@@ -17,10 +17,13 @@ class CreateProjectsTable extends Migration
             Schema::create('projects', function (Blueprint $table) {
                 $table->id();
                 $table->string('nombre');
-                $table->integer('id_ciudad')->unsigned(); //testing unsigned
+
+                $table->integer('id_ciudad'); //testing unsigned
                 $table->foreign('id_ciudad')->references('id')->on('cities');
+
                 $table->integer('id_creador');
                 $table->foreign('id_creador')->references('id')->on('users');
+
                 $table->string('latitud')->nullable();
                 $table->string('longitud')->nullable();
                 $table->timestamps();

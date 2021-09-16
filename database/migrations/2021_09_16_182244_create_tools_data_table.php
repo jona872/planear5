@@ -17,12 +17,12 @@ class CreateToolsDataTable extends Migration
             Schema::create('tools_data', function (Blueprint $table) {
                 $table->id();
 
-                $table->integer('id_herramienta')->unsigned();
+                $table->integer('id_herramienta');
                 $table->foreign('id_herramienta')->references('id')->on('tools');
 
-                $table->integer('id_dato')->unsigned();
+                $table->integer('id_dato');
                 $table->foreign('id_dato')->references('id')->on('data');
-                
+
                 $table->timestamps();
             });
         }

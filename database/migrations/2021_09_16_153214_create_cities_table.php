@@ -18,7 +18,7 @@ class CreateCitiesTable extends Migration
                 $table->id();
                 $table->string('nombre');
 
-                $table->integer('id_provincia')->unsigned(); //testing unsigned
+                $table->integer('id_provincia'); //testing unsigned
                 $table->foreign('id_provincia')->references('id')->on('provinces');
                 
                 $table->timestamps();
