@@ -39,7 +39,7 @@ class RelevamientoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Recibe un proyectoID, una HerramientaID y las respuestas de esa Herramienta.
     }
 
     /**

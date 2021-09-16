@@ -15,23 +15,23 @@ class ProjectController extends Controller
 	 */
 	public function index()
 	{
-		return Project::all();
-		// try {
-		// 	$getAllProject = Project::orderBy('id', 'desc')->get();
+		// return Project::all();
+		try {
+			$getAllProject = Project::orderBy('id', 'desc')->get();
 
-		// 	return response()->json([
-		// 		'value'  => $getAllProject,
-		// 		'status' => 'success',
-		// 		'message' => 'Project Listed Successfully !!'
-		// 	]);
-		// } catch (Exception $e) {
-		// 	return [
-		// 		'value'  => [],
-		// 		'status' => 'error',
-		// 		'message'   => $e->getMessage()
+			return response()->json([
+				'value'  => $getAllProject,
+				'status' => 'success',
+				'message' => 'Project Listed Successfully !!'
+			]);
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
 
-		// 	];
-		// }
+			];
+		}
 	}
 
 	/**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data;
+use Exception;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -39,7 +40,22 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+			$Data = Data::create($request->all());
+
+			return response()->json([
+				'value'  => $Data,
+				'status' => 'success',
+				'message' => 'Data Added Successfully !!'
+			]);
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
+
+			];
+		}
     }
 
     /**
