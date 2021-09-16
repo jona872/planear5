@@ -28,7 +28,7 @@ Route::get('/proyectos', 'APIController@index');
 Route::post('/proyecto', 'APIController@crearProyecto');
 
 //UPDATE->PUT-> Form/url encoded postman
-Route::put('/proyecto-editar/{id}', 'ProyectoController@update');
+Route::put('/proyecto-editar/{id}', 'ProjectController@update');
 // //PROYECTOS API
 Route::apiResources([
     'proyectos' => 'ProjectController',

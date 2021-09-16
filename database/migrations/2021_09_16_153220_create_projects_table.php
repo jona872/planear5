@@ -26,8 +26,8 @@ class CreateProjectsTable extends Migration
 
                 // $table->integer('id_creador');
                 // $table->foreign('id_creador')->references('id')->on('users');
-                $table->bigInteger('id_creador')->unsigned()->index()->nullable();
-                $table->foreign('id_creador')->references('id')->on('users')->onDelete('cascade');
+                $table->bigInteger('user_id')->unsigned()->index()->nullable();
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
                 $table->string('latitud')->nullable();
                 $table->string('longitud')->nullable();

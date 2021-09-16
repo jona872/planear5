@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $table = 'proyectos';
+    protected $table = 'projects';
     protected $fillable = [
         'nombre',
-        'id_ciudad',
-        'id_creador',
+        'city_id',
+        'user_id',
         'latitud',
         'longitud',
         'created_at'
