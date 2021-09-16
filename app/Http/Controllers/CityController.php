@@ -14,7 +14,11 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        $values = City::all();
+        return response()->json([
+            'mensaje' => 'city controller',
+            'value' => $values
+        ]);
     }
 
     /**
@@ -35,7 +39,6 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**

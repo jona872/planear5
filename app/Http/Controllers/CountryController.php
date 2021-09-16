@@ -14,7 +14,11 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        $values = Country::all();
+        return response()->json([
+                            'mensaje' => 'country controller',
+                            'value' => $values   
+                        ]);
     }
 
     /**

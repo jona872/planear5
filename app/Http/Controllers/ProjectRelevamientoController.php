@@ -14,7 +14,11 @@ class ProjectRelevamientoController extends Controller
      */
     public function index()
     {
-        //
+        $values = ProjectRelevamiento::all();
+        return response()->json([
+            'mensaje' => 'ProjectRelevamiento controller',
+            'value' => $values
+        ]);
     }
 
     /**

@@ -14,7 +14,11 @@ class RelevamientoController extends Controller
      */
     public function index()
     {
-        //
+        $values = Relevamiento::all();
+        return response()->json([
+                            'mensaje' => 'relevamiento controller',
+                            'value' => $values   
+                        ]);
     }
 
     /**

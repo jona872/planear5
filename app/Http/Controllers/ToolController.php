@@ -14,7 +14,11 @@ class ToolController extends Controller
      */
     public function index()
     {
-        //
+        $values = Tool::all();
+        return response()->json([
+            'mensaje' => 'Tool controller',
+            'value' => $values
+        ]);
     }
 
     /**

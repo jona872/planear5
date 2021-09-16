@@ -14,7 +14,11 @@ class DataController extends Controller
      */
     public function index()
     {
-        //
+        $values = Data::all();
+        return response()->json([
+            'mensaje' => 'Data controller',
+            'value' => $values
+        ]);
     }
 
     /**

@@ -14,7 +14,11 @@ class ToolDataController extends Controller
      */
     public function index()
     {
-        //
+        $values = ToolData::all();
+        return response()->json([
+            'mensaje' => 'ToolData controller',
+            'value' => $values
+        ]);
     }
 
     /**

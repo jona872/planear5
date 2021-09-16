@@ -16,4 +16,5 @@ class Project extends Model
         'longitud',
         'created_at'
     ];
+    
 }
