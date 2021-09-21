@@ -16,21 +16,16 @@ class CreateProjectsTable extends Migration
         if (!Schema::hasTable('projects')) {
             Schema::create('projects', function (Blueprint $table) {
                 $table->id();
-                $table->string('nombre');
+                $table->string('project_name');
 
                 // $table->integer('id_ciudad'); //testing unsigned
                 // $table->foreign('id_ciudad')->references('id')->on('cities');
                 $table->bigInteger('city_id')->unsigned()->index()->nullable();
-                $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+                $table->foreign('city_id')->references('id')->on('cities');
 
-
-                // $table->integer('id_creador');
-                // $table->foreign('id_creador')->references('id')->on('users');
-                $table->bigInteger('user_id')->unsigned()->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-                $table->string('latitud')->nullable();
-                $table->string('longitud')->nullable();
+                $table->string('project_creator')->nullable();
+                $table->string('project_latitud')->nullable();
+                $table->string('project_longitud')->nullable();
                 $table->timestamps();
             });
         }

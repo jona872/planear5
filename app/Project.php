@@ -9,11 +9,11 @@ class Project extends Model
 {
     protected $table = 'projects';
     protected $fillable = [
-        'nombre',
+        'project_name',
         'city_id',
-        'user_id',
-        'latitud',
-        'longitud',
+        'project_creator',
+        'project_latitud',
+        'project_longitud',
         'created_at'
     ];
     

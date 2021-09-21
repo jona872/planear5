@@ -68,6 +68,8 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
+                    <br/>
+                    <br/>
                         <a href="{{ url('/home') }}">Home</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
@@ -81,7 +83,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel with ReactJs
+                    UNL /home
                 </div>
             </div>
         </div>

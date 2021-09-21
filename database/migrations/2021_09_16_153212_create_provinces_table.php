@@ -16,10 +16,10 @@ class CreateProvincesTable extends Migration
         if (!Schema::hasTable('provinces')) {
             Schema::create('provinces', function (Blueprint $table) {
                 $table->id();
-                $table->string('nombre');
+                $table->string('province_name');
 
                 $table->bigInteger('country_id')->unsigned()->index()->nullable();
-                $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+                $table->foreign('country_id')->references('id')->on('countries');
 
                 // $table->integer('country_id')->unsigned(); //testing unsigned
                 // $table->foreign('country_id')->references('id')->on('countries');

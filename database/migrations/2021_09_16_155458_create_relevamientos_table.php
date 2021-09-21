@@ -15,15 +15,11 @@ class CreateRelevamientosTable extends Migration
     {
         if (!Schema::hasTable('relevamientos')) {
             Schema::create('relevamientos', function (Blueprint $table) {
-                $table->id();
+                $table->id();                
+                // $table->bigInteger('user_id')->unsigned()->index()->nullable();
+                // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->string('relevamiento_creator')->nullable();
 
-                // $table->integer('id_responsable');
-                // $table->foreign('id_responsable')->references('id')->on('users');
-                $table->bigInteger('user_id')->unsigned()->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-                // $table->integer('id_herramienta');
-                // $table->foreign('id_herramienta')->references('id')->on('tools');
                 $table->bigInteger('tool_id')->unsigned()->index()->nullable();
                 $table->foreign('tool_id')->references('id')->on('tools')->onDelete('cascade');
 

@@ -22,23 +22,24 @@ Route::get('/post', 'APIController@postList');
 Route::post('/createPost', 'APIController@createPost');
 Route::get('/remove/post/{id}', 'APIController@removePost');
 Route::get('/post/{id}', 'APIController@postDetail');
+
+// Route::get('/proyectos', 'APIController@index');
+// Route::post('/proyecto', 'APIController@crearProyecto');
 // ========================================
 
-Route::get('/proyectos', 'APIController@index');
-Route::post('/proyecto', 'APIController@crearProyecto');
 
 //UPDATE->PUT-> Form/url encoded postman
 Route::put('/proyecto-editar/{id}', 'ProjectController@update');
 Route::put('/dato-editar/{id}', 'DataController@update');
 
 
-// //PROYECTOS API  
-Route::apiResources([
-    'paises' => 'CountryController',
-    'provincias' => 'ProvinceController',
-    'ciudades' => 'CityController',
-    'datos' => 'DataController',
-    'herramientas' => 'ToolController',
-    'proyectos' => 'ProjectController',
-    'relevamientos' => 'RelevamientoController',
-]);
+// // //PROYECTOS API  
+// Route::apiResources([
+//     'paises' => 'CountryController',
+//     'provincias' => 'ProvinceController',
+//     'ciudades' => 'CityController',
+//     'datos' => 'DataController',
+//     'herramientas' => 'ToolController',
+//     'proyectos' => 'ProjectController',
+//     'relevamientos' => 'RelevamientoController',
+// ]);

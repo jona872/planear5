@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
 use App\Project;
+use App\Proyecto;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Throwable;
 
 class ProjectController extends Controller
 {
@@ -15,23 +20,17 @@ class ProjectController extends Controller
 	 */
 	public function index()
 	{
-		// return Project::all();
-		try {
-			$getAllProject = Project::orderBy('id', 'desc')->get();
-
-			return response()->json([
-				'value'  => $getAllProject,
-				'status' => 'success',
-				'message' => 'Project Listed Successfully !!'
-			]);
-		} catch (Exception $e) {
-			return [
-				'value'  => [],
-				'status' => 'error',
-				'message'   => $e->getMessage()
-
-			];
-		}
+		// $projects = DB::table('projects')
+		// 	->select('projects.id', 'projects.nombre as project_name', 'projects.latitud', 'projects.longitud', 'cities.nombre as city_name', 'users.name')
+		// 	->join('users', 'projects.user_id', '=', 'users.id')
+		// 	->join('cities', 'projects.city_id', '=', 'cities.id')
+		// 	->get();
+		$projects = DB::table('projects')
+		 	->select('projects.*','cities.city_name')
+			->join('cities', 'projects.city_id', '=', 'cities.id')
+			->get();
+		// dd($projects);
+		return view('projects.index', compact('projects'));
 	}
 
 	/**
@@ -41,7 +40,11 @@ class ProjectController extends Controller
 	 */
 	public function create()
 	{
-		//
+		// $cities = City::pluck('city_name', 'id');
+		$cities = City::all();
+
+
+		return view('projects.create', ["cities" => $cities]);
 	}
 
 	/**
@@ -52,22 +55,12 @@ class ProjectController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		try {
-			$Project = Project::create($request->all());
+		$request->validate([
+			'project_name' => 'required',
+		]);
 
-			return response()->json([
-				'value'  => $Project,
-				'status' => 'success',
-				'message' => 'Project Added Successfully !!'
-			]);
-		} catch (Exception $e) {
-			return [
-				'value'  => [],
-				'status' => 'error',
-				'message'   => $e->getMessage()
-
-			];
-		}
+		Project::create($request->all());
+		return redirect()->route('projects.index')->with('success', 'Post created successfully.');
 	}
 
 	/**
@@ -76,23 +69,9 @@ class ProjectController extends Controller
 	 * @param  \App\Project  $Project
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(Project $Project)
+	public function show(Project $project)
 	{
-		try {
-			$getProjectData = Project::find($Project->id);
-			return response()->json([
-				'value'  => $getProjectData,
-				'status' => 'success',
-				'message' => 'Project Showed Successfully !!'
-			]);
-		} catch (Exception $e) {
-			return [
-				'value'  => [],
-				'status' => 'error',
-				'message'   => $e->getMessage()
-
-			];
-		}
+		return view('projects.show', compact('project'));
 	}
 
 	/**
@@ -101,9 +80,9 @@ class ProjectController extends Controller
 	 * @param  \App\Project  $Project
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(Project $Project)
+	public function edit(Project $project)
 	{
-		//
+		return view('projects.edit', compact('project'));
 	}
 
 	/**
@@ -115,18 +94,19 @@ class ProjectController extends Controller
 	 */
 	public function update(Request $request, Project $Project)
 	{
+		//$data = array('requestValues' => $request->all(), 'Project' => $Project );
+
+		$request->validate([
+			'project_name' => 'required',
+		]);
+
 		try {
 			$p = Project::find($request->id);
-
 			if ($p) {
 				// Project::where('id', $id)->update($request->all());
 				$p->update($request->all());
 			}
-			return response()->json([
-				'value'  => $p,
-				'status' => 'success',
-				'message' => 'Project Editado Successfully !!'
-			]);
+			return redirect()->route('projects.index')->with('success', 'Project updated successfully');
 		} catch (Exception $e) {
 			return [
 				'value'  => [],
@@ -150,11 +130,7 @@ class ProjectController extends Controller
 			if ($p) {
 				$p->delete();
 			}
-			return response()->json([
-				'value'  => [],
-				'status' => 'success',
-				'message' => 'Project Removed Successfully !!'
-			]);
+			return redirect()->route('projects.index')->with('success', 'project deleted successfully');
 		} catch (Exception $e) {
 			return [
 				'value'  => [],

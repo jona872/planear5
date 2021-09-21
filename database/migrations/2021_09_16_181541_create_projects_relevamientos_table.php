@@ -17,16 +17,13 @@ class CreateProjectsRelevamientosTable extends Migration
             Schema::create('projects_relevamientos', function (Blueprint $table) {
                 $table->id();
 
-                
-                // $table->integer('id_proyecto');
-                // $table->foreign('id_proyecto_relevamiento')->references('id')->on('projects');
+                // $table->bigInteger('project_id')->unsigned()->index()->nullable();
+                // $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
                 $table->bigInteger('project_id')->unsigned()->index()->nullable();
-                $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+                $table->foreign('project_id')->references('id')->on('projects');
 
-                // $table->integer('id_relevamiento');
-                // $table->foreign('id_relevamiento')->references('id')->on('relevamientos');
                 $table->bigInteger('relevamiento_id')->unsigned()->index()->nullable();
-                $table->foreign('relevamiento_id')->references('id')->on('relevamientos')->onDelete('cascade');
+                $table->foreign('relevamiento_id')->references('id')->on('relevamientos');
 
                 $table->timestamps();
             });

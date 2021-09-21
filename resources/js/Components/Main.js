@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import Sidebar from './Sidebar';
-import Content from './Content';
-
-
-
-
+// import Content from './Content';
+import Content from './Grafico';
+ 
 function Main() {
   return (
-    <div className="d-flex">
+    <div id="page">
       
-      <div className="main-sidebar border-end bg-white">
+      <div className="main-sidebar" id="sideBar">
         <Sidebar />
       </div>
 
-      <div className="main-content">
+      <div className="main-content" id="content">
         <Content />
       </div>
 

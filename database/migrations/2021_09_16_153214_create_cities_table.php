@@ -16,10 +16,10 @@ class CreateCitiesTable extends Migration
         if (!Schema::hasTable('cities')) {
             Schema::create('cities', function (Blueprint $table) {
                 $table->id();
-                $table->string('nombre');
+                $table->string('city_name');
 
                 $table->bigInteger('province_id')->unsigned()->index()->nullable();
-                $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+                $table->foreign('province_id')->references('id')->on('provinces');
 
                 // $table->unsignedInteger('province_id'); //testing unsigned
                 // $table->foreign('province_id')->references('id')->on('provinces');

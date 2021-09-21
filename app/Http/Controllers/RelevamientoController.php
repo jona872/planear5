@@ -40,6 +40,10 @@ class RelevamientoController extends Controller
     public function store(Request $request)
     {
         //Recibe un proyectoID, una HerramientaID y las respuestas de esa Herramienta.
+        // 1) Update data
+        // 2) Agrega el relavmiento nuevo (idHerramienta, fecha y responsable.)
+        // 3) Cuando ya tengo el id del nuevo relevamiento, agrego ese relevamientoID + proyectoID a 'projects_relevamientos'
+        
     }
 
     /**

@@ -16,12 +16,12 @@ class CreateToolsTable extends Migration
         if (!Schema::hasTable('tools')) {
             Schema::create('tools', function (Blueprint $table) {
                 $table->id();
-                $table->string('nombre');
+                $table->string('tool_name');
                 // $table->integer('id_creador');
                 // $table->foreign('id_creador')->references('id')->on('users');
 
                 $table->bigInteger('user_id')->unsigned()->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
         }

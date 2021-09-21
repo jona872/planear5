@@ -39,7 +39,9 @@ class ToolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Agregar herramienta recibe un array de Data y el nombre de la herramienta. 
+        //primero crea la herramienta con el nombre.
+        //luego en un for va creando Data y desp agrega a la tabla relacional 'tools_data'
     }
 
     /**

@@ -1,0 +1,39 @@
+html {
+    height: 100%;
+  }
+  
+  body {
+    height: 100%;
+    margin: 0;
+    font-family: Ubuntu;
+    background: linear-gradient(#b3ffab, #67fffc);
+  }
+  
+  #header {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(#444444, #333333);
+    color: #bbbbbb;
+  }
+  
+  #headerContent {
+    margin-left: 10px;
+  }
+  
+  #page {
+    display: flex;
+    height: calc( 100vh - 30px);
+    /* calculate the height. Header is 30px */
+  }
+  
+  #sideBar {
+    width: 10%;
+    background: red;
+  }
+  
+  #content {
+    background: blue;
+    flex: 1 0 auto;
+    /* enable grow, disable shrink */
+  }
