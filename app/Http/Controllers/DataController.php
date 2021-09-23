@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Data;
+use App\Tool;
+use App\ToolData;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DataController extends Controller
 {
@@ -15,12 +18,16 @@ class DataController extends Controller
      */
     public function index()
     {
-        $values = Data::all();
-        return response()->json([
-            'mensaje' => 'Data controller',
-            'value' => $values
-        ]);
+        $tools = Tool::all();
+        return view('data.index', compact('tools'));
     }
+    public function customize(Request $request)
+    {
+        $params = $request->all();
+        return view('data.create', compact('params'));
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -29,7 +36,10 @@ class DataController extends Controller
      */
     public function create()
     {
-        //
+        return view('data.test')->with('success', 'Datos agregados corretamente');
+    }
+    public function test()
+    {
     }
 
     /**
@@ -41,21 +51,31 @@ class DataController extends Controller
     public function store(Request $request)
     {
         try {
-			$Data = Data::create($request->all());
+            foreach ($request->all() as $key => $value) {
+                if (str_contains($key, 'data_question')) {
+                    $data = new Data();
+                    $data->data_question = $value;
+                    $data->data_answer = '';
+                    $data->save();
+                    $id = $data->id;
 
-			return response()->json([
-				'value'  => $Data,
-				'status' => 'success',
-				'message' => 'Data Added Successfully !!'
-			]);
-		} catch (Exception $e) {
-			return [
-				'value'  => [],
-				'status' => 'error',
-				'message'   => $e->getMessage()
+                    $td = new ToolData();
+                    $td->tool_id = $request['tool_id'];
+                    $td->data_id = $data->id;
+                    $td->save();
+                }
+            }
 
-			];
-		}
+            // return redirect()->route('tools.index')->with('success', 'Datos agregados corretamente');
+            return redirect()->route('tools.index')->withSuccess(['Success Message here!']);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+
+            ];
+        }
     }
 
     /**
@@ -98,8 +118,43 @@ class DataController extends Controller
      * @param  \App\Data  $data
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Data $data)
+    public function destroy($id)
     {
-        //
+
+
+        // Session::flash('message','Cliente eliminado correctamente');
+        // return Redirect::to('owners');
+
+        try {
+            $td = DB::table('tools_data')
+                // ->select('tools_data.id', 'tools_data.data_id','tools_data.tool_id')
+                ->select('tools_data.id')
+                ->join('data', 'tools_data.data_id', '=', 'data.id')
+                ->where('data.id', $id)
+                ->get();
+
+            ToolData::destroy($td[0]->id);
+
+            // $d = Data::find($id);
+            // if ($d) {
+            //     Data::destroy($id);
+            // }
+
+                
+            $d = Data::findOrFail($id);
+            $d->delete();
+            return redirect()->back()->withSuccess(['Success Delete Message here!']);
+
+
+
+            // return redirect()->route('tools.index')->withSuccess(['Success Delete Message here!']);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+
+            ];
+        }
     }
 }

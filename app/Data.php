@@ -8,7 +8,7 @@ class Data extends Model
 {
     protected $table = 'data';
     protected $fillable = [
-        'pregunta',
-        'respuesta'
+        'data_question',
+        'data_answer'
     ];
 }

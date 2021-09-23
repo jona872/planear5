@@ -33,7 +33,7 @@
 	@push('react-js-include')
 	<!-- Scripts -->
 	<!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
-	<script src="{{ asset('assets/front/js/jquery.min.js') }}"></script>
+	<!-- <script src="{{ asset('assets/front/js/jquery.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/jquery-migrate-3.0.1.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/popper.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/bootstrap.min.js') }}"></script>
@@ -44,7 +44,7 @@
 	<script src="{{ asset('assets/front/js/jquery.magnific-popup.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/aos.js') }}"></script>
 	<script src="{{ asset('assets/front/js/jquery.animateNumber.min.js') }}"></script>
-	<script src="{{ asset('assets/front/js/scrollax.min.js') }}"></script>
+	<script src="{{ asset('assets/front/js/scrollax.min.js') }}"></script> -->
 	
 	<!-- Scripts -->
 

@@ -14,10 +14,12 @@
 	<!-- IMPORTANTE -->
 	<!-- <link rel="stylesheet" href="{{ asset('css/app2.css')}}"> -->
 	<link rel="stylesheet" href="{{ asset('css/admin.css')}}">
-	<!-- <link href="/css/admin.css" rel="stylesheet"> -->
+	<link rel="stylesheet" href="{{ asset('fonts/bootstrap-icons/font/bootstrap-icons.css')}}">
 	<!-- <link rel="stylesheet" href="{{ asset('css/appTest.css')}}"> -->
 
+
 	@stack('react-css-include')
+
 </head>
 
 <body class="app header-fixed sidebar-fixed sidebar-lg-show">
@@ -74,10 +76,10 @@
 				<ul class="nav">
 					<li class="nav-title">Principal</li>
 					<li class="nav-item"><a class="nav-link" href="/projects"><i class="nav-icon icon-plane"></i>Proyectos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/posts"><i class="nav-icon icon-globe"></i> Herramientas</a></li>
-					<li class="nav-item"><a class="nav-link" href="/translatable-articles"><i class="nav-icon icon-ghost"></i> Relevamientos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/exports"><i class="nav-icon icon-drop"></i> Graficar Datos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/articles-with-relationships"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
+					<li class="nav-item"><a class="nav-link" href="/tools"><i class="nav-icon icon-globe"></i> Herramientas</a></li>
+					<li class="nav-item"><a class="nav-link" href="/relevamientos"><i class="nav-icon icon-ghost"></i> Relevamientos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/plots"><i class="nav-icon icon-drop"></i> Graficar Datos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
 					<!-- <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/bulk-actions"><i class="nav-icon icon-book-open"></i> #6: Bulk Actions</a></li>
 					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/tags"><i class="nav-icon icon-tag"></i> #7: Tags</a></li> -->
 
@@ -103,18 +105,18 @@
 			<div id="app" class="container-fluid">
 				<div class="modals">
 					<!---->
-					Modal
-				</div>
-				<div class="jona">
-				@yield('content')
 				</div>
 				<div>
 					<div class="notifications" style="width: 300px; bottom: 0px; right: 0px;"><span>notifications</span>
 					</div>
 				</div>
-				<div class="welcome-quote">
+
+				@yield('content')
+
+
+				<!-- <div class="welcome-quote">
 					Welcome-quote
-				</div>
+				</div> -->
 			</div>
 
 		</main><!-- CONTENT -->
@@ -166,6 +168,11 @@
 	<script src="{{ asset('assets/front/js/aos.js') }}"></script>
 	<script src="{{ asset('assets/front/js/jquery.animateNumber.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/scrollax.min.js') }}"></script>
+	@yield('footer-scripts')
+	<!-- // ACA -->
+	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script> -->
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 </body>
 
 </html>

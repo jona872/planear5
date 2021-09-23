@@ -7,6 +7,27 @@ use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
+
+    public function getCities(Request $request)
+    {
+
+        $search = $request->search;
+
+        if ($search == '') {
+            $cities = City::orderby('city_name', 'asc')->select('id', 'city_name')->limit(5)->get();
+        } else {
+            $cities = City::orderby('city_name', 'asc')->select('id', 'city_name')
+                ->where('city_name', 'like', '%' . $search . '%')->limit(5)->get();
+        }
+
+        $response = array();
+        foreach ($cities as $city) {
+            $response[] = array("value" => $city->id, "label" => $city->city_name);
+        }
+
+        return response()->json($response);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -8,7 +8,7 @@ class Tool extends Model
 {
     protected $table = 'tools';
     protected $fillable = [
-        'nombre',
+        'tool_name',
         'user_id'
     ];
 }

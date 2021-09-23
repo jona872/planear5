@@ -8,7 +8,7 @@ class City extends Model
 {
     protected $table = 'cities';
     protected $fillable = [
-        'nombre',
+        'city_name',
         'province_id',
     ];
 }

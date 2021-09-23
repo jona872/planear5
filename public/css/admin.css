@@ -22245,7 +22245,9 @@ table th a:not([href]) {
 .table-listing .row.no-gutters .btn {
   margin-right: 10px;
 }
-
+.table-listing .btn {
+  margin-right: 10px;
+}
 @media (max-width: 1319px) {
   .table-listing .row.no-gutters .btn {
     margin-bottom: 10px;

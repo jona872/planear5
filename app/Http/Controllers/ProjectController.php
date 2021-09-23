@@ -71,6 +71,10 @@ class ProjectController extends Controller
 	 */
 	public function show(Project $project)
 	{
+		$city = DB::table('cities')
+				->where('id', $project->city_id)
+				->get();		
+		$project['city_name'] = $city[0]->city_name;
 		return view('projects.show', compact('project'));
 	}
 
@@ -82,7 +86,14 @@ class ProjectController extends Controller
 	 */
 	public function edit(Project $project)
 	{
-		return view('projects.edit', compact('project'));
+		$cities = City::all();
+		$projects = DB::table('projects')
+		 	->select('projects.*','cities.city_name','cities.id as city_id')
+			->join('cities', 'projects.city_id', '=', 'cities.id')
+			->where('projects.id',$project->id)
+			->get();
+		// dd($projects);
+		return view('projects.edit', compact('projects','cities'));
 	}
 
 	/**
