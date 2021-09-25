@@ -15,7 +15,7 @@
 
 <div class="container-xl">
 	<div class="card">
-		<form action="{{ route('relevamientos.pos-create') }}" method="POST" class="form-horizontal form-create">
+		<form action="{{ route('relevamientos.poscreate') }}" method="POST" class="form-horizontal form-create">
 			@csrf
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 

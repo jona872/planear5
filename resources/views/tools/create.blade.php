@@ -16,56 +16,58 @@
 @endif
 
 
-<div class="row">
-	<div class="col-lg-12 margin-tb">
-		<div class="pull-top">
-			<h2>Aregar Proyecto</h2>
-		</div>
-		<div class="pull-right">
-			<a class="btn btn-primary" href="{{ route('tools.index') }}"> Back</a>
-		</div>
-	</div>
-</div>
 
-<form action="{{ route('tools.store') }}" method="POST">
-	@csrf
+<div class="container-xl">
+	<div class="card">
+		<form action="{{ route('tools.store') }}" method="POST" class="form-horizontal form-create">
+			@csrf
+			<div class="card-header"><i class="fa fa-plus"></i> Agregar Herramienta </div>
 
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12">
-			<div class="form-group">
-				<strong>Nombre Herramienta:</strong>
-				<input type="text" name="tool_name" class="form-control" placeholder="Nombre de Herramienta">
+			<div class="card-body">
+
+				<div class="form-group row align-items-center has-success">
+					<label for="tool_name" class="col-form-label text-md-right col-md-3">
+						<strong> Nombre Herramienta </strong>
+					</label>
+					<div class="col-md-9 col-xl-7">
+						<input type="text" id="tool_name" name="tool_name" placeholder="Nombre Herramienta" class="form-control form-control-success" aria-required="true" aria-invalid="false">
+					</div>
+				</div>
+
+				<div class="form-group row align-items-center has-success">
+					<label for="project_creator" class="col-form-label text-md-right col-md-3">
+						<strong> Creador </strong>
+					</label>
+					<div class="col-md-9 col-xl-7">
+						<input type="text" id="project_creator" name="project_creator" class="form-control form-control-success" aria-required="true" aria-invalid="false" value="{{ Auth::user()->name }}" readonly>
+					</div>
+				</div>
+
+
+				<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+					<a class="btn btn-danger" href="{{ route('tools.index') }}">
+						<i class="fa fa-ban"></i> Cancelar</a>
+					<button type="submit" class="btn btn-primary">
+						<i class="fa fa-download"></i> Guardar
+					</button>
+				</div>
+
+
 			</div>
-		</div>
-
-
-		<div class="col-xs-12 col-sm-12 col-md-12">
-			<div class="form-group">
-				<strong>Creador:</strong>
-				<input type="text" readonly name="project_creator" class="form-control" value="{{ Auth::user()->name }}">
-			</div>
-		</div>
-
-
-		<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</div>
-
-	</div>
-</form>
+		</form>
 
 
 
 
-<!-- For defining autocomplete -->
-<!-- <input class="ui-widget" type="text" id='city_search'> -->
+		<!-- For defining autocomplete -->
+		<!-- <input class="ui-widget" type="text" id='city_search'> -->
 
-<!-- For displaying selected option value from autocomplete suggestion -->
-<!-- <inpu/t type="text" id='cityid' readonly> -->
+		<!-- For displaying selected option value from autocomplete suggestion -->
+		<!-- <inpu/t type="text" id='cityid' readonly> -->
 
-@endsection
+		@endsection
 
-<!-- @push('react-js-include') -->
-<!-- @section('footer-scripts')
+		<!-- @push('react-js-include') -->
+		<!-- @section('footer-scripts')
 @include('scripts.citySearch')
 @endsection -->

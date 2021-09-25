@@ -79,6 +79,7 @@
 					<li class="nav-item"><a class="nav-link" href="/tools"><i class="nav-icon icon-globe"></i> Herramientas</a></li>
 					<li class="nav-item"><a class="nav-link" href="/relevamientos"><i class="nav-icon icon-ghost"></i> Relevamientos</a></li>
 					<li class="nav-item"><a class="nav-link" href="/plots"><i class="nav-icon icon-drop"></i> Graficar Datos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/calcs"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
 					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
 					<!-- <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/bulk-actions"><i class="nav-icon icon-book-open"></i> #6: Bulk Actions</a></li>
 					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/tags"><i class="nav-icon icon-tag"></i> #7: Tags</a></li> -->
@@ -103,13 +104,13 @@
 		<main class="main">
 
 			<div id="app" class="container-fluid">
-				<div class="modals">
-					<!---->
-				</div>
-				<div>
+				<!-- <div class="modals">
+					
+				</div> -->
+				<!-- <div>
 					<div class="notifications" style="width: 300px; bottom: 0px; right: 0px;"><span>notifications</span>
 					</div>
-				</div>
+				</div> -->
 
 				@yield('content')
 
@@ -156,6 +157,7 @@
 	@stack('react-js-include')
 	<!-- <script src="/js/admin.js"></script> -->
 	<script src="{{ asset('js/admin.js') }}"></script>
+	<!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 	<script src="{{ asset('assets/front/js/jquery.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/jquery-migrate-3.0.1.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/popper.min.js') }}"></script>
@@ -172,6 +174,7 @@
 	<!-- // ACA -->
 	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script> -->
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	@include('scripts.tmp')
 
 </body>
 

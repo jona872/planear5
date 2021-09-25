@@ -14,41 +14,60 @@
 
 <div class="container-xl">
 	<div class="card">
-		<form action="{{ route('relevamientos.update',$relevamiento->id) }}" method="POST" class="form-horizontal form-create">
+		<form action="{{ route('relevamientos.update', $relevamiento->id) }}" method="POST" class="form-horizontal form-create">
 			@csrf
 
 			@method('PUT')
 			<input name="id" type="hidden" value="{{ $relevamiento->id }}">
-
 			<div class="card-header"><i class="fa fa-plus"></i> Editar Relevamiento </div>
-
 			<div class="card-body">
-
-				<div class="form-group row align-items-center has-success">
-					<input name="user_id" type="hidden" value="{{ $relevamiento->user_id }}">
-					<label for="creator" class="col-form-label text-md-right col-md-3">
-						<strong> Creador </strong>
-					</label>
+				<div class="form-group row align-items-center">
+					<label for="" class="col-form-label text-md-right col-md-3"><strong>Proyecto</strong></label>
 					<div class="col-md-9 col-xl-7">
-						<input type="text" id="creator" name="creator" value="{{ $relevamiento->creator }}" 
-						class="form-control form-control-success" aria-required="true" aria-invalid="false" readonly>
+						<select name="project_id" class="form-control form-select">
+							<option value=""> {{$actualP->project_name}} </option>
+							@if (count($projects)>1)
+							@foreach($projects ?? '' as $project)
+							<option value="{{ $project->id }}">{{ $project->project_name }}</option>
+							@endforeach
+							@endif
+						</select>
 					</div>
 				</div>
 
+				<div class="form-group row align-items-center">
+					<label for="" class="col-form-label text-md-right col-md-3"><strong>Herramienta</strong></label>
+					<div class="col-md-9 col-xl-7">
+						<select name="tool_id" class="form-control form-select">
+							<option value=""> {{$actualT->tool_name}} </option>
+							@if (count($tools)>1)
+							@foreach($tools ?? '' as $tool)
+							<option value="{{ $tool->id }}">{{ $tool->tool_name }}</option>
+							@endforeach
+							@endif
+						</select>
+					</div>
+				</div>
+				<!-- PREGUNTAS -->
 
-				<div class="card-header"> Datos recolectados </div>
+				<div class="card-header"> Preguntas asociadas a la Relevamiento </div>
 				<br>
-				<div class="form-group row align-items-center has-success">
-					<label for="project_name" class="col-form-label text-md-right col-md-3">
-						<strong> PREGUNTA </strong>
-					</label>
-					<div class="col-md-9 col-xl-7">
-						<input type="text" id="project_name" name="project_name" value="RESPUESTA" 
-								class="form-control form-control-success" aria-required="true" aria-invalid="false">
+				@for($i = 0; $i < count($relevamientoData) ; $i++)
+					<div class="form-group row align-items-center has-success">
+						<label for="answer_name{{$i}}" class="col-form-label text-md-right col-md-3">
+							<strong> {{$relevamientoData[$i]->data_question}} </strong>
+						</label>
+						<div class="col-md-9 col-xl-7">
+						<input type="hidden" name="answer_id{{$i}}" class="form-control" value="{{ $relevamientoData[$i]->answer_id }}">
+							<input type="text" id="answer_name{{$i}}" name="answer_name{{$i}}" class="form-control form-control-success" 
+							aria-required="true" aria-invalid="false" value="{{ $relevamientoData[$i]->answer_name }}">
+						</div>
 					</div>
-				</div>
+
+				@endfor
 
 
+				
 				<div class="card-footer text-center">
 					<a class="btn btn-danger" href="{{ route('relevamientos.index') }}">
 						<i class="fa fa-ban"></i> Cancelar</a>

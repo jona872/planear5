@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from "react-router-dom";
 import Header from './Components/Header';
+import Grafico from './Components/Grafico';
 import Main from './Components/Main';
 import Test from './Test';
 
@@ -12,7 +13,7 @@ render(){
                 <Router>
                     {/* <Header/    > */}
                     {/* <Main /> */}
-                    <Test />
+                    <Grafico />
                 </Router>
             </div>
         );

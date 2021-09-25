@@ -20,8 +20,14 @@ class CreateRelevamientosTable extends Migration
                 // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('relevamiento_creator')->nullable();
 
+                $table->bigInteger('project_id')->unsigned()->index()->nullable();
+                $table->foreign('project_id')->references('id')->on('projects');
+
                 $table->bigInteger('tool_id')->unsigned()->index()->nullable();
                 $table->foreign('tool_id')->references('id')->on('tools');
+
+                $table->bigInteger('user_id')->unsigned()->index()->nullable();
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 
                 $table->string('relevamiento_latitud')->nullable();
                 $table->string('relevamiento_longitud')->nullable();

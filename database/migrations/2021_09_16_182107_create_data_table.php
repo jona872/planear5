@@ -17,7 +17,6 @@ class CreateDataTable extends Migration
             Schema::create('data', function (Blueprint $table) {
                 $table->id();
                 $table->string('data_question')->nullable();
-                $table->string('data_answer')->nullable();
                 $table->timestamps();
             });
         }

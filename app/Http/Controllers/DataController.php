@@ -55,9 +55,7 @@ class DataController extends Controller
                 if (str_contains($key, 'data_question')) {
                     $data = new Data();
                     $data->data_question = $value;
-                    $data->data_answer = '';
                     $data->save();
-                    $id = $data->id;
 
                     $td = new ToolData();
                     $td->tool_id = $request['tool_id'];

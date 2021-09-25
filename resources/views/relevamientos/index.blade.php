@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<?php
+session()->forget('toolData');
+session()->forget('tid');
+session()->forget('pid');
+?>
+
 <div class="row">
 	<div class="col">
 		<div class="card">
@@ -24,6 +30,7 @@
 				<div class="table-responsive">
 					<table class="table table-hover">
 						<thead>
+							<th>Proyecto</th>
 							<th>Herramienta</th>
 							<th>Fecha</th>
 							<th>Responsable</th>
@@ -32,10 +39,12 @@
 						</thead>
 						@foreach ($relevamientos as $u)
 						<tbody>
-							<td>{{$u->tool_id }}</td>
+							<td>{{$u->project_name }}</td>
+							<td>{{$u->tool_name }}</td>
 							<td>{{$u->created_at}}</td>
 							<td>{{$u->relevamiento_creator}}</td>
-							<td>{{$u->relevamiento_latitud." ; ".$u->relevamiento_longitud }}</td>
+							<td>{{$u->name}}</td>
+							<!-- <td>{{$u->relevamiento_latitud." ; ".$u->relevamiento_longitud }}</td> -->
 							<td>
 								<div class="row no-gutters">
 									<div class="col-auto">

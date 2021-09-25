@@ -15,9 +15,9 @@
 
 <div class="container-xl">
 	<div class="card">
-		<form action="{{ route('projects.store') }}" method="POST" class="form-horizontal form-create">
+		<form action="{{ route('projects.update',$projects[0]->id) }}" method="POST" class="form-horizontal form-create">
 			@csrf
-			@method('POST')
+			@method('PUT')
 			<input name="id" type="hidden" value="{{ $projects[0]->id }}">
 
 			<div class="card-header"><i class="fa fa-plus"></i> Editar Proyecto </div>

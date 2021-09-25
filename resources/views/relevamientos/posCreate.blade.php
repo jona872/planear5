@@ -12,37 +12,36 @@
 </div>
 @endif
 
+@php
+//dd($toolData);
+@endphp
 
 <div class="container-xl">
 	<div class="card">
 		<form action="{{ route('relevamientos.store') }}" method="POST" class="form-horizontal form-create">
 			@csrf
+			<input type="hidden" name="pid" value="{{ $pid }}">
+			<input type="hidden" name="tid" value="{{ $tid }}">
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 
 			<div class="card-body">
-				@for($i = 0; $i < count($toolData) ; $i++) 
-				<div class="form-group row align-items-center has-success">
-					<label for="tool_name" class="col-form-label text-md-right col-md-3">
+				@for($i = 0; $i < count($toolData) ; $i++) <div class="form-group row align-items-center has-success">
+					<label for="data_question" class="col-form-label text-md-right col-md-3">
 						<strong> {{ $toolData[$i]->data_question }} </strong>
 					</label>
 					<div class="col-md-9 col-xl-7">
 						<input type="hidden" name="data_id{{$i}}" class="form-control" value="{{ $toolData[$i]->id }}">
-						<input type="text" name="data_answer{{$i}}" class="form-control" value="{{ $toolData[$i]->data_answer }} ">
+						<input type="text" name="answer_name{{$i}}" class="form-control">
 					</div>
-				</div>
+			</div>
 			@endfor
-
-
-
-
-
 
 	</div> <!-- CARD BODY -->
 
 	<div class="card-footer">
 		<a class="btn btn-danger" href="{{ route('relevamientos.index') }}">
 			<i class="fa fa-ban"></i> Cancelar</a>
-		<button type="submit" class="btn btn-primary">
+		<button type="submit" class="btn btn-primary" id="Enviar">
 			<i class="fa fa-arrow-right"></i> Continuar
 		</button>
 	</div>
@@ -50,3 +49,7 @@
 </div>
 </div>
 @endsection
+
+<!-- @section('footer-scripts')
+@include('scripts.submitRelevamiento')
+@endsection -->

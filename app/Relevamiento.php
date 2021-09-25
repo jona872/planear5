@@ -9,8 +9,9 @@ class Relevamiento extends Model
     protected $table = 'relevamientos';
     protected $fillable = [
         'relevamiento_creator',
-        // 'user_id',
+        'project_id',
         'tool_id',
+        'user_id',
         'relevamiento_latitud',
         'relevamiento_longitud'
     ];

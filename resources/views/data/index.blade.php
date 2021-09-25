@@ -10,7 +10,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<div class="form-group">
 				<strong>Seleccione a que herramienta se agregaran los campos:</strong>
-				<select name="tool_id" class="form-control custom-select">
+				<select name="tool_id" class="form-control form-select">
 					<option value=""> Seleccione Herramienta </option>
 					@foreach($tools ?? '' as $tool)
 					<option value="{{ $tool->id }}">{{ $tool->tool_name }}</option>

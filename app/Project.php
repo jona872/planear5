@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Project extends Model
 {
@@ -16,5 +17,10 @@ class Project extends Model
         'project_longitud',
         'created_at'
     ];
+
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::parse($date)->format('d M Y h:i A');
+    }
     
 }

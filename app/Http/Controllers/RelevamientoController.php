@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Data;
+use App\Answer;
+use App\DataAnswer;
 use App\Project;
 use App\ProjectRelevamiento;
 use App\Relevamiento;
@@ -22,11 +23,13 @@ class RelevamientoController extends Controller
      */
     public function index()
     {
-        $relevamientos = Relevamiento::all();
-        // return response()->json([
-        //                     'mensaje' => 'relevamiento controller',
-        //                     'value' => $values   
-        //                 ]);
+        $relevamientos = DB::table('relevamientos')
+            ->join('users', 'relevamientos.user_id', '=', 'users.id')
+            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+            ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
+            ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
+            ->get();
+        // dd($relevamientos);
         return view('relevamientos.index', compact('relevamientos'));
     }
 
@@ -37,12 +40,6 @@ class RelevamientoController extends Controller
      */
     public function preCreate()
     {
-        // $projects = Project::all();
-        // $tools = Tool::all();
-
-        // $projects2 = Project::pluck('project_name', 'id')->all();
-        // $tools = Tool::pluck('tool_name', 'id') ->all();
-
         $projects = DB::table('projects')
             ->select('projects.id', 'projects.project_name')
             ->get();
@@ -54,40 +51,24 @@ class RelevamientoController extends Controller
     }
     public function posCreate(Request $request)
     {
-        //1 creo el relevameinto conel toolID
-        //2 Creo el projects_relevamientos con el id recien creado y el projectID
-        try {
-            $relevameinto = new Relevamiento();
-            if ($relevameinto) {
-                $relevameinto->relevamiento_creator = Auth::user()->name;
-                $relevameinto->tool_id = $request->tool_id;
-                $relevameinto->relevamiento_latitud = "";
-                $relevameinto->relevamiento_longitud = "";
-                $relevameinto->save();
+        //dd($request);
+        //$request->pid; $request->tid;
+        $toolData = DB::table('data')
+            ->join('tools_data', 'data.id', '=', 'tools_data.data_id')
+            ->join('tools', 'tools_data.tool_id', '=', 'tools.id')
+            ->where('tools.id', $request->tool_id)
+            ->select('data.*')
+            ->get();
 
-                $pr = new ProjectRelevamiento();
-                if ($pr) {
-                    $pr->relevamiento_id = $relevameinto->id;
-                    $pr->project_id = $request->project_id;
-                    $pr->save();
-                }
-            }
-            $toolData = DB::table('data')
-                ->join('tools_data', 'data.id', '=', 'tools_data.data_id')
-                ->join('tools', 'tools_data.tool_id', '=', 'tools.id')
-                ->where('tools.id', $request->tool_id)
-                ->select('data.*')
-                ->get();
+        $pid = $request->project_id;
+        $tid = $request->tool_id;
+        session(['pid' => $request->project_id]);
+        session(['tid' => $request->tool_id]);
+        session(['toolData' => $toolData]);
 
-            return view('relevamientos.posCreate', compact('toolData'));
-        } catch (Exception $e) {
-            return [
-                'value'  => [],
-                'status' => 'error',
-                'message'   => $e->getMessage()
+        // dd(session('pid'));
 
-            ];
-        }
+        return view('relevamientos.posCreate', compact('toolData', 'pid', 'tid'));
     }
 
     /**
@@ -98,31 +79,48 @@ class RelevamientoController extends Controller
      */
     public function store(Request $request)
     {
-        //Recibe un proyectoID, una HerramientaID y las respuestas de esa Herramienta.
-        // 1) Update data
-        // 2) Agrega el relavmiento nuevo (idHerramienta, fecha y responsable.)
-        // 3) Cuando ya tengo el id del nuevo relevamiento, agrego ese relevamientoID + proyectoID a 'projects_relevamientos'
+        // dd($request->all());
+        $toolData = session('toolData');
+        $pid = session('pid');
+        $tid = session('tid');
+
         try {
-            
+
             //Updateo los campos de cada herramienta =====================
-            $data_ids = array();
-            $data_answers = array();
+            $questions_id = array();
+            $answers_value = array();
             foreach ($request->all() as $key => $value) {
                 if (str_contains($key, 'data_id')) {
-                    array_push($data_ids, $value);
-                }elseif (str_contains($key, 'data_answer')){
-                    array_push($data_answers, $value);
+                    array_push($questions_id, $value);
+                    // dd($questions_id);
+                    // dd([$key,$value]);
+                } elseif (str_contains($key, 'answer_name')) {
+                    array_push($answers_value, $value);
                 }
             }
 
-            $td_key_values = array_combine($data_ids, $data_answers);
-            // dd($td_key_values);
+            $td_key_values = array_combine($questions_id, $answers_value);
             foreach ($td_key_values as $key => $value) {
-                Data::where('id', $key)->update(['data_answer' => $value]);
-            }
-            //===============================================================
+                $answer = new Answer();
+                $answer->answer_name = $value;
+                $answer->save();
 
-            return redirect()->back()->withSuccess(['Recopilacion Exitosa!']);
+                $da = new DataAnswer();
+                $da->data_id = $key;
+                $da->answer_id = $answer->id;
+                $da->save();
+            }
+
+            $relevamiento = new Relevamiento();
+            $relevamiento->relevamiento_creator = Auth::user()->name;
+            $relevamiento->project_id = $pid;
+            $relevamiento->tool_id = $tid;
+            $relevamiento->user_id = Auth::user()->id;
+            $relevamiento->save();
+
+
+            //===============================================================
+            return view('relevamientos.posCreate', compact('toolData', 'pid', 'tid'));
         } catch (Exception $e) {
             return [
                 'value'  => [],
@@ -131,10 +129,6 @@ class RelevamientoController extends Controller
 
             ];
         }
-
-
-
-        dd($request);
     }
 
     /**
@@ -156,7 +150,35 @@ class RelevamientoController extends Controller
      */
     public function edit(Relevamiento $relevamiento)
     {
-        return view('relevamientos.edit');
+        // dd($relevamiento);
+        $projects = DB::table('projects')
+            ->select('projects.id', 'projects.project_name')
+            ->get();
+        $actualP = DB::table('projects')
+            ->select('projects.id', 'projects.project_name')
+            ->where('projects.id', $relevamiento->project_id)
+            ->get()->first();
+        //dd($actualP);
+        $tools = DB::table('tools')
+            ->select('tools.id', 'tools.tool_name')
+            ->get();
+        $actualT = DB::table('tools')
+            ->select('tools.id', 'tools.tool_name')
+            ->where('tools.id', $relevamiento->tool_id)
+            ->get()->first();
+
+        $relevamientoData = DB::table('relevamientos')
+            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+            ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
+            ->join('data', 'tools_data.data_id', '=', 'data.id')
+            ->join('data_answers', 'data.id', '=', 'data_answers.data_id')
+            ->join('answers', 'data_answers.answer_id', '=', 'answers.id')
+            ->select('answers.answer_name', 'answers.id as answer_id', 'relevamientos.id as relevamiento_id','data.data_question')
+            ->where('relevamientos.id', $relevamiento->id )
+            ->get();
+         dd($relevamientoData);
+
+        return view('relevamientos.edit', compact('relevamientoData', 'projects', 'tools', 'relevamiento', 'actualP','actualT'));
     }
 
     /**
@@ -168,7 +190,7 @@ class RelevamientoController extends Controller
      */
     public function update(Request $request, Relevamiento $relevamiento)
     {
-        //
+        return "hola";
     }
 
     /**
