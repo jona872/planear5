@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79808077d582a6f5097775c5fc285f96",
+    "content-hash": "27d55f9abeba3540f319abd95e3046e6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -121,6 +121,108 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "chartisan/php",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Chartisan/PHP.git",
+                "reference": "85d2352077800e9bcb411aec1ff7e4d23eef93a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Chartisan/PHP/zipball/85d2352077800e9bcb411aec1ff7e4d23eef93a1",
+                "reference": "85d2352077800e9bcb411aec1ff7e4d23eef93a1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Chartisan\\PHP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Èrik Campobadal Forés",
+                    "email": "soc@erik.cat"
+                }
+            ],
+            "description": "Chartisan's PHP backend",
+            "support": {
+                "issues": "https://github.com/Chartisan/PHP/issues",
+                "source": "https://github.com/Chartisan/PHP/tree/1.2.1"
+            },
+            "time": "2020-11-05T13:13:58+00:00"
+        },
+        {
+            "name": "consoletvs/charts",
+            "version": "7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ConsoleTVs/Charts.git",
+                "reference": "cc820595e9bec13fbaf4cf552128860830a0f9e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ConsoleTVs/Charts/zipball/cc820595e9bec13fbaf4cf552128860830a0f9e2",
+                "reference": "cc820595e9bec13fbaf4cf552128860830a0f9e2",
+                "shasum": ""
+            },
+            "require": {
+                "chartisan/php": "^1.2.0",
+                "illuminate/console": "^7.14.1|^8.0",
+                "illuminate/contracts": "^7.14.1|^8.0",
+                "illuminate/http": "^7.14.1|^8.0",
+                "illuminate/support": "^7.14.1|^8.0",
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ConsoleTVs\\Charts\\ChartsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ConsoleTVs\\Charts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Èrik C. Forés",
+                    "email": "soc@erik.cat"
+                }
+            ],
+            "description": "The missing charting library on laravel, powered by Chartisan",
+            "support": {
+                "issues": "https://github.com/ConsoleTVs/Charts/issues",
+                "source": "https://github.com/ConsoleTVs/Charts/tree/7.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ConsoleTVs",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/ErikCampobadal",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-12-11T02:13:47+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -4558,6 +4660,77 @@
                 }
             ],
             "time": "2021-08-04T23:19:25+00:00"
+        },
+        {
+            "name": "szymach/c-pchart",
+            "version": "v3.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/szymach/c-pchart.git",
+                "reference": "daf0912e0bd9069508a87a4419e4735a34e09698"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/szymach/c-pchart/zipball/daf0912e0bd9069508a87a4419e4735a34e09698",
+                "reference": "daf0912e0bd9069508a87a4419e4735a34e09698",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": "^5.4|^7.0|^8.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "^4.1.22",
+                "codeception/module-asserts": "^1.3",
+                "codeception/module-filesystem": "^1.0",
+                "phpunit/phpunit": "^5.7|^9.5",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev",
+                    "2.0": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CpChart\\": "src/"
+                },
+                "files": [
+                    "constants.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Jean-Damien Pogolotti",
+                    "homepage": "http://www.pchart.net",
+                    "role": "Creator of the original pChart library"
+                },
+                {
+                    "name": "Piotr Szymaszek",
+                    "homepage": "https://github.com/szymach",
+                    "role": "Developer of the CpChart wrapper package"
+                }
+            ],
+            "description": "Port of \"pChart\" library into PHP 5+",
+            "homepage": "https://github.com/szymach/c-pchart",
+            "keywords": [
+                "CpChart",
+                "c-pChart",
+                "charts",
+                "pchart",
+                "statistics"
+            ],
+            "support": {
+                "issues": "https://github.com/szymach/c-pchart/issues",
+                "source": "https://github.com/szymach/c-pchart/tree/v3.0.10"
+            },
+            "time": "2021-09-25T16:34:55+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

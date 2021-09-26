@@ -18,9 +18,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test', function () {
+    return response()->json([
+        '1' => 'value1',
+        '2' => 'value2',
+        '3' => 'value3'
+    ]);
+});
+
+
+
+
 Auth::routes(['password.request' => false, 'password.reset' => false]);
 
 Route::group(['middleware'=>'auth'],function () {
+    Route::get('create-chart/{type}','PlotController@makeChart');
+
     Route::get('/data/create/','DataController@create')->name('data.create');
     Route::get('/data/test/','DataController@test')->name('data.test');
     Route::get('data/destroy/{id}','DataController@destroy');

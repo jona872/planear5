@@ -8,7 +8,8 @@ class PlotController extends Controller
 {
     public function index()
     {
-        return  view('plots.indexphp');
+        // return  view('plots.indexphp');
+        return  view('plots.index');
     }
 }
 

@@ -9,13 +9,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5||8.0.6",
+        "consoletvs/charts": "^7.2",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "nesbot/carbon": "^2.32"
+        "nesbot/carbon": "^2.32",
+        "szymach/c-pchart": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

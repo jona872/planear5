@@ -85,21 +85,27 @@ class RelevamientoController extends Controller
         $tid = session('tid');
 
         try {
+            $relevamiento = new Relevamiento();
+            $relevamiento->relevamiento_creator = Auth::user()->name;
+            $relevamiento->project_id = $pid;
+            $relevamiento->tool_id = $tid;
+            $relevamiento->user_id = Auth::user()->id;
+            $relevamiento->save();
 
             //Updateo los campos de cada herramienta =====================
-            $questions_id = array();
+            $answer_id = array();
             $answers_value = array();
             foreach ($request->all() as $key => $value) {
                 if (str_contains($key, 'data_id')) {
-                    array_push($questions_id, $value);
-                    // dd($questions_id);
+                    array_push($answer_id, $value);
+                    // dd($answer_id);
                     // dd([$key,$value]);
                 } elseif (str_contains($key, 'answer_name')) {
                     array_push($answers_value, $value);
                 }
             }
 
-            $td_key_values = array_combine($questions_id, $answers_value);
+            $td_key_values = array_combine($answer_id, $answers_value);
             foreach ($td_key_values as $key => $value) {
                 $answer = new Answer();
                 $answer->answer_name = $value;
@@ -108,15 +114,11 @@ class RelevamientoController extends Controller
                 $da = new DataAnswer();
                 $da->data_id = $key;
                 $da->answer_id = $answer->id;
+                $da->relevamiento_id = $relevamiento->id;
                 $da->save();
             }
 
-            $relevamiento = new Relevamiento();
-            $relevamiento->relevamiento_creator = Auth::user()->name;
-            $relevamiento->project_id = $pid;
-            $relevamiento->tool_id = $tid;
-            $relevamiento->user_id = Auth::user()->id;
-            $relevamiento->save();
+
 
 
             //===============================================================
@@ -150,6 +152,32 @@ class RelevamientoController extends Controller
      */
     public function edit(Relevamiento $relevamiento)
     {
+        $relevamientoData = DB::table('relevamientos')
+            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+            ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
+            ->join('data', 'tools_data.data_id', '=', 'data.id')
+            ->join('data_answers', 'data.id', '=', 'data_answers.data_id')
+            ->join('answers', 'data_answers.answer_id', '=', 'answers.id')
+            ->select('relevamientos.id as relevamiento_id', 'data.data_question', 'answers.id as answer_id', 'answers.answer_name')
+            ->where('data_answers.relevamiento_id', $relevamiento->id)
+            ->where('relevamientos.id', $relevamiento->id)
+            ->get();
+
+        // $dataset = DB::select(' 
+        //     SELECT answers.answer_name, answers.id as answer_id, relevamientos.id as relevamiento_id, data.data_question FROM data 
+        //         INNER JOIN tools_data ON data.id = tools_data.data_id
+        //         INNER JOIN tools ON tools_data.tool_id = tools.id
+        //         INNER JOIN relevamientos ON tools.id = relevamientos.tool_id
+        //         INNER JOIN projects ON relevamientos.project_id = projects.id
+        //         INNER JOIN data_answers ON data.id = data_answers.data_id
+        //         INNER JOIN answers ON data_answers.answer_id = answers.id
+        //         where data_answers.relevamiento_id = 1 and relevamientos.id = 1 ');
+        // dd($relevamientoData);
+
+
+
+
+
         // dd($relevamiento);
         $projects = DB::table('projects')
             ->select('projects.id', 'projects.project_name')
@@ -161,24 +189,21 @@ class RelevamientoController extends Controller
         //dd($actualP);
         $tools = DB::table('tools')
             ->select('tools.id', 'tools.tool_name')
-            ->get();
-        $actualT = DB::table('tools')
-            ->select('tools.id', 'tools.tool_name')
             ->where('tools.id', $relevamiento->tool_id)
             ->get()->first();
 
-        $relevamientoData = DB::table('relevamientos')
-            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
-            ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
-            ->join('data', 'tools_data.data_id', '=', 'data.id')
-            ->join('data_answers', 'data.id', '=', 'data_answers.data_id')
-            ->join('answers', 'data_answers.answer_id', '=', 'answers.id')
-            ->select('answers.answer_name', 'answers.id as answer_id', 'relevamientos.id as relevamiento_id','data.data_question')
-            ->where('relevamientos.id', $relevamiento->id )
-            ->get();
-         dd($relevamientoData);
+        // $relevamientoData = DB::table('relevamientos')
+        //     ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+        //     ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
+        //     ->join('data', 'tools_data.data_id', '=', 'data.id')
+        //     ->join('data_answers', 'data.id', '=', 'data_answers.data_id')
+        //     ->join('answers', 'data_answers.answer_id', '=', 'answers.id')
+        //     ->select('answers.answer_name', 'answers.id as answer_id', 'relevamientos.id as relevamiento_id', 'data.data_question')
+        //     ->where('relevamientos.id', $relevamiento->id)
+        //     ->get();
+        // dd($relevamientoData);
 
-        return view('relevamientos.edit', compact('relevamientoData', 'projects', 'tools', 'relevamiento', 'actualP','actualT'));
+        return view('relevamientos.edit', compact('relevamientoData', 'projects', 'tools', 'relevamiento', 'actualP'));
     }
 
     /**
@@ -190,7 +215,49 @@ class RelevamientoController extends Controller
      */
     public function update(Request $request, Relevamiento $relevamiento)
     {
-        return "hola";
+        if (!is_null($request->project_id) && strcmp($request->project_id, $relevamiento->project_id) != 0) {
+            echo "Hay que modificar ";
+            $relevamiento->project_id = intval($request->project_id);
+            $relevamiento->save();
+        } else {
+            echo "NO Hay que modificar ";
+        }
+
+
+        // dd( [ $request->project_id, $relevamiento->project_id]);
+
+        // dd([$request->id, $relevamiento->project_id]);
+        //Nuevo = request->id, Old = relevamiento_project_id
+        try {
+            //Agrupo las key,values a modificar =====================
+            $answer_id = array();
+            $answers_value = array();
+            foreach ($request->all() as $key => $value) {
+                if (str_contains($key, 'answer_id')) {
+                    array_push($answer_id, $value);
+                    // dd($answer_id);
+                    // dd([$key,$value]);
+                } elseif (str_contains($key, 'answer_name')) {
+                    array_push($answers_value, $value);
+                }
+            }
+            $td_key_values = array_combine($answer_id, $answers_value);
+            //dd($td_key_values);
+            //========================================================
+            //updateo cada una de las respuestas que tiene el relevamiento. =========
+            foreach ($td_key_values as $key => $value) {
+                Answer::where('id', '=', $key)->update(['answer_name' => $value]);
+            }
+
+            return redirect()->route('relevamientos.index')->with('success', 'Relevamiento editaro correctamente!');
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+
+            ];
+        }
     }
 
     /**
@@ -201,6 +268,34 @@ class RelevamientoController extends Controller
      */
     public function destroy(Relevamiento $relevamiento)
     {
-        //
+        try {
+            $answerIds = array();
+            $relevamientos = DB::table('data_answers')
+                ->select('data_answers.id as DA_id', 'data_answers.answer_id as answer_id')
+                ->where('data_answers.relevamiento_id', $relevamiento->id)
+                ->get();
+    
+            foreach ($relevamientos as $r) {
+                array_push($answerIds, $r->answer_id);
+            }
+            DataAnswer::where('relevamiento_id', '=', $relevamiento->id)->delete();
+            Answer::whereIn('id', $answerIds)->delete();
+
+			$p = Relevamiento::find($relevamiento->id);
+			if ($p) {
+				$p->delete();
+			}
+
+			return redirect()->route('relevamientos.index')->with('success', 'Relevamiento Eliminado correctamente!');
+
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
+
+			];
+		}       
     }
+    
 }

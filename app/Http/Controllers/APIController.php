@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Proyecto;
@@ -32,7 +33,7 @@ class APIController extends Controller
 	public function postList()
 	{
 		try {
-			$getAllPost = Post::orderBy('id', 'desc')->get();
+			$getAllPost = Answer::orderBy('id', 'desc')->get();
 
 			return response()->json([
 				'value'  => $getAllPost,

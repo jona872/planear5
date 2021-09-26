@@ -23,6 +23,9 @@ class CreateDataAnswersTable extends Migration
                 $table->bigInteger('answer_id')->unsigned()->index()->nullable();
                 $table->foreign('answer_id')->references('id')->on('answers');
 
+                $table->bigInteger('relevamiento_id')->unsigned()->index()->nullable();
+                $table->foreign('relevamiento_id')->references('id')->on('relevamientos');
+
                 $table->timestamps();
             });
         }

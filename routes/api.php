@@ -18,7 +18,7 @@ use App\Http\Controllers\RelevamientoController;
 */
 
 // // Viejo, borrar despues===================
-// Route::get('/post', 'APIController@postList');
+ Route::get('/post', 'APIController@postList');
 // Route::post('/createPost', 'APIController@createPost');
 // Route::get('/remove/post/{id}', 'APIController@removePost');
 // Route::get('/post/{id}', 'APIController@postDetail');

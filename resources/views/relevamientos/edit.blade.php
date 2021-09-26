@@ -35,19 +35,15 @@
 					</div>
 				</div>
 
-				<div class="form-group row align-items-center">
-					<label for="" class="col-form-label text-md-right col-md-3"><strong>Herramienta</strong></label>
+				<div class="form-group row align-items-center has-success">
+					<label for="tool_id" class="col-form-label text-md-right col-md-3">
+						<strong> Herramienta </strong>
+					</label>
 					<div class="col-md-9 col-xl-7">
-						<select name="tool_id" class="form-control form-select">
-							<option value=""> {{$actualT->tool_name}} </option>
-							@if (count($tools)>1)
-							@foreach($tools ?? '' as $tool)
-							<option value="{{ $tool->id }}">{{ $tool->tool_name }}</option>
-							@endforeach
-							@endif
-						</select>
+						<input type="text" id="tool_id" name="tool_id" value="{{$tools->tool_name}}" readonly class="form-control form-control-success" aria-required="false" aria-invalid="false">
 					</div>
 				</div>
+
 				<!-- PREGUNTAS -->
 
 				<div class="card-header"> Preguntas asociadas a la Relevamiento </div>

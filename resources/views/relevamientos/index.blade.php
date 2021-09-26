@@ -7,6 +7,20 @@ session()->forget('tid');
 session()->forget('pid');
 ?>
 
+@if (session()->has('success'))
+<div class="modals alert alert-success">
+	@if(is_array(session('success')))
+	<ul>
+		@foreach (session('success') as $message)
+		<li>{{ $message }}</li>
+		@endforeach
+	</ul>
+	@else
+	{{ session('success') }}
+	@endif
+</div>
+@endif
+
 <div class="row">
 	<div class="col">
 		<div class="card">
@@ -64,16 +78,6 @@ session()->forget('pid');
 											<i class="fa fa-trash-o"></i>
 										</button>
 									</form>
-									<!-- <a class="btn btn-warning" href="{{ route('relevamientos.show',$u->id) }}">Detalles</a>
-                                <a class="btn btn-sm btn-spinner btn-info" href="relevamientos/{{$u->id}}/edit" method="post">Editar</a> -->
-									<!-- @csrf
-                                @method('DELETE') -->
-									<!-- <div class="col-auto">
-                                    <a href="relevamientos/{{$u->id}}/edit" title="Borrar" role="button" class="btn btn-sm btn-spinner btn-info">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </div> -->
-									<!-- <button type="submit" class="btn btn-danger">Borrar</button> -->
 								</div>
 							</td>
 						</tbody>
@@ -81,9 +85,6 @@ session()->forget('pid');
 
 					</table>
 				</div>
-
-				<!-- <a href="relevamientos/create" class="btn btn-primary">Crear Relevamiento <span class="glyphicon glyphicon-plus"></span></a> -->
-
 			</div>
 		</div>
 	</div>
