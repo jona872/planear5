@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "league/csv": "^9.0",
+        "markrogoyski/math-php": "2.*",
         "nesbot/carbon": "^2.32",
         "szymach/c-pchart": "^3.0"
     },

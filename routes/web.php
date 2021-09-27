@@ -27,6 +27,7 @@ Route::get('/test', function () {
 });
 
 Route::get('/exportador','CsvController@index')->name('exportador');
+Route::get('/plots2','PlotController@plots2')->name('plots2');
 
 
 Auth::routes(['password.request' => false, 'password.reset' => false]);

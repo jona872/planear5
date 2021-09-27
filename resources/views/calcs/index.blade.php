@@ -8,5 +8,5 @@
 
 
 
-@push 
+@push('react-js-include')
 <script src="{{ asset('js/app.js') }}" defer></script>
