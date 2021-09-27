@@ -26,7 +26,7 @@ Route::get('/test', function () {
     ]);
 });
 
-
+Route::get('/exportador','CsvController@index')->name('exportador');
 
 
 Auth::routes(['password.request' => false, 'password.reset' => false]);
