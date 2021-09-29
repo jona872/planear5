@@ -26,8 +26,14 @@ Route::get('/test', function () {
     ]);
 });
 
+Route::get('/live_search', 'LiveSearch@index');
+Route::get('/live_search/action', 'LiveSearch@action')->name('live_search.action');
+
 Route::get('/exportador','CsvController@index')->name('exportador');
 Route::get('/plots2','PlotController@plots2')->name('plots2');
+
+Route::get('/projects/action', 'ProjectController@action')->name('projects.action');
+Route::post('/projects/search', 'ProjectController@search')->name('projects.search');
 
 
 Auth::routes(['password.request' => false, 'password.reset' => false]);

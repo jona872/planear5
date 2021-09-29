@@ -20,17 +20,73 @@ class ProjectController extends Controller
 	 */
 	public function index()
 	{
-		// $projects = DB::table('projects')
-		// 	->select('projects.id', 'projects.nombre as project_name', 'projects.latitud', 'projects.longitud', 'cities.nombre as city_name', 'users.name')
-		// 	->join('users', 'projects.user_id', '=', 'users.id')
-		// 	->join('cities', 'projects.city_id', '=', 'cities.id')
-		// 	->get();
 		$projects = DB::table('projects')
-		 	->select('projects.*','cities.city_name')
+			->select('projects.*', 'cities.city_name')
 			->join('cities', 'projects.city_id', '=', 'cities.id')
 			->get();
 		// dd($projects);
 		return view('projects.index', compact('projects'));
+	}
+	public function search(Request $request)
+	{
+		// dd($request->search);
+
+		if (is_null($request->search)) {
+			$projects = Project::all();
+		} else {
+			$projects = DB::table('projects')
+				->select('projects.*', 'cities.city_name')
+				->join('cities', 'projects.city_id', '=', 'cities.id')
+				->where('project_name', 'like', '%' . $request->search . '%')
+				->orderBy('project_name', 'desc')
+				->get();
+		}
+
+		//return redirect()->route('projects.index',compact('projects'));
+		return view('projects.index', compact('projects'));
+	}
+
+	public function action(Request $request)
+	{
+		if ($request->ajax()) {
+			$output = '';
+			$query = $request->get('query');
+			if ($query != '') {
+				$data = DB::table('projects')
+					->where('project_name', 'like', '%' . $query . '%')
+					->orderBy('project_name', 'desc')
+					->get();
+			} else {
+				$data = DB::table('projects')
+					->orderBy('project_name', 'desc')
+					->get();
+			}
+			$total_row = $data->count();
+			if ($total_row > 0) {
+				foreach ($data as $row) {
+					$output .= '
+        <tr>
+         <td>' . $row->project_name . '</td>
+         <td>' . $row->project_name . '</td>
+         <td>' . $row->project_name . '</td>
+         <td>' . $row->project_name . '</td>
+        </tr>
+        ';
+				}
+			} else {
+				$output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+			}
+			$data = array(
+				'table_data'  => $output,
+				'total_data'  => $total_row
+			);
+
+			echo json_encode($data);
+		}
 	}
 
 	/**
@@ -72,8 +128,8 @@ class ProjectController extends Controller
 	public function show(Project $project)
 	{
 		$city = DB::table('cities')
-				->where('id', $project->city_id)
-				->get();		
+			->where('id', $project->city_id)
+			->get();
 		$project['city_name'] = $city[0]->city_name;
 		return view('projects.show', compact('project'));
 	}
@@ -88,12 +144,12 @@ class ProjectController extends Controller
 	{
 		$cities = City::all();
 		$projects = DB::table('projects')
-		 	->select('projects.*','cities.city_name','cities.id as city_id')
+			->select('projects.*', 'cities.city_name', 'cities.id as city_id')
 			->join('cities', 'projects.city_id', '=', 'cities.id')
-			->where('projects.id',$project->id)
+			->where('projects.id', $project->id)
 			->get();
 		// dd($projects);
-		return view('projects.edit', compact('projects','cities'));
+		return view('projects.edit', compact('projects', 'cities'));
 	}
 
 	/**

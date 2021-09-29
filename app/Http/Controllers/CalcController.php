@@ -62,7 +62,7 @@ class CalcController extends Controller
         
         // Averages report
         $averages = Average::describe($numbers);
-        print_r($averages);
+        //print_r($averages);
         /* Array (
             [mean]                => 15
             [median]              => 14

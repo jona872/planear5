@@ -26,10 +26,15 @@
 			<!-- TITLE -->
 			<div class="card-body">
 				<!-- SEARCH -->
-				<form>
+				<form action="{{ route('projects.search') }}" method="POST" class="form-horizontal form-create">
+					@csrf
 					<div class="row justify-content-md-between">
 						<div class="col col-lg-7 col-xl-5 form-group">
-							<div class="input-group"><input placeholder="Search" class="form-control"> <span class="input-group-append"><button type="button" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button></span></div>
+							<div class="input-group"><input name="search" placeholder="Search" class="form-control">
+								<span class="input-group-append">
+									<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
+								</span>
+							</div>
 						</div>
 					</div>
 				</form>
@@ -43,6 +48,8 @@
 							<th>Latitud;Longitud</th>
 							<th>Operaciones</th>
 						</thead>
+						
+						@if (count($projects) > 0)
 						@foreach ($projects as $u)
 						<tbody>
 							<td>{{$u->project_name }}</td>
@@ -72,6 +79,14 @@
 							</td>
 						</tbody>
 						@endforeach
+						@else
+						<tbody>
+							<tr>
+								<td align="center" colspan="5">No se encontraron </td>
+							</tr>
+						</tbody>
+						@endif
+
 
 					</table>
 				</div>

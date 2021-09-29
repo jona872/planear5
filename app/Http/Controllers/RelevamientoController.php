@@ -29,7 +29,10 @@ class RelevamientoController extends Controller
             ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
             ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
             ->get();
-        // dd($relevamientos);
+    
+        // $relevamientos[0]->created_at = date("d-m-Y");
+        // $relevamientos[0]->update();
+        //dd($relevamientos[0]->created_at);
         return view('relevamientos.index', compact('relevamientos'));
     }
 
@@ -90,6 +93,7 @@ class RelevamientoController extends Controller
             $relevamiento->project_id = $pid;
             $relevamiento->tool_id = $tid;
             $relevamiento->user_id = Auth::user()->id;
+            $relevamiento->created_at = date("d-m-Y");
             $relevamiento->save();
 
             //Updateo los campos de cada herramienta =====================
