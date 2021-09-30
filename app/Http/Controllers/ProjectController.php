@@ -30,6 +30,9 @@ class ProjectController extends Controller
 	public function search(Request $request)
 	{
 		// dd($request->search);
+		$request->validate([
+            'search' => 'required',
+        ]);
 
 		if (is_null($request->search)) {
 			$projects = Project::all();

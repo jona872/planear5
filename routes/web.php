@@ -29,11 +29,19 @@ Route::get('/test', function () {
 Route::get('/live_search', 'LiveSearch@index');
 Route::get('/live_search/action', 'LiveSearch@action')->name('live_search.action');
 
-Route::get('/exportador','CsvController@index')->name('exportador');
-Route::get('/plots2','PlotController@plots2')->name('plots2');
-
 Route::get('/projects/action', 'ProjectController@action')->name('projects.action');
 Route::post('/projects/search', 'ProjectController@search')->name('projects.search');
+
+// Route::get('/relevamientos', 'RelevamientoController@index')->name('relevamientos');
+Route::post('/relevamientos/export', 'RelevamientoController@export')->name('relevamientos.export');
+Route::post('/relevamientos/export-confirm', 'RelevamientoController@exportConfirm')->name('relevamientos.export-confirm');
+
+Route::post('/relevamientos/name-search', 'RelevamientoController@nameSearch')->name('relevamientos.name-search');
+Route::post('/relevamientos/date-search', 'RelevamientoController@dateSearch')->name('relevamientos.date-search');
+
+
+Route::get('/exportador','CsvController@index')->name('exportador');
+Route::get('/plots2','PlotController@plots2')->name('plots2');
 
 
 Auth::routes(['password.request' => false, 'password.reset' => false]);
@@ -44,6 +52,7 @@ Route::group(['middleware'=>'auth'],function () {
     Route::get('/data/create/','DataController@create')->name('data.create');
     Route::get('/data/test/','DataController@test')->name('data.test');
     Route::get('data/destroy/{id}','DataController@destroy');
+
     Route::get('relevamientos/pre-create','RelevamientoController@preCreate')->name('relevamientos.pre-create');
     Route::post('relevamientos/pos-create','RelevamientoController@posCreate')->name('relevamientos.poscreate');
     

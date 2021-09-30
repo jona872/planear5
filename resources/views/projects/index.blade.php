@@ -14,12 +14,22 @@
 	@endif
 </div>
 @endif
+@if ($errors->any())
+<div class="alert alert-danger">
+	<ul>
+		@foreach ($errors->all() as $error)
+		<li>{{ $error }}</li>
+		@endforeach
+	</ul>
+</div>
+@endif
+
 <div class="row">
 	<div class="col">
 		<div class="card">
 			<!-- TITLE -->
 			<div class="card-header"><i class="fa fa-align-justify"></i> Proyectos
-				<a href="projects/create" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0">
+				<a href="/projects/create" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0">
 					<i class="fa fa-plus"></i>&nbsp; Crear Proyecto
 				</a>
 			</div>
@@ -82,7 +92,7 @@
 						@else
 						<tbody>
 							<tr>
-								<td align="center" colspan="5">No se encontraron </td>
+								<td align="center" colspan="5">No se encontraron resultados </td>
 							</tr>
 						</tbody>
 						@endif

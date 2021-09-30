@@ -20,7 +20,8 @@ class PlotController extends Controller
         // dd($data);
         // dd($data[$meses]=$values);
 
-        return  view('plots.indexphp',compact('data'));
+        //return  view('plots.indexphp',compact('data'));
+        return  view('plots.index');
     }
     public function plots2()
     {

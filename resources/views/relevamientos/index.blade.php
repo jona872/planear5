@@ -20,24 +20,28 @@ session()->forget('pid');
 	@endif
 </div>
 @endif
+@if ($errors->any())
+<div class="alert alert-danger">
+	<ul>
+		@foreach ($errors->all() as $error)
+		<li>{{ $error }}</li>
+		@endforeach
+	</ul>
+</div>
+@endif
 
 <div class="row">
 	<div class="col">
 		<div class="card">
 			<!-- TITLE -->
 			<div class="card-header"><i class="fa fa-align-justify"></i> Relevamientos
-				<a href="relevamientos/pre-create" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0">
+				<a href="/relevamientos/pre-create" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0">
 					<i class="fa fa-plus"></i>&nbsp; Crear Relevamiento
 				</a>
 			</div>
 			<!-- TITLE -->
 			<div class="card-body">
 				<!-- SEARCH -->
-				<!-- <select>
-					<option value='project_name'>Buscar por fecha de Relevamiento</option>
-					<option value='project_date'>Buscar por fecha de Relevamiento</option>
-				</select> -->
-
 				<div class="container">
 					<div class="row">
 						<div class="col-6">
@@ -47,34 +51,40 @@ session()->forget('pid');
 							</select>
 						</div>
 						<div class="col-6">
-							<form>
+							<form action="{{ route('relevamientos.name-search') }}" method="POST" class="form-horizontal form-create">
+								@csrf
 								<!-- NOMBRE -->
 								<div name-search="project_name" class="row justify-content-md-between">
 									<div class="col form-group">
-										<div class="input-group"><input class="form-control"> <span class="input-group-append"><button type="button" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button></span></div>
+										<div class="input-group">
+											<input class="form-control" name="search"> <span class="input-group-append">
+												<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button></span>
+										</div>
+									</div>
+								</div>
+							</form>
+
+
+							<form action="{{ route('relevamientos.date-search') }}" method="POST" class="form-horizontal form-create">
+								@csrf
+								<!-- FECHA -->
+								<div date-search="project_date" style="display: none; margin-left: 2%;" class="container">
+
+									<div class="row">
+
+										<div class="row">
+											<input name="searchStart" data-provide="datepicker" class="form-control col" data-date-format="dd/mm/yyyy">
+											<div class="form-control input-group-addon col-2">hasta</div>
+											<input name="searchEnd" data-provide="datepicker" class="form-control col" data-date-format="dd/mm/yyyy">
+										</div>
+										<div class="col">
+											<!-- <span class="input-group-append col">  -->
+											<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
+											<!-- </span> -->
+										</div>
 									</div>
 								</div>
 
-
-								<!-- FECHA -->
-								<div date-search="project_date" style="display: none; margin-left: 2%;" class="container">
-									
-										<div class="row">
-
-											<div class="row">
-												<input data-provide="datepicker" class="form-control col" data-date-format="dd/mm/yyyy">
-												<div class="form-control input-group-addon col-2">hasta</div>
-												<input data-provide="datepicker" class="form-control col" data-date-format="dd/mm/yyyy">
-											</div>
-											<div class="col">
-
-												<!-- <span class="input-group-append col">  -->
-													<button type="button" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
-												<!-- </span> -->
-											</div>
-										</div>
-									</div>
-								
 
 							</form>
 							<br>
@@ -93,6 +103,7 @@ session()->forget('pid');
 							<th>Latitud;Longitud</th>
 							<th>Operaciones</th>
 						</thead>
+						@if (count($relevamientos) > 0)
 						@foreach ($relevamientos as $u)
 						<tbody>
 							<td>{{$u->project_name }}</td>
@@ -124,6 +135,13 @@ session()->forget('pid');
 							</td>
 						</tbody>
 						@endforeach
+						@else
+						<tbody>
+							<tr>
+								<td align="center" colspan="6">No se encontraron resultados </td>
+							</tr>
+						</tbody>
+						@endif
 
 					</table>
 				</div>
@@ -134,16 +152,30 @@ session()->forget('pid');
 
 
 @endsection
+@section('footer')
+
+<form action="{{ route('relevamientos.export') }}" method="POST" class="form-horizontal form-create">
+	@csrf @method('POST')
+	<button type="submit" class="btn btn-primary btn-spinner"> <i class="fa fa-share-square-o"></i> &nbsp; Exportar Datos </button>
+</form>
+<div> &nbsp; </div>
+<!-- <form action="{{ route('relevamientos.export') }}" method="POST" class="form-horizontal form-create">
+		@csrf @method('POST')
+		<button id="graficar" type="submit" class="btn btn-primary btn-spinner"> <i class="fa fa-bar-chart "></i> &nbsp; Graficar Datos </button>
+	</form> -->
+
+@endsection
+
+
 @section('footer-scripts')
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> -->
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 
 <script type="text/javascript">
 	$(document).ready(function() {
+
 
 
 		$('.datepicker').datepicker();

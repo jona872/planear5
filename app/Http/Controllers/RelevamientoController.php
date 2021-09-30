@@ -9,10 +9,14 @@ use App\ProjectRelevamiento;
 use App\Relevamiento;
 use App\Tool;
 use App\ToolData;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use League\Csv\Writer;
+use SplTempFileObject;
+use PhpParser\Node\Expr\FuncCall;
 
 class RelevamientoController extends Controller
 {
@@ -29,12 +33,118 @@ class RelevamientoController extends Controller
             ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
             ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
             ->get();
-    
+
+
+        if (session()->has('export')) {
+            session()->forget('export');
+        }
+        session(['export' => $relevamientos]);
         // $relevamientos[0]->created_at = date("d-m-Y");
         // $relevamientos[0]->update();
         //dd($relevamientos[0]->created_at);
         return view('relevamientos.index', compact('relevamientos'));
     }
+
+    public function nameSearch(Request $request)
+    {
+        try {
+            $relevamientos = DB::table('relevamientos')
+                ->join('users', 'relevamientos.user_id', '=', 'users.id')
+                ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+                ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
+                ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
+                ->where('projects.project_name', 'like', '%' . $request->search . '%')
+                ->orderBy('projects.project_name', 'desc')
+                ->get();
+
+            session()->forget('export');
+            session(['export' => $relevamientos]);
+
+            return view('relevamientos.index', compact('relevamientos'));
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+
+            ];
+        }
+    }
+    public function dateSearch(Request $request)
+    {
+        // dd($request->all());
+        // "searchStart" => "01/09/2021"
+        // "searchEnd" => "02/09/2021"
+        $start = Carbon::createFromFormat('d/m/Y', $request->searchStart)->toDateString();
+        $end = Carbon::createFromFormat('d/m/Y', $request->searchEnd);
+        //dd([$start, $end]);
+        $relevamientos = DB::table('relevamientos')
+            ->join('users', 'relevamientos.user_id', '=', 'users.id')
+            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+            ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
+            ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
+            ->whereBetween('relevamientos.created_at', [$start, $end])
+            ->orderBy('relevamientos.created_at', 'desc')
+            ->get();
+        session()->forget('export');
+        session(['export' => $relevamientos]);
+        // dd($relevamientos);
+        return view('relevamientos.index', compact('relevamientos'));
+    }
+    public function export(Request $request)
+    {
+        //dd(session()->get('export'));
+        //dd($request->session()->get('export'));
+        $relevamientos = session()->get('export');
+
+        return view('relevamientos.exportar', compact('relevamientos'));
+    }
+    public function exportConfirm(Request $request)
+    { //handle csv output
+
+        $header = ['tool_name',  'project_name',  'relevamiento_creator',  'relevamiento_latitud',  'relevamiento_longitud',  'created_at'];
+
+        //we create the CSV into memory
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+
+        //we insert the CSV header
+        $csv->insertOne($header);
+
+        // Insert the body
+        foreach (session()->get('export') as $key => $value) {
+            $csv->insertOne([
+                $value->tool_name,
+                $value->project_name,
+                $value->relevamiento_creator,
+                $value->relevamiento_latitud,
+                $value->relevamiento_longitud,
+                $value->created_at
+            ]);
+        }
+
+        $csv->output('datas.csv');
+
+
+        $relevamientos = DB::table('relevamientos')
+            ->join('users', 'relevamientos.user_id', '=', 'users.id')
+            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+            ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
+            ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
+            ->get();
+
+        // if (session()->has('export')) {
+        //     session()->forget('export');
+        // }
+        // session(['export' => $relevamientos]);
+
+        // return view('relevamientos.index', compact('relevamientos'));
+        //return view('csvs.index');
+
+        // echo "confirm";
+        // dd($request);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -93,7 +203,7 @@ class RelevamientoController extends Controller
             $relevamiento->project_id = $pid;
             $relevamiento->tool_id = $tid;
             $relevamiento->user_id = Auth::user()->id;
-            $relevamiento->created_at = date("d-m-Y");
+            //$relevamiento->created_at = date("d-m-Y");
             $relevamiento->save();
 
             //Updateo los campos de cada herramienta =====================
@@ -278,28 +388,26 @@ class RelevamientoController extends Controller
                 ->select('data_answers.id as DA_id', 'data_answers.answer_id as answer_id')
                 ->where('data_answers.relevamiento_id', $relevamiento->id)
                 ->get();
-    
+
             foreach ($relevamientos as $r) {
                 array_push($answerIds, $r->answer_id);
             }
             DataAnswer::where('relevamiento_id', '=', $relevamiento->id)->delete();
             Answer::whereIn('id', $answerIds)->delete();
 
-			$p = Relevamiento::find($relevamiento->id);
-			if ($p) {
-				$p->delete();
-			}
+            $p = Relevamiento::find($relevamiento->id);
+            if ($p) {
+                $p->delete();
+            }
 
-			return redirect()->route('relevamientos.index')->with('success', 'Relevamiento Eliminado correctamente!');
+            return redirect()->route('relevamientos.index')->with('success', 'Relevamiento Eliminado correctamente!');
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
 
-		} catch (Exception $e) {
-			return [
-				'value'  => [],
-				'status' => 'error',
-				'message'   => $e->getMessage()
-
-			];
-		}       
+            ];
+        }
     }
-    
 }
