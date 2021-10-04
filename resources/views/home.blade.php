@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- puedo cargar react con esto + include <script src="{{ asset('js/app.js') }}" defer></script>  -->
-	<div id="react-js"></div> 
+	<!-- <div id="react-js"></div>  -->
 	Bienvenido
 	@push('react-css-include')
 	<!-- Fonts -->

@@ -83,7 +83,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    UNL /home
+                    UNL
                 </div>
             </div>
         </div>

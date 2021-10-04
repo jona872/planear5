@@ -8,6 +8,8 @@ use App\Proyecto;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Validator;
+use \Validator;
 use Illuminate\View\View;
 use Throwable;
 
@@ -31,8 +33,8 @@ class ProjectController extends Controller
 	{
 		// dd($request->search);
 		$request->validate([
-            'search' => 'required',
-        ]);
+			'search' => 'required',
+		]);
 
 		if (is_null($request->search)) {
 			$projects = Project::all();
@@ -164,27 +166,37 @@ class ProjectController extends Controller
 	 */
 	public function update(Request $request, Project $Project)
 	{
-		//$data = array('requestValues' => $request->all(), 'Project' => $Project );
+		//dd([$request->all(),$Project]);
 
-		$request->validate([
-			'project_name' => 'required',
-		]);
+		$request_params = $request->all();
+		$rules = array(
+			'project_name' => 'required'
+		);
 
-		try {
-			$p = Project::find($request->id);
-			if ($p) {
-				// Project::where('id', $id)->update($request->all());
-				$p->update($request->all());
+		$messages = [
+			'project_name.required' => 'El nombre del proyecto es requerido',
+		];
+
+		$validator = Validator::make($request_params, $rules, $messages);
+
+		if ($validator->passes()) {
+
+			try {
+				$p = Project::find($request->id);
+				if ($p) {
+					$p->update($request->all());
+				}
+				return redirect()->route('projects.index')->with('success', 'Proyecto editado correctamente');
+			} catch (Exception $e) {
+				return [
+					'value'  => [],
+					'status' => 'error',
+					'message'   => $e->getMessage()
+
+				];
 			}
-			return redirect()->route('projects.index')->with('success', 'Project updated successfully');
-		} catch (Exception $e) {
-			return [
-				'value'  => [],
-				'status' => 'error',
-				'message'   => $e->getMessage()
-
-			];
 		}
+		return redirect()->back()->with('errors', $validator->messages());
 	}
 
 	/**

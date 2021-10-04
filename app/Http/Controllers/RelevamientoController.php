@@ -11,6 +11,7 @@ use App\Tool;
 use App\ToolData;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,8 @@ class RelevamientoController extends Controller
             ->join('users', 'relevamientos.user_id', '=', 'users.id')
             ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
             ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
-            ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
+            ->select('projects.project_name', 'tools.tool_name', 'users.name', 'relevamientos.*')
+            ->orderBy('relevamientos.created_at', 'desc')
             ->get();
 
 
@@ -39,9 +41,7 @@ class RelevamientoController extends Controller
             session()->forget('export');
         }
         session(['export' => $relevamientos]);
-        // $relevamientos[0]->created_at = date("d-m-Y");
-        // $relevamientos[0]->update();
-        //dd($relevamientos[0]->created_at);
+
         return view('relevamientos.index', compact('relevamientos'));
     }
 
@@ -94,54 +94,87 @@ class RelevamientoController extends Controller
     public function export(Request $request)
     {
         //dd(session()->get('export'));
-        //dd($request->session()->get('export'));
         $relevamientos = session()->get('export');
+        $grupos = array();
+        $resu = DB::select('SELECT DISTINCT projects.project_name, tools.tool_name, projects.id as pid, tools.id as tid FROM relevamientos
+        INNER JOIN projects on projects.id = relevamientos.project_id
+        INNER JOIN tools on relevamientos.tool_id = tools.id
+        ORDER BY projects.project_name;');
+        // dd($resu);
 
-        return view('relevamientos.exportar', compact('relevamientos'));
-    }
-    public function exportConfirm(Request $request)
-    { //handle csv output
+        foreach ($resu as $relevamiento) {
+            $grupo['project_name'] = $relevamiento->project_name;
+            $grupo['tool_name'] = $relevamiento->tool_name;
+            $grupo['pid'] = $relevamiento->pid;
+            $grupo['tid'] = $relevamiento->tid;
 
-        $header = ['tool_name',  'project_name',  'relevamiento_creator',  'relevamiento_latitud',  'relevamiento_longitud',  'created_at'];
+            $preguntas = DB::table('relevamientos')
+                ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
+                ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
+                ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
+                ->join('data', 'tools_data.data_id', '=', 'data.id')
+                ->select('data.data_question')
+                ->where('projects.id', $relevamiento->pid)
+                ->where('tools.id', $relevamiento->tid)
+                ->distinct()
+                ->get()->toArray();
+            $aux = array();
+            //aplano las preguntas a un solo array
+            foreach ($preguntas as $v) {
+                array_push($aux, $v->data_question);
+            }
+            $grupo['preguntas'] = $aux;
+            $colCount = count($aux);
+            $grupo['colCount'] = $colCount;
 
-        //we create the CSV into memory
-        $csv = Writer::createFromFileObject(new SplTempFileObject());
+            $respuestas = DB::select('SELECT answers.answer_name, data.data_question FROM answers
+            INNER JOIN data_answers ON data_answers.answer_id = answers.id
+            INNER JOIN data on data.id = data_answers.data_id
+            WHERE answers.id IN 
+                (SELECT answer_id FROM answers
+                INNER JOIN data_answers ON data_answers.data_id = answers.id
+                WHERE data_answers.relevamiento_id IN 
+                    (SELECT relevamientos.id FROM relevamientos 
+                     WHERE relevamientos.project_id = ' . $relevamiento->pid . ' AND relevamientos.tool_id = ' . $relevamiento->tid . ') )
+            ORDER BY answers.id ;');
+            // dd($respuestas);
+            $aux = array();
+            //aplano las preguntas a un solo array
+            foreach ($respuestas as $v) {
+                array_push($aux, $v->answer_name); //aca
+            }
+            $aux = array_chunk($aux, $colCount);
+            $grupo['respuestas'] = $aux;
 
-        //we insert the CSV header
-        $csv->insertOne($header);
-
-        // Insert the body
-        foreach (session()->get('export') as $key => $value) {
-            $csv->insertOne([
-                $value->tool_name,
-                $value->project_name,
-                $value->relevamiento_creator,
-                $value->relevamiento_latitud,
-                $value->relevamiento_longitud,
-                $value->created_at
-            ]);
+            array_push($grupos, $grupo);
         }
 
-        $csv->output('datas.csv');
+        return view('relevamientos.exportar', compact('grupos'));
+    }
+
+    public function exportConfirm(Request $request)
+    { //handle csv output
+        //dd($request->all());
+        //dd(unserialize($request->exportData));
+        $grupo = unserialize($request->exportData);
+        
+        $csv = $this->exportData($grupo);
+        $csv->output($grupo['project_name'].' -- '.$grupo['tool_name'].'.csv');
+    }
 
 
-        $relevamientos = DB::table('relevamientos')
-            ->join('users', 'relevamientos.user_id', '=', 'users.id')
-            ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
-            ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
-            ->select('tools.tool_name', 'projects.project_name', 'users.name', 'relevamientos.*')
-            ->get();
+    public function exportData($grupo)
+    {
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        //header
+        $csv->insertOne($grupo['preguntas']);
+        //body 
+        foreach ($grupo['respuestas'] as $key => $columnas) {
+            // dd($columnas);
+            $csv->insertOne($columnas);
+        }
 
-        // if (session()->has('export')) {
-        //     session()->forget('export');
-        // }
-        // session(['export' => $relevamientos]);
-
-        // return view('relevamientos.index', compact('relevamientos'));
-        //return view('csvs.index');
-
-        // echo "confirm";
-        // dd($request);
+        return $csv;
     }
 
 
@@ -276,23 +309,8 @@ class RelevamientoController extends Controller
             ->where('data_answers.relevamiento_id', $relevamiento->id)
             ->where('relevamientos.id', $relevamiento->id)
             ->get();
+        //dd($relevamientoData);
 
-        // $dataset = DB::select(' 
-        //     SELECT answers.answer_name, answers.id as answer_id, relevamientos.id as relevamiento_id, data.data_question FROM data 
-        //         INNER JOIN tools_data ON data.id = tools_data.data_id
-        //         INNER JOIN tools ON tools_data.tool_id = tools.id
-        //         INNER JOIN relevamientos ON tools.id = relevamientos.tool_id
-        //         INNER JOIN projects ON relevamientos.project_id = projects.id
-        //         INNER JOIN data_answers ON data.id = data_answers.data_id
-        //         INNER JOIN answers ON data_answers.answer_id = answers.id
-        //         where data_answers.relevamiento_id = 1 and relevamientos.id = 1 ');
-        // dd($relevamientoData);
-
-
-
-
-
-        // dd($relevamiento);
         $projects = DB::table('projects')
             ->select('projects.id', 'projects.project_name')
             ->get();
@@ -300,22 +318,11 @@ class RelevamientoController extends Controller
             ->select('projects.id', 'projects.project_name')
             ->where('projects.id', $relevamiento->project_id)
             ->get()->first();
-        //dd($actualP);
+
         $tools = DB::table('tools')
             ->select('tools.id', 'tools.tool_name')
             ->where('tools.id', $relevamiento->tool_id)
             ->get()->first();
-
-        // $relevamientoData = DB::table('relevamientos')
-        //     ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
-        //     ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
-        //     ->join('data', 'tools_data.data_id', '=', 'data.id')
-        //     ->join('data_answers', 'data.id', '=', 'data_answers.data_id')
-        //     ->join('answers', 'data_answers.answer_id', '=', 'answers.id')
-        //     ->select('answers.answer_name', 'answers.id as answer_id', 'relevamientos.id as relevamiento_id', 'data.data_question')
-        //     ->where('relevamientos.id', $relevamiento->id)
-        //     ->get();
-        // dd($relevamientoData);
 
         return view('relevamientos.edit', compact('relevamientoData', 'projects', 'tools', 'relevamiento', 'actualP'));
     }
@@ -330,18 +337,13 @@ class RelevamientoController extends Controller
     public function update(Request $request, Relevamiento $relevamiento)
     {
         if (!is_null($request->project_id) && strcmp($request->project_id, $relevamiento->project_id) != 0) {
-            echo "Hay que modificar ";
+            // echo "Hay que modificar ";
             $relevamiento->project_id = intval($request->project_id);
             $relevamiento->save();
-        } else {
-            echo "NO Hay que modificar ";
         }
-
-
-        // dd( [ $request->project_id, $relevamiento->project_id]);
-
         // dd([$request->id, $relevamiento->project_id]);
         //Nuevo = request->id, Old = relevamiento_project_id
+
         try {
             //Agrupo las key,values a modificar =====================
             $answer_id = array();
@@ -349,8 +351,6 @@ class RelevamientoController extends Controller
             foreach ($request->all() as $key => $value) {
                 if (str_contains($key, 'answer_id')) {
                     array_push($answer_id, $value);
-                    // dd($answer_id);
-                    // dd([$key,$value]);
                 } elseif (str_contains($key, 'answer_name')) {
                     array_push($answers_value, $value);
                 }
@@ -358,6 +358,7 @@ class RelevamientoController extends Controller
             $td_key_values = array_combine($answer_id, $answers_value);
             //dd($td_key_values);
             //========================================================
+
             //updateo cada una de las respuestas que tiene el relevamiento. =========
             foreach ($td_key_values as $key => $value) {
                 Answer::where('id', '=', $key)->update(['answer_name' => $value]);

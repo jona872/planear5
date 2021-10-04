@@ -28,11 +28,7 @@
 	<div class="col">
 		<div class="card">
 			<!-- TITLE -->
-			<div class="card-header"><i class="fa fa-align-justify"></i> Proyectos
-				<a href="/projects/create" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0">
-					<i class="fa fa-plus"></i>&nbsp; Crear Proyecto
-				</a>
-			</div>
+
 			<!-- TITLE -->
 			<div class="card-body">
 				<!-- SEARCH -->
@@ -58,7 +54,7 @@
 							<th>Latitud;Longitud</th>
 							<th>Operaciones</th>
 						</thead>
-						
+
 						@if (count($projects) > 0)
 						@foreach ($projects as $u)
 						<tbody>
@@ -107,4 +103,10 @@
 
 
 
+@endsection
+
+@section('footer')
+<a href="/projects/create" role="button" class="btn btn-primary btn-spinner">
+	<i class="fa fa-plus"></i>&nbsp; Crear Proyecto
+</a>
 @endsection

@@ -8,6 +8,7 @@ class Data extends Model
 {
     protected $table = 'data';
     protected $fillable = [
-        'data_question'
+        'data_question',
+        'created_at'
     ];
 }

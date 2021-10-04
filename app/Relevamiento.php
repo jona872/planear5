@@ -15,18 +15,12 @@ class Relevamiento extends Model
         'user_id',
         'relevamiento_latitud',
         'relevamiento_longitud',
-        'created_at',
+        'created_at'
     ];
-    public $timestamps = false;
+    // public $timestamps = false;
     
     public function getCreatedAtAttribute($date)
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
     }
-
-        
-    // public function getCreatedAtAttribute($date)
-    // {
-    //     return Carbon::parse($date)->format('d-m-Y');
-    // }
 }

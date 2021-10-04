@@ -9,75 +9,67 @@ session()->forget('pid');
 
 @if (session()->has('success'))
 <div class="modals alert alert-success">
-    @if(is_array(session('success')))
-    <ul>
-        @foreach (session('success') as $message)
-        <li>{{ $message }}</li>
-        @endforeach
-    </ul>
-    @else
-    {{ session('success') }}
-    @endif
+	@if(is_array(session('success')))
+	<ul>
+		@foreach (session('success') as $message)
+		<li>{{ $message }}</li>
+		@endforeach
+	</ul>
+	@else
+	{{ session('success') }}
+	@endif
 </div>
 @endif
 @if ($errors->any())
 <div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
+	<ul>
+		@foreach ($errors->all() as $error)
+		<li>{{ $error }}</li>
+		@endforeach
+	</ul>
 </div>
 @endif
 
 <div class="row">
-    <div class="col">
-        <div class="card">
-            <!-- TITLE -->
-            <div class="card-header"><i class="fa fa-align-justify"></i> Confirmar datos a exportar </div>
-            <!-- TITLE -->
-            <div class="card-body">
-                <!-- SEARCH -->
-                <!-- SEARCH -->
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <th>Proyecto</th>
-                            <th>Herramienta</th>
-                            <th>Fecha</th>
-                            <th>Responsable</th>
-                            <th>Latitud;Longitud</th>
-                        </thead>
-                        @if (isset($relevamientos))
-                        @foreach ($relevamientos as $u)
-                        <tbody>
-                            <td>{{$u->project_name }}</td>
-                            <td>{{$u->tool_name }}</td>
-                            <td>{{\Carbon\Carbon::parse($u->created_at)->format('d-m-Y')}}</td>
-                            <td>{{$u->relevamiento_creator}}</td>
-                            <td>{{$u->name}}</td>
-                        </tbody>
-                        @endforeach
-                        @endif
+	<div class="col">
+		@foreach ($grupos as $grupo)
+		<form action="{{ route('relevamientos.export-confirm') }}" method="POST" class="form-horizontal form-create">
+			{{ csrf_field() }}
 
+			<input type="hidden" name="exportData" value="{{serialize($grupo)}}">
 
+			<div class="card">
+				<!-- TITLE -->
+				<div class="card-header"><i class="fa fa-align-justify"></i> {{$grupo['project_name']}} -- {{$grupo['tool_name']}} </div>
 
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="card-body">
+					<div class="table-responsive ">
+						<table class="table table-hover">
+							<thead>
+								@for ($i = 0; $i < $grupo['colCount']; $i++) <th name="este">{{ $grupo['preguntas'][$i] }}</th>
+									@endfor
+							</thead>
+							@foreach ($grupo['respuestas'] as $r)
+							<tbody>
+								@for ($i = 0; $i < count($r); $i++) <td>{{ $r[$i] }}</td>
+									@endfor
+							</tbody>
+							@endforeach
+						</table>
+					</div>
+
+					<a href="/relevamientos" title="Cancelar" role="button" class="btn btn-sm btn-danger">
+						<i class="fa fa-ban"></i> &nbsp; Cancelar
+					</a>
+					<button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-share-square-o"></i> &nbsp; Exportar </button>
+		</form>
+	</div>
+</div>
+
+@endforeach
+
+</div>
 </div>
 
 
-@endsection
-@section('footer')
-<form action="{{ route('relevamientos.export-confirm',['relevamientos' => $relevamientos]) }}" method="POST" class="form-horizontal form-create">
-    @csrf
-    @method('POST')
-    <a href="/relevamientos" title="Cancelar" role="button" class="btn btn-sm btn-danger">
-        <i class="fa fa-ban"></i> &nbsp; Cancelar
-    </a>
-    <button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-share-square-o"></i> &nbsp; Confirmar </button>
-</form>
 @endsection

@@ -120,7 +120,7 @@ session()->forget('pid');
 										</a>
 									</div>
 									<div class="col-auto" style="margin: 0 2%">
-										<a href="relevamientos/{{$u->id}}/edit" title="Edit" role="button" class="btn btn-sm btn-warning">
+										<a href="/relevamientos/{{$u->id}}/edit" title="Edit" role="button" class="btn btn-sm btn-warning">
 											<i class="fa fa-edit"></i>
 										</a>
 									</div>
@@ -152,6 +152,7 @@ session()->forget('pid');
 
 
 @endsection
+
 @section('footer')
 
 <form action="{{ route('relevamientos.export') }}" method="POST" class="form-horizontal form-create">
@@ -159,10 +160,6 @@ session()->forget('pid');
 	<button type="submit" class="btn btn-primary btn-spinner"> <i class="fa fa-share-square-o"></i> &nbsp; Exportar Datos </button>
 </form>
 <div> &nbsp; </div>
-<!-- <form action="{{ route('relevamientos.export') }}" method="POST" class="form-horizontal form-create">
-		@csrf @method('POST')
-		<button id="graficar" type="submit" class="btn btn-primary btn-spinner"> <i class="fa fa-bar-chart "></i> &nbsp; Graficar Datos </button>
-	</form> -->
 
 @endsection
 

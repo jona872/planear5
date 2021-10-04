@@ -6,6 +6,7 @@ use App\City;
 use App\Data;
 use App\Tool;
 use Exception;
+use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -73,17 +74,24 @@ class ToolController extends Controller
      */
     public function store(Request $request)
     {
-        //Agregar herramienta recibe un array de Data y el nombre de la herramienta. 
-        //primero crea la herramienta con el nombre.
-        //luego en un for va creando Data y desp agrega a la tabla relacional 'tools_data'
-        $request['user_id'] = Auth::user()->id;
+        $request_params = $request->all();
+        $rules = array(
+            'tool_name' => 'required'
+        );
 
-        $request->validate([
-            'tool_name' => 'required',
-        ]);
+        $messages = [
+            'tool_name.required' => 'El nombre de la herramienta es requerido',
+        ];
 
-        Tool::create($request->all());
-        return redirect()->route('tools.index')->with('success', 'Tool created successfully.');
+        $validator = Validator::make($request_params, $rules, $messages);
+
+        if ($validator->passes()) {
+            $request['user_id'] = Auth::user()->id;
+
+            Tool::create($request->all());
+            return redirect()->route('tools.index')->with('success', 'Herramienta creada corractamente');
+        }
+        return redirect()->back()->with('errors', $validator->messages());
     }
 
     /**
@@ -113,7 +121,7 @@ class ToolController extends Controller
             ->get();
         $creator = DB::table('users')
             ->select('users.name')
-            ->where('users.id',$tool->user_id)
+            ->where('users.id', $tool->user_id)
             ->get()
             ->first();
         $tool['creator'] = $creator->name;
@@ -130,51 +138,61 @@ class ToolController extends Controller
      */
     public function update(Request $request, Tool $tool)
     {
-        //como $request->id = 4 = id herramienta (trabajo de cmapo)
-        $request->validate([
-            'tool_name' => 'required',
-        ]);
+        $request_params = $request->all();
+        $rules = array(
+            'tool_name' => 'required'
+        );
+
+        $messages = [
+            'tool_name.required' => 'El nombre de la herramienta es requerido',
+        ];
+
+        $validator = Validator::make($request_params, $rules, $messages);
+
+        if ($validator->passes()) {
 
 
-        try {
-            //$request['user_id'] = Auth::user()->id;
+            try {
+                //$request['user_id'] = Auth::user()->id;
 
-            //Updateo los campos de cada herramienta =====================
-            $data_ids = array();
-            $data_questions = array();
-            foreach ($request->all() as $key => $value) {
-                if (str_contains($key, 'data_id')) {
-                    array_push($data_ids, $value);
+                //Updateo los campos de cada herramienta =====================
+                $data_ids = array();
+                $data_questions = array();
+                foreach ($request->all() as $key => $value) {
+                    if (str_contains($key, 'data_id')) {
+                        array_push($data_ids, $value);
+                    }
                 }
-            }
-            foreach ($request->all() as $key => $value) {
-                if (str_contains($key, 'data_question')) {
-                    array_push($data_questions, $value);
+                foreach ($request->all() as $key => $value) {
+                    if (str_contains($key, 'data_question')) {
+                        array_push($data_questions, $value);
+                    }
                 }
+                $td_key_values = array_combine($data_ids, $data_questions);
+
+                foreach ($td_key_values as $key => $value) {
+                    Data::where('id', $key)->update(['data_question' => $value]);
+                }
+                //===============================================================
+
+
+                $p = Tool::find($request->id);
+                if ($p) {
+                    $p->tool_name = $request->tool_name;
+                    $p->save();
+                }
+
+                return redirect()->route('tools.index')->with('success', 'Herramienta editada correctamente');
+            } catch (Exception $e) {
+                return [
+                    'value'  => [],
+                    'status' => 'error',
+                    'message'   => $e->getMessage()
+
+                ];
             }
-            $td_key_values = array_combine($data_ids, $data_questions);
-
-            foreach ($td_key_values as $key => $value) {
-                Data::where('id', $key)->update(['data_question' => $value]);
-            }
-            //===============================================================
-
-
-            $p = Tool::find($request->id);
-            if ($p) {
-                $p->tool_name = $request->tool_name;
-                $p->save();
-            }
-
-            return redirect()->route('tools.index')->with('success', 'Tool updated successfully');
-        } catch (Exception $e) {
-            return [
-                'value'  => [],
-                'status' => 'error',
-                'message'   => $e->getMessage()
-
-            ];
         }
+        return redirect()->back()->with('errors', $validator->messages());
     }
 
     /**

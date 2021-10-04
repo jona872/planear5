@@ -24,6 +24,9 @@ class DataController extends Controller
     public function customize(Request $request)
     {
         $params = $request->all();
+        $t = Tool::find($request->tool_id);
+        $params['tool_name'] = $t->tool_name;
+        
         return view('data.create', compact('params'));
     }
 
@@ -36,7 +39,7 @@ class DataController extends Controller
      */
     public function create()
     {
-        return view('data.test')->with('success', 'Datos agregados corretamente');
+        
     }
     public function test()
     {
@@ -63,9 +66,7 @@ class DataController extends Controller
                     $td->save();
                 }
             }
-
-            // return redirect()->route('tools.index')->with('success', 'Datos agregados corretamente');
-            return redirect()->route('tools.index')->withSuccess(['Success Message here!']);
+            return redirect()->route('tools.index')->withSuccess(['Preguntas agregadas correctamente']);
         } catch (Exception $e) {
             return [
                 'value'  => [],

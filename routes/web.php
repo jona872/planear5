@@ -39,6 +39,8 @@ Route::post('/relevamientos/export-confirm', 'RelevamientoController@exportConfi
 Route::post('/relevamientos/name-search', 'RelevamientoController@nameSearch')->name('relevamientos.name-search');
 Route::post('/relevamientos/date-search', 'RelevamientoController@dateSearch')->name('relevamientos.date-search');
 
+Route::post('/plots/process','PlotController@process')->name('plots.process');
+
 
 Route::get('/exportador','CsvController@index')->name('exportador');
 Route::get('/plots2','PlotController@plots2')->name('plots2');
@@ -49,8 +51,8 @@ Auth::routes(['password.request' => false, 'password.reset' => false]);
 Route::group(['middleware'=>'auth'],function () {
     Route::get('create-chart/{type}','PlotController@makeChart');
 
-    Route::get('/data/create/','DataController@create')->name('data.create');
-    Route::get('/data/test/','DataController@test')->name('data.test');
+    //Route::get('/data/create/','DataController@create')->name('data.create');
+    //Route::get('/data/test/','DataController@test')->name('data.test');
     Route::get('data/destroy/{id}','DataController@destroy');
 
     Route::get('relevamientos/pre-create','RelevamientoController@preCreate')->name('relevamientos.pre-create');

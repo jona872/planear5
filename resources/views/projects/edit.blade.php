@@ -37,12 +37,9 @@
 					<label for="" class="col-form-label text-md-right col-md-3"><strong>Ciudad</strong></label>
 					<div class="col-md-9 col-xl-7">
 						<select name="city_id" class="form-control form-select">
-							@if($cities ?? '' )
-							<option value="">{{ $projects[0]->city_name }}</option>
 							@foreach($cities ?? '' as $city)
 							<option value="{{ $city->id }}">{{ $city->city_name }}</option>
 							@endforeach
-							@endif
 						</select>
 					</div>
 				</div>
