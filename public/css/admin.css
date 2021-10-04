@@ -13,6 +13,9 @@
 
 /* FONT PATH
  * -------------------------- */
+ .custom-file-input ~ .custom-file-label::after {
+  content: "Elegir";
+}
 
 @font-face {
   font-family: "FontAwesome";
@@ -23453,4 +23456,6 @@ div.trumbowyg-dropdown-table table td.active {
     display: none;
   }
 }
+
+
 

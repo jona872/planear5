@@ -154,12 +154,20 @@ session()->forget('pid');
 @endsection
 
 @section('footer')
-
+<br>
 <form action="{{ route('relevamientos.export') }}" method="POST" class="form-horizontal form-create">
-	@csrf @method('POST')
-	<button type="submit" class="btn btn-primary btn-spinner"> <i class="fa fa-share-square-o"></i> &nbsp; Exportar Datos </button>
+	@csrf
+
+	<button type="submit" class="btn btn-sm btn-dark btn-spinner">
+		<i class="fa fa-upload" aria-hidden="true"></i> &nbsp; Exportar Datos
+	</button>
+
+	<a href="{{ route('relevamientos.import-picker') }}" title="Importar" role="button" class="btn btn-sm btn-dark">
+		<i class="fa fa-download" aria-hidden="true"></i> &nbsp; Importar Datos
+	</a>
+
 </form>
-<div> &nbsp; </div>
+
 
 @endsection
 

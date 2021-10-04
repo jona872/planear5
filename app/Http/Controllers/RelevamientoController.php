@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Data;
 use App\DataAnswer;
 use App\Project;
 use App\ProjectRelevamiento;
@@ -11,13 +12,20 @@ use App\Tool;
 use App\ToolData;
 use Carbon\Carbon;
 use Exception;
+use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use League\Csv\Reader;
+use League\Csv\Statement;
 use League\Csv\Writer;
 use SplTempFileObject;
 use PhpParser\Node\Expr\FuncCall;
+use SplFileObject;
+
+//use Illuminate\Support\Facades\Input;
 
 class RelevamientoController extends Controller
 {
@@ -34,6 +42,7 @@ class RelevamientoController extends Controller
             ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
             ->select('projects.project_name', 'tools.tool_name', 'users.name', 'relevamientos.*')
             ->orderBy('relevamientos.created_at', 'desc')
+            ->orderBy('relevamientos.id', 'desc')
             ->get();
 
 
@@ -91,6 +100,153 @@ class RelevamientoController extends Controller
         // dd($relevamientos);
         return view('relevamientos.index', compact('relevamientos'));
     }
+
+    public function picker(Request $request)
+    {
+        $projects = DB::table('projects')
+            ->select('projects.id', 'projects.project_name')
+            ->get();
+        $tools = DB::table('tools')
+            ->select('tools.id', 'tools.tool_name')
+            ->get();
+
+        return view('relevamientos.picker', compact('projects', 'tools'));
+    }
+
+    public function preview(Request $request)
+    {
+        //dd($request->file());
+        //dd($request->all()); // project_id y tool_id
+        // dd($request->file('file')); //en forma de array plano
+        if ($request->hasFile('file')) {
+            $tmpFile = $request->file;
+
+            $path = $request->file->path();
+            $extension = $request->file->extension();
+
+            // $grupo = array();
+
+            // $csv = Reader::createFromPath($path, 'r');
+            // $csv->setHeaderOffset(0); //set the CSV header offset
+            
+            // //get 25 records starting from the 11th row
+            // $stmt = Statement::create()
+            //     ->offset(0);
+
+            // $records = $stmt->process($csv);
+            // $row = array();
+            // foreach ($records as $record) {
+            //     array_push($row, $record);
+            // }
+            // $grupo['respuestas'] = $row;
+            
+
+            // dd($grupo);
+            $grupos = array();
+            $grupo = array();
+            $grupo['project_name'] = Project::find($request->project_id)->project_name ;
+            $grupo['tool_name'] = Tool::find($request->tool_id)->tool_name ;
+
+            //load the CSV document from a file path
+            $reader = Reader::createFromPath($path, 'r');
+            $importedValues = array();
+            $reader->setHeaderOffset(0);
+            $header_offset = $reader->getHeaderOffset();
+            $header = $reader->getHeader(); //returns ['First Name', 'Last Name', 'E-mail']
+            $grupo['preguntas'] = $header;
+            $grupo['colCount'] = count($header);
+
+            $row = array();
+            $newDataCount = 0;
+            $newAnswerCount = 0;
+            foreach ($reader as $offset => $record) { //todo el csv
+                
+                
+                $relevamiento = new Relevamiento();
+                $relevamiento->relevamiento_creator = Auth::user()->name;
+                $relevamiento->user_id = Auth::user()->id;
+                $relevamiento->project_id = intval($request->project_id);
+                $relevamiento->tool_id = intval($request->tool_id);
+                $relevamiento->save();
+                foreach ($record as $data_question => $answer_name) { // data_question - answer_name
+                    array_push($row, $answer_name);
+                    //dd($data_question);
+                    //dd([$data_question, $answer_name]);
+                    $data = DB::table('data')
+                        ->join('tools_data', 'tools_data.data_id', '=', 'data.id')
+                        ->join('tools', 'tools_data.tool_id', '=', 'tools.id')
+                        ->join('relevamientos', 'relevamientos.tool_id', '=', 'tools.id')
+                        ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
+                        ->where('data_question', 'LIKE', $data_question)
+                        ->where('projects.id', intval($request->project_id))
+                        ->where('tools.id', intval($request->tool_id))
+                        ->select('data.*')
+                        ->first();
+                    // dd($data);
+
+                    if (!$data) { //Si no encontro, tengo que agregar el data y desp las relaciones existentes
+                        $newQuestion = new Data();
+                        $newQuestion->data_question = $data_question;
+                        $newQuestion->save();
+                        $newDataCount++;
+
+                        $toolData = new ToolData();
+                        $toolData->tool_id = intval($request->tool_id);
+                        $toolData->data_id = $newQuestion->id;
+                        $toolData->save();
+                    } else { //existe una pregunta, asi que agrego a la relacion existente
+                        //dd([$data->id, $data->data_question, $answer_name]);
+                        $answer = new Answer();
+                        $answer->answer_name = $answer_name;
+                        $answer->save();
+                        $newAnswerCount++;
+
+                        $dataAnswer = new DataAnswer();
+                        $dataAnswer->data_id = $data->id;
+                        $dataAnswer->answer_id = $answer->id;
+                        $dataAnswer->relevamiento_id = $relevamiento->id;
+                        $dataAnswer->save();
+                    }
+                }
+                // array_push($importedValues, $record);
+            }
+            $grupo['respuestas'] = array_chunk($row, $grupo['colCount']);
+            $grupo['newDataCount'] = $newDataCount ;
+            $grupo['newAnswerCount'] = $newAnswerCount ; 
+            array_push($grupos,$grupo);
+            //dd($grupos);
+
+
+            //dd($importedValues);
+            return view('relevamientos.import-result', compact('grupos'));
+        }
+
+        //$fileName = time().'.'.$request->file->extension();  
+        //$fileName = $request->file->originalName . '.' . $request->file->extension();
+
+        //dd($fileName);
+        return view('relevamientos.picker');
+    }
+
+
+
+    public function fileUpload(Request $request)
+    {
+
+        // $request->validate([
+        //     'file' => 'required|mimes:csv,txt,xlx,xls,pdf|max:2048'
+        //     ]);
+
+        dd($request->file());
+        return view('relevamientos.picker');
+    }
+
+    public function import(Request $request)
+    {
+        dd($request);
+    }
+
+
     public function export(Request $request)
     {
         //dd(session()->get('export'));
@@ -148,7 +304,7 @@ class RelevamientoController extends Controller
 
             array_push($grupos, $grupo);
         }
-
+        //dd($grupos);
         return view('relevamientos.exportar', compact('grupos'));
     }
 
@@ -157,9 +313,9 @@ class RelevamientoController extends Controller
         //dd($request->all());
         //dd(unserialize($request->exportData));
         $grupo = unserialize($request->exportData);
-        
+
         $csv = $this->exportData($grupo);
-        $csv->output($grupo['project_name'].' -- '.$grupo['tool_name'].'.csv');
+        $csv->output($grupo['project_name'] . ' -- ' . $grupo['tool_name'] . '.csv');
     }
 
 

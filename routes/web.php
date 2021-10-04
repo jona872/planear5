@@ -25,6 +25,8 @@ Route::get('/test', function () {
         '3' => 'value3'
     ]);
 });
+Route::get('/map', 'LiveSearch@map');
+Route::post('/google/map/store', 'LiveSearch@store')->name('google.map.store');
 
 Route::get('/live_search', 'LiveSearch@index');
 Route::get('/live_search/action', 'LiveSearch@action')->name('live_search.action');
@@ -32,9 +34,13 @@ Route::get('/live_search/action', 'LiveSearch@action')->name('live_search.action
 Route::get('/projects/action', 'ProjectController@action')->name('projects.action');
 Route::post('/projects/search', 'ProjectController@search')->name('projects.search');
 
-// Route::get('/relevamientos', 'RelevamientoController@index')->name('relevamientos');
+
 Route::post('/relevamientos/export', 'RelevamientoController@export')->name('relevamientos.export');
 Route::post('/relevamientos/export-confirm', 'RelevamientoController@exportConfirm')->name('relevamientos.export-confirm');
+
+Route::get('/relevamientos/import-picker', 'RelevamientoController@picker')->name('relevamientos.import-picker');
+Route::post('/relevamientos/import-preview', 'RelevamientoController@preview')->name('relevamientos.import-preview');
+Route::post('/fileUpload', 'RelevamientoController@fileUpload')->name('fileUpload');
 
 Route::post('/relevamientos/name-search', 'RelevamientoController@nameSearch')->name('relevamientos.name-search');
 Route::post('/relevamientos/date-search', 'RelevamientoController@dateSearch')->name('relevamientos.date-search');
@@ -44,6 +50,7 @@ Route::post('/plots/process','PlotController@process')->name('plots.process');
 
 Route::get('/exportador','CsvController@index')->name('exportador');
 Route::get('/plots2','PlotController@plots2')->name('plots2');
+
 
 
 Auth::routes(['password.request' => false, 'password.reset' => false]);

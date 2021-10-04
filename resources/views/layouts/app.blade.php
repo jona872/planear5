@@ -15,6 +15,7 @@
 	<!-- <link rel="stylesheet" href="{{ asset('css/app2.css')}}"> -->
 	<link rel="stylesheet" href="{{ asset('css/admin.css')}}">
 	<link rel="stylesheet" href="{{ asset('fonts/bootstrap-icons/font/bootstrap-icons.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/picker.css')}}">
 	<!-- <link rel="stylesheet" href="{{ asset('css/appTest.css')}}"> -->
 
 
@@ -171,6 +172,7 @@
 	<script src="{{ asset('assets/front/js/aos.js') }}"></script>
 	<script src="{{ asset('assets/front/js/jquery.animateNumber.min.js') }}"></script>
 	<script src="{{ asset('assets/front/js/scrollax.min.js') }}"></script>
+	<script src="{{ asset('js/map.js') }}"></script>
 	@yield('footer-scripts')
 	<!-- // ACA -->
 	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script> -->
