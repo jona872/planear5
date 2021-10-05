@@ -37,7 +37,7 @@ class PlotController extends Controller
     }
     public function process(Request $request)
     {
-        //dd($request_params = $request->all());
+        dd($request_params = $request->all());
 
         $request_params = $request->all();
         $rules = array(

@@ -114,11 +114,6 @@ session()->forget('pid');
 							<!-- <td>{{$u->relevamiento_latitud." ; ".$u->relevamiento_longitud }}</td> -->
 							<td>
 								<div class="row no-gutters">
-									<div class="col-auto">
-										<a href="{{ route('relevamientos.show',$u->id) }}" title="Detalles" role="button" class="btn btn-sm btn-primary">
-											<i class="fa fa-eye"></i>
-										</a>
-									</div>
 									<div class="col-auto" style="margin: 0 2%">
 										<a href="/relevamientos/{{$u->id}}/edit" title="Edit" role="button" class="btn btn-sm btn-warning">
 											<i class="fa fa-edit"></i>
@@ -151,26 +146,25 @@ session()->forget('pid');
 </div>
 
 
-@endsection
+
 
 @section('footer')
 <br>
 <form action="{{ route('relevamientos.export') }}" method="POST" class="form-horizontal form-create">
-	@csrf
-
+	@csrf @method('POST')
 	<button type="submit" class="btn btn-sm btn-dark btn-spinner">
 		<i class="fa fa-upload" aria-hidden="true"></i> &nbsp; Exportar Datos
 	</button>
-
+	
 	<a href="{{ route('relevamientos.import-picker') }}" title="Importar" role="button" class="btn btn-sm btn-dark">
 		<i class="fa fa-download" aria-hidden="true"></i> &nbsp; Importar Datos
 	</a>
-
+	
 </form>
 
 
 @endsection
-
+@endsection
 
 @section('footer-scripts')
 

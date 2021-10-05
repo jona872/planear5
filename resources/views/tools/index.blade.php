@@ -59,20 +59,9 @@
 	</div>
 </div>
 
-<!-- <div class="container">
-	<div class="row">
-		<div class="ml-auto">
-			<a href="tools/create" class="btn btn-primary"><i class="bi bi-plus-lg"> </i> Agregar Herramienta </a>
-			<a href="data" class="btn btn-primary"><i class="bi bi-plus-lg"> </i> Agregar Campos </a>
-		</div>
-	</div>
-</div> -->
-
-
-
+@section('footer')
+<a href="tools/create" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"> </i> Agregar Herramienta </a>
+<a href="data" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"> </i> Agregar Campos </a>
 @endsection
 
-@section('footer')
-<a href="tools/create" class="btn btn-primary"><i class="bi bi-plus-lg"> </i> Agregar Herramienta </a>
-<a href="data" class="btn btn-primary"><i class="bi bi-plus-lg"> </i> Agregar Campos </a>
 @endsection
