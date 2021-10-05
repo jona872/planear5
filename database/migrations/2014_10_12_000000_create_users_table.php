@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
                 $table->id();
                 $table->string('name');
                 $table->string('legajo')->nullable();
+                $table->integer('rol')->nullable();
                 $table->string('email', 255)->unique();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');

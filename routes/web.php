@@ -46,10 +46,17 @@ Route::post('/relevamientos/name-search', 'RelevamientoController@nameSearch')->
 Route::post('/relevamientos/date-search', 'RelevamientoController@dateSearch')->name('relevamientos.date-search');
 
 Route::post('/plots/process','PlotController@process')->name('plots.process');
-
-
 Route::get('/exportador','CsvController@index')->name('exportador');
+
+Route::get('/admin','UserController@index')->name('admin');
+
 Route::get('/plots2','PlotController@plots2')->name('plots2');
+Route::get('/plots3', function () {
+    return view('plots.factores');
+});
+Route::get('/plots4', function () {
+    return view('plots.tortas');
+});
 
 
 

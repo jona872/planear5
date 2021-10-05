@@ -99,7 +99,8 @@
         zoom: 13 // starting zoom
     });
     const popup = new mapboxgl.Popup().setHTML(
-        "<h3>Proyecto</h3> <p>"+project['project_longitud']+"; "+project['project_longitud']+"</p>"
+        // "<h3>Proyecto</h3> <p>"+project['project_longitud']+"; "+project['project_longitud']+"</p>"
+        "<h3>"+project['city_name']+"</h3> <p>"+project['project_longitud']+"; "+project['project_longitud']+"</p>"
     );
 
     map.on('load', () => {

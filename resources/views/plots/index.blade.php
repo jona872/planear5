@@ -40,8 +40,10 @@
 						<select name="plot_id" class="form-control form-select">
 							<option value="1"> Linea </option>
 							<option value="2"> Barra </option>
-							<option value="3"> Doughnut </option>
-							<option value="4"> Pie / Torta </option>
+							<option value="3"> Dona </option>
+							<option value="4"> Torta </option>
+							<option value="5"> Linea Comparativa </option>
+							<option value="6"> Barra Comparativa </option>
 						</select>
 					</div>
 				</div>
@@ -50,9 +52,10 @@
 					<label for="" class="col-form-label text-md-right col-md-3"><strong>Método</strong></label>
 					<div class="col-md-6 col-xl-6">
 						<select name="metodo_id" class="form-control form-select">
-							<option value="1"> Promedio </option>
-							<option value="2"> Tipo 2 </option>
-							<option value="3"> Tipo 3 </option>
+							<option value="1"> Media </option>
+							<option value="2"> Media Aritmetica </option>
+							<option value="3"> Dispersion </option>
+							<option value="4"> Suma </option>
 
 						</select>
 					</div>

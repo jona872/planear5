@@ -80,15 +80,15 @@
 					<li class="nav-item"><a class="nav-link" href="/tools"><i class="nav-icon icon-globe"></i> Herramientas</a></li>
 					<li class="nav-item"><a class="nav-link" href="/relevamientos"><i class="nav-icon icon-ghost"></i> Relevamientos</a></li>
 					<li class="nav-item"><a class="nav-link" href="/plots"><i class="nav-icon icon-drop"></i> Graficar Datos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/calcs"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
-					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
+					<!-- <li class="nav-item"><a class="nav-link" href="/calcs"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
+					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li> -->
 					<!-- <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/bulk-actions"><i class="nav-icon icon-book-open"></i> #6: Bulk Actions</a></li>
 					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/tags"><i class="nav-icon icon-tag"></i> #7: Tags</a></li> -->
-
+					@if ( Auth::user()->admin )
 					<li class="nav-item"> </li>
 					<li class="nav-title">Administrativo</li>
-					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/admin-users"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>
-
+					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>
+					@endif
 				</ul>
 
 				<div class="ps__rail-x" style="left: 0px; bottom: 0px;">
@@ -127,7 +127,7 @@
 
 
 
-	<footer class="app-footer">
+	<footer class="app-footer" style="position: relative;">
 		<div class="container-fluid">
 			<div class="container-xl">
 				<span class="pull-right">

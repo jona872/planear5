@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\FuncCall;
+use MathPHP\Statistics\Average;
 
 class PlotController extends Controller
 {
@@ -20,20 +22,56 @@ class PlotController extends Controller
     }
     public function plots2()
     {
-        // $meses = array('0' => 'Enero', '1' => 'Febrero','2' => 'Marzo','3' => 'Abril','4' => 'Mayo');
-        // $meses = array('Enero','Febrero','Marzo','Abril','Mayo'); //eje X
-        // $values = [random_int(1, 20),random_int(1, 20),random_int(1, 20),random_int(1, 20),10]; //eje Y
-        // $data=[];
+        //Grafico 1
+        $meses = array('0' => 'Enero', '1' => 'Febrero', '2' => 'Marzo', '3' => 'Abril', '4' => 'Mayo');  //idem que siguiente
+        $meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'); //eje X
+        // dd($meses);
+        $values = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 10]; //eje Y
 
-        // foreach ($meses as $key => $month) {
-        //     $data[$month] = $values[$key];
-
-        // }
+        $data = [];
+        foreach ($meses as $key => $month) {
+            $data[$month] = $values[$key];
+        }
         // dd($data);
         // dd($data[$meses]=$values);
 
-        //return  view('plots.indexphp',compact('data'));
-        return  view('plots.plots2');
+        // FIN grafico 1 ================================================================
+
+        // //Grafico 2
+        // // $ejeX = array('0' => 'Enero', '1' => 'Febrero', '2' => 'Marzo', '3' => 'Abril', '4' => 'Mayo');
+        // //$ejeX = array('Hombres', 'Mujeres'); //eje X (preguntas que tiene la herramienta)
+        // $questions = ['Hombre', 'Mujer'];
+        // $ejeX = array();
+        // foreach ($questions as $key => $value) {
+        //     array_push($ejeX, $value);
+        // }
+        // //Genreo mis 2 vectores de respuestas (pueden ser varios)
+        // $answersP1 = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 10]; //genero aleatorio las respuestas SIN PROCESAR
+        // $answersP2 = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 5];
+
+        // $meanP1   = Average::mean($answersP1);
+        // $meanP2   = Average::mean($answersP2);
+        // // $median = Average::median($numbers);
+        // // $values = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 10]; //eje Y
+        // $answersProcesed = [$meanP1, $meanP2];
+        // $values = [];
+        // foreach ($answersProcesed as $key => $value) {
+        //     array_push($values, $value);
+        // }
+        // //dd($values);
+
+        // $data = [];
+        // foreach ($ejeX as $key => $month) {
+        //     $data[$month] = $values[$key];
+        // }
+
+        // FIN grafico 2 ================================================================
+        //dd($data);
+        // dd($data[$meses]=$values);
+
+        return  view('plots.indexphp', compact('data'));
+
+        // return  view('plots.plots2');
     }
     public function process(Request $request)
     {
@@ -54,7 +92,7 @@ class PlotController extends Controller
         ];
 
         $validator = Validator::make($request_params, $rules, $messages);
-    
+
         if ($validator->passes()) {
 
             //Columnas que necesito saber las respuestas

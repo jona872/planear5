@@ -30,9 +30,10 @@ session()->forget('pid');
 </div>
 @endif
 
+@foreach ($grupos as $grupo)
 <div class="row">
 	<div class="col">
-		@foreach ($grupos as $grupo)
+
 		<form action="{{ route('relevamientos.export-confirm') }}" method="POST" class="form-horizontal form-create">
 			{{ csrf_field() }}
 
@@ -46,15 +47,17 @@ session()->forget('pid');
 					<div class="table-responsive ">
 						<table class="table table-hover">
 							<thead>
-								@for ($i = 0; $i < $grupo['colCount']; $i++) <th name="este">{{ $grupo['preguntas'][$i] }}</th>
-									@endfor
+								@foreach ($grupo['preguntas'] as $pregunta)
+								<th> {{ $pregunta }}</th>
+								@endforeach
 							</thead>
-							@foreach ($grupo['respuestas'] as $r)
 							<tbody>
-								@for ($i = 0; $i < count($r); $i++) <td>{{ $r[$i] }}</td>
-									@endfor
+								<tr>
+									@foreach ($grupo['respuestas'] as $respuesta)
+									<td>{{ $respuesta }}</td>
+									@endforeach
+								</tr>
 							</tbody>
-							@endforeach
 						</table>
 					</div>
 
@@ -67,9 +70,6 @@ session()->forget('pid');
 </div>
 
 @endforeach
-
-</div>
-</div>
 
 
 @endsection

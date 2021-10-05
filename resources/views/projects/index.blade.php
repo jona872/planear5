@@ -106,7 +106,7 @@
 @endsection
 
 @section('footer')
-<a href="/projects/create" role="button" class="btn btn-primary btn-spinner">
+<a href="/projects/create" role="button" class="btn btn-sm btn-primary btn-spinner">
 	<i class="fa fa-plus"></i>&nbsp; Crear Proyecto
 </a>
 @endsection
