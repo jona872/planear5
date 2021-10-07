@@ -110,7 +110,7 @@ session()->forget('pid');
 							<td>{{$u->tool_name }}</td>
 							<td>{{\Carbon\Carbon::parse($u->created_at)->format('d-m-Y')}}</td>
 							<td>{{$u->relevamiento_creator}}</td>
-							<td>{{$u->name}}</td>
+							<td>{{$u->relevamiento_latitud}}; {{$u->relevamiento_longitud}} </td>
 							<!-- <td>{{$u->relevamiento_latitud." ; ".$u->relevamiento_longitud }}</td> -->
 							<td>
 								<div class="row no-gutters">
