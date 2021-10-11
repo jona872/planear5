@@ -35,7 +35,17 @@ Route::get('/projects/action', 'ProjectController@action')->name('projects.actio
 Route::post('/projects/search', 'ProjectController@search')->name('projects.search');
 
 
+
+Route::get('/relevamientos/select-export', 'RelevamientoController@selectExport')->name('relevamientos.select-export');
+Route::get('/relevamientos/getTools','RelevamientoController@getProjectTools')->name('relevamientos.getTools');
+//Route::post('/relevamientos/getTools2', 'RelevamientoController@getProjectTools')->name('relevamientos.getTools2');
+//Route::get('/relevamientos/find-tools', 'RelevamientoController@getProjectTools')->name('relevamientos.find-tools');
+
+
 Route::post('/relevamientos/export', 'RelevamientoController@export')->name('relevamientos.export');
+Route::post('/relevamientos/export-tool', 'RelevamientoController@exportTool')->name('relevamientos.export-tool');
+Route::post('/relevamientos/export-tools', 'RelevamientoController@exportTools')->name('relevamientos.export-tools');
+
 Route::post('/relevamientos/export-confirm', 'RelevamientoController@exportConfirm')->name('relevamientos.export-confirm');
 
 Route::get('/relevamientos/import-picker', 'RelevamientoController@picker')->name('relevamientos.import-picker');
@@ -45,11 +55,15 @@ Route::post('/fileUpload', 'RelevamientoController@fileUpload')->name('fileUploa
 Route::post('/relevamientos/name-search', 'RelevamientoController@nameSearch')->name('relevamientos.name-search');
 Route::post('/relevamientos/date-search', 'RelevamientoController@dateSearch')->name('relevamientos.date-search');
 
+
+
 Route::post('/plots/process','PlotController@process')->name('plots.process');
 Route::get('/exportador','CsvController@index')->name('exportador');
 
 Route::get('/admin','UserController@index')->name('admin');
 
+
+Route::get('/piePlot','PlotController@piePlot')->name('piePlot');
 Route::get('/plots2','PlotController@plots2')->name('plots2');
 Route::get('/plots3', function () {
     return view('plots.factores');

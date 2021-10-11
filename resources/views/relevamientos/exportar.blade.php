@@ -52,19 +52,21 @@ session()->forget('pid');
 								@endforeach
 							</thead>
 							<tbody>
+								@foreach ($grupo['respuestas'] as $key => $respuesta)
 								<tr>
-									@foreach ($grupo['respuestas'] as $respuesta)
-									<td>{{ $respuesta }}</td>
-									@endforeach
+									@for ($i = 0; $i < count($respuesta); $i++) <td>{{ $respuesta[$i] }}</td>
+										@endfor
 								</tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div>
 
-					<a href="/relevamientos" title="Cancelar" role="button" class="btn btn-sm btn-danger">
-						<i class="fa fa-ban"></i> &nbsp; Cancelar
+					<a href="/relevamientos/select-export" title="Cancelar" role="button" class="btn btn-sm btn-danger">
+						<i class="fa fa-arrow-left"></i> &nbsp; Volver
 					</a>
-					<button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-share-square-o"></i> &nbsp; Exportar </button>
+					<button type="submit" class="btn btn-primary btn-sm">
+						<i class="fa fa-download"></i> &nbsp; Descargar </button>
 		</form>
 	</div>
 </div>

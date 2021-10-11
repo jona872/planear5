@@ -150,19 +150,14 @@ session()->forget('pid');
 
 @section('footer')
 <br>
-<form action="{{ route('relevamientos.export',['relevamientos' => $relevamientos] ) }}" method="POST" class="form-horizontal form-create">
-	@csrf @method('POST')
-	<input type="hidden" name="relevamientosHidden" value="{{serialize($relevamientos)}}">
-	<button type="submit" class="btn btn-sm btn-dark btn-spinner">
-		<i class="fa fa-upload" aria-hidden="true"></i> &nbsp; Exportar Datos
-	</button>
 
-	<a href="{{ route('relevamientos.import-picker') }}" title="Importar" role="button" class="btn btn-sm btn-dark">
-		<i class="fa fa-download" aria-hidden="true"></i> &nbsp; Importar Datos
-	</a>
+<a href="{{ route('relevamientos.select-export') }}" title="Importar" role="button" class="btn btn-sm btn-dark">
+	<i class="fa fa-download" aria-hidden="true"></i> &nbsp; New Export
+</a>
 
-</form>
-
+<a href="{{ route('relevamientos.import-picker') }}" title="Importar" role="button" class="btn btn-sm btn-dark">
+	<i class="fa fa-download" aria-hidden="true"></i> &nbsp; Importar Datos
+</a>
 
 @endsection
 @endsection

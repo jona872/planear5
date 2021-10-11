@@ -11,4 +11,8 @@ class Province extends Model
         'nombre',
         'country_id'
     ];
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
 }

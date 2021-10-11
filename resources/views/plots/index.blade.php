@@ -21,15 +21,27 @@
 
 			<div class="card-body">
 
-				<div class="form-group row align-items-center">
-					<label for="project_name" class="col-form-label text-md-right col-md-3"><strong>Proyecto</strong></label>
-					<div class="col-md-6 col-xl-6">
-						<select name="project_id" class="form-control form-select">
+			<div class="form-group row align-items-center">
+					<label for="" class="col-form-label text-md-right col-md-3"><strong>Proyecto</strong></label>
+					<div class="col-md-9 col-xl-7">
+						<select id="pList" name="pList" class="form-control form-select">
 							<option value=""> Seleccione Proyecto </option>
-							@foreach($projects as $project)
+							@foreach($projects ?? '' as $project)
 							<option value="{{ $project->id }}">{{ $project->project_name }}</option>
+							<input hidden name="pName" value="{{ $project->project_name }}" />
 							@endforeach
 						</select>
+
+					</div>
+				</div>
+
+				<div class="form-group row align-items-center">
+					<label for="" class="col-form-label text-md-right col-md-3"><strong>Herramienta</strong></label>
+					<div class="col-md-9 col-xl-7">
+						<select id="tList" name="tList" class="form-control form-select">
+							<option value=""> Seleccione Herramienta </option>
+						</select>
+
 					</div>
 				</div>
 
@@ -81,10 +93,5 @@
 <!-- //react components -->
 
 @section('footer-scripts')
-<script type="text/javascript">
-	$(document).ready(function() {
-		console.log('PlotController');
-	});
-</script>
-
+@include('scripts.getProjectTools')
 @endsection

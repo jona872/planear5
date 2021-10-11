@@ -16,7 +16,7 @@ class PlotController extends Controller
         $projects = DB::table('projects')
             ->select('projects.id', 'projects.project_name')
             ->get();
-        //dd($projects);
+        //dd($tools);
 
         return  view('plots.index', compact('projects'));
     }
@@ -75,68 +75,68 @@ class PlotController extends Controller
     }
     public function process(Request $request)
     {
-        dd($request_params = $request->all());
-
         $request_params = $request->all();
+        //dd($request_params = $request->all());
         $rules = array(
-            'project_id' => 'required',
-            'plot_id' => 'required',
-            'metodo_id' => 'required'
+            'pList' => 'required',
+            'tList' => 'required',
+            'plot_id' => 'required'
+            //'metodo_id' => 'required'
         );
 
         // $messages = array(
         //     'required' => 'El :attribute es requerido.'
         // );
         $messages = [
-            'project_id.required' => 'El Proyecto es requerido',
+            'pList.required' => 'El Proyecto es requerido',
+            'tList.required' => 'La Herramienta es requerida',
         ];
 
         $validator = Validator::make($request_params, $rules, $messages);
 
         if ($validator->passes()) {
 
-            //Columnas que necesito saber las respuestas
-            $columnas = DB::table('projects')
-                ->join('relevamientos', 'relevamientos.project_id', '=', 'projects.id')
-                ->join('tools', 'tools.id', '=', 'relevamientos.tool_id')
-                ->join('tools_data', 'tools_data.tool_id', '=', 'tools.id')
-                ->join('data', 'data.id', '=', 'tools_data.data_id')
-                ->select('projects.project_name', 'projects.id as pid', 'data.id as did', 'data.data_question')
-                ->where('projects.id', $request->project_id)
-                ->groupBy('data.data_question')
-                ->get();
-            //dd($columnas);
-            $datasets = [];
+            $pid = intval($request->pList);
+            $tid = intval($request->tList);
+            //dd([$pid,$tid]);
+            $columnas = DB::select("SELECT DISTINCT(data.data_question),SUM(answers.answer_name) total from data_answers
+                INNER JOIN answers ON answers.id = data_answers.answer_id
+                INNER JOIN data ON data.id = data_answers.data_id
+                WHERE data_answers.relevamiento_id IN (
+                    SELECT relevamientos.id from relevamientos 
+                    INNER JOIN tools ON relevamientos.tool_id = tools.id
+                    INNER JOIN projects on relevamientos.project_id = projects.id
+                    WHERE projects.id = '$pid' AND tools.id = '$tid' )
+                GROUP BY data.data_question");
 
-            //dd($respuestas[0]->answer_name);
-            //dd($respuestas);
 
-            foreach ($columnas as $key => $element) {
-                // $element->pid,$element->did;
-                //dd([$key,$element]);
-                $tmp = array();
-                $datasets[$element->data_question] = array();
-                //busco las respuestas de cada columna
-                $respuestas = DB::table('answers')
-                    ->join('data_answers', 'answers.id', '=', 'data_answers.answer_id')
-                    ->join('data', 'data_answers.data_id', '=', 'data.id')
-                    ->join('relevamientos', 'data_answers.relevamiento_id', '=', 'relevamientos.id')
-                    ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
-                    ->where('data.id', $element->did)
-                    ->select('answers.answer_name')
-                    ->get();
-                //dd($respuestas);
-
-                foreach ($respuestas as $keyRespuesta => $valueRespuesta) {
-                    array_push($tmp, $valueRespuesta->answer_name);
-                }
-                array_push($datasets[$element->data_question], $tmp);
+            $preguntas = array(); //eje X
+            $respuestas = array(); //eje Y
+            foreach ($columnas as $key => $value) {
+                array_push($preguntas, $value->data_question);
+                array_push($respuestas, $value->total);
             }
+            
+            $labels = $preguntas;
+            $label = "My First Dataset desde controller";
+            $bgc = array();
 
-            $datasets = $this->farmatData($datasets, $request->plot_id, $request->metodo_id);
-            //dd($datasets);
+            foreach ($respuestas as $r) {
+                array_push($bgc,$this->generateRGB());
+            }
+            
+            $obj3 = (object)[]; // Cast empty array to object
+            $obj3->label = $label;
+            $obj3->data = $respuestas;
+            $obj3->backgroundColor = $bgc;
+            $obj3->hoverOffset = 4;
+            
+            $data['datasets'] = [$obj3];
+            $data['labels'] = $labels;
+    
 
-            return  view('plots.plot', compact('datasets'));
+            return  view('plots.pie', compact('data'));
+
         }
         return redirect()->back()->with('errors', $validator->messages());
     }
@@ -191,5 +191,20 @@ class PlotController extends Controller
         }
 
         return $formattedData;
+    }
+
+    public function piePlot(Request $request)
+    {
+        dd($request);
+        // SELECT DISTINCT(data.data_question),SUM(answers.answer_name) total from data_answers
+        // INNER JOIN answers ON answers.id = data_answers.answer_id
+        // INNER JOIN data ON data.id = data_answers.data_id
+        // WHERE data_answers.relevamiento_id IN (
+        //     SELECT relevamientos.id from relevamientos 
+        //     INNER JOIN tools ON relevamientos.tool_id = tools.id
+        //     INNER JOIN projects on relevamientos.project_id = projects.id
+        //     WHERE projects.id = 1 AND tools.id = 2
+        // )
+        // GROUP BY data.data_question
     }
 }

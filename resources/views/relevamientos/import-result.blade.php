@@ -64,9 +64,8 @@ session()->forget('pid');
 				</div>
 
 				<a href="/relevamientos" title="Cancelar" role="button" class="btn btn-sm btn-danger">
-					<i class="fa fa-ban"></i> &nbsp; Cancelar
+					<i class="fa fa-ban"></i> &nbsp; Finalizar
 				</a>
-				<button type="submit" class="btn btn-primary btn-sm"> <i class="fa fa-share-square-o"></i> &nbsp; Exportar </button>
 			</div>
 		</div>
 
