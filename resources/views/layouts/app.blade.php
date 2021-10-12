@@ -76,10 +76,10 @@
 			<nav class="sidebar-nav ps">
 				<ul class="nav">
 					<li class="nav-title">Principal</li>
-					<li class="nav-item"><a class="nav-link" href="/projects"><i class="nav-icon icon-plane"></i>Proyectos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/tools"><i class="nav-icon icon-globe"></i> Herramientas</a></li>
-					<li class="nav-item"><a class="nav-link" href="/relevamientos"><i class="nav-icon icon-ghost"></i> Relevamientos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/plots"><i class="nav-icon icon-drop"></i> Graficar Datos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/projects"><i class="nav-icon icon-layers"></i>Proyectos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/tools"><i class="nav-icon fa fa-book"></i> Herramientas</a></li>
+					<li class="nav-item"><a class="nav-link" href="/relevamientos"><i class="nav-icon icon-puzzle"></i> Relevamientos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/plots"><i class="nav-icon icon-chart"></i> Graficar Datos</a></li>
 					<!-- <li class="nav-item"><a class="nav-link" href="/calcs"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
 					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li> -->
 					<!-- <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/bulk-actions"><i class="nav-icon icon-book-open"></i> #6: Bulk Actions</a></li>

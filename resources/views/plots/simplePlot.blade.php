@@ -14,14 +14,14 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-
+        
         console.log("Plot = Pie");
         //fetch data
         var data = <?php echo json_encode($data); ?>;
-        //console.log(data);
+        // console.log(data.type);
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
-            type: 'pie',
+            type: data.type,
             data: data,
             options: {
                 plugins: {

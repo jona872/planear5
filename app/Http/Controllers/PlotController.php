@@ -81,12 +81,8 @@ class PlotController extends Controller
             'pList' => 'required',
             'tList' => 'required',
             'plot_id' => 'required'
-            //'metodo_id' => 'required'
         );
 
-        // $messages = array(
-        //     'required' => 'El :attribute es requerido.'
-        // );
         $messages = [
             'pList.required' => 'El Proyecto es requerido',
             'tList.required' => 'La Herramienta es requerida',
@@ -98,8 +94,50 @@ class PlotController extends Controller
 
             $pid = intval($request->pList);
             $tid = intval($request->tList);
-            //dd([$pid,$tid]);
-            $columnas = DB::select("SELECT DISTINCT(data.data_question),SUM(answers.answer_name) total from data_answers
+
+            $extraConfig = (object)[]; // Cast empty array to object
+            $type =  $this->parsePlotType($request->plot_id);
+            $extraConfig->type = $type;
+            $extraConfig->title = $request->tName;
+            switch ($request->plot_id) {
+                case '1':
+                    $data = $this->simplePlot($pid, $tid, $extraConfig);
+                    return  view('plots.simplePlot', compact('data'));
+                    break;
+                case '2':
+                    $data = $this->simplePlot($pid, $tid, $extraConfig);
+                    return  view('plots.simplePlot', compact('data'));
+                    break;
+                case '3':
+                    $data = $this->simplePlot($pid, $tid, $extraConfig);
+                    return  view('plots.simplePlot', compact('data'));
+                    break;
+                case '4':
+                    $data = $this->simplePlot($pid, $tid, $extraConfig);
+                    return  view('plots.simplePlot', compact('data'));
+                    break;
+                case '5':
+                    $data = $this->simplePlot($pid, $tid, $extraConfig);
+                    return  view('plots.simplePlot', compact('data'));
+                    break;
+                case '6':
+                    $data = $this->simplePlot($pid, $tid, $extraConfig);
+                    return  view('plots.simplePlot', compact('data'));
+                    break;
+                default:
+                    return "default";
+                    break;
+            }
+        }
+        return redirect()->back()->with('errors', $validator->messages());
+    }
+    public function linePlot($pid, $tid, $type)
+    {
+    }
+
+    public function simplePlot($pid, $tid, $extraConfig)
+    {
+        $columnas = DB::select("SELECT DISTINCT(data.data_question),SUM(answers.answer_name) total from data_answers
                 INNER JOIN answers ON answers.id = data_answers.answer_id
                 INNER JOIN data ON data.id = data_answers.data_id
                 WHERE data_answers.relevamiento_id IN (
@@ -110,53 +148,67 @@ class PlotController extends Controller
                 GROUP BY data.data_question");
 
 
-            $preguntas = array(); //eje X
-            $respuestas = array(); //eje Y
-            foreach ($columnas as $key => $value) {
-                array_push($preguntas, $value->data_question);
-                array_push($respuestas, $value->total);
-            }
-            
-            $labels = $preguntas;
-            $label = "My First Dataset desde controller";
-            $bgc = array();
-
-            foreach ($respuestas as $r) {
-                array_push($bgc,$this->generateRGB());
-            }
-            
-            $obj3 = (object)[]; // Cast empty array to object
-            $obj3->label = $label;
-            $obj3->data = $respuestas;
-            $obj3->backgroundColor = $bgc;
-            $obj3->hoverOffset = 4;
-            
-            $data['datasets'] = [$obj3];
-            $data['labels'] = $labels;
-    
-
-            return  view('plots.pie', compact('data'));
-
+        $preguntas = array(); //eje X
+        $respuestas = array(); //eje Y
+        foreach ($columnas as $key => $value) {
+            array_push($preguntas, $value->data_question);
+            array_push($respuestas, $value->total);
         }
-        return redirect()->back()->with('errors', $validator->messages());
+
+        $labels = $preguntas;
+        //$label = "My First Dataset desde controller";
+        $label = $extraConfig->title;
+        $bgc = array();
+
+        foreach ($respuestas as $r) {
+            array_push($bgc, $this->generateRGB());
+        }
+
+        $obj3 = (object)[]; // Cast empty array to object
+        $obj3->label = $label;
+        $obj3->data = $respuestas;
+        $obj3->backgroundColor = $bgc;
+        $obj3->hoverOffset = 4;
+
+        $data['datasets'] = [$obj3];
+        $data['labels'] = $labels;
+        $data['type'] = $extraConfig->type;
+        $data['title'] = $extraConfig->title;
+        return $data;
     }
+
 
     public function generateRGB()
     {
-        return "rgba(" . rand(0, 255) . "," . rand(0, 255) . "," . rand(0, 255) . ",1)";
+
+        //return "rgba(" . rand(0, 255) . "," . rand(0, 255) . "," . rand(0, 255) . ",1)";
+        return "rgba(" . mt_rand(0, 255) . "," . mt_rand(0, 255) . "," . mt_rand(0, 255) . ",0.9)";
+
+        // $numbers = range(0, 255);
+        // shuffle($numbers);
+        // $resu = array_slice($numbers, 0, 3);
+
+        // return "rgba(" . $resu['0'] . "," . $resu['1'] . "," . $resu['2'] . ",0.9)";
+
     }
+
 
     public function parsePlotType($value)
     {
         switch ($value) {
             case 1:
+            case 5:
                 return "line";
                 break;
             case 2:
+            case 6:
                 return "bar";
                 break;
             case 3:
                 return "doughnut";
+                break;
+            case 4:
+                return "pie";
                 break;
 
             default:
@@ -191,20 +243,5 @@ class PlotController extends Controller
         }
 
         return $formattedData;
-    }
-
-    public function piePlot(Request $request)
-    {
-        dd($request);
-        // SELECT DISTINCT(data.data_question),SUM(answers.answer_name) total from data_answers
-        // INNER JOIN answers ON answers.id = data_answers.answer_id
-        // INNER JOIN data ON data.id = data_answers.data_id
-        // WHERE data_answers.relevamiento_id IN (
-        //     SELECT relevamientos.id from relevamientos 
-        //     INNER JOIN tools ON relevamientos.tool_id = tools.id
-        //     INNER JOIN projects on relevamientos.project_id = projects.id
-        //     WHERE projects.id = 1 AND tools.id = 2
-        // )
-        // GROUP BY data.data_question
     }
 }
