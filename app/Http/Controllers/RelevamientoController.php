@@ -508,9 +508,12 @@ class RelevamientoController extends Controller
 
 		return view('relevamientos.preCreate', compact('projects', 'tools'));
 	}
+
+
 	public function posCreate(Request $request)
 	{
-		//dd($request);
+		//dd($request->all());
+		
 		//$request->pid; $request->tid;
 		$toolData = DB::table('data')
 			->join('tools_data', 'data.id', '=', 'tools_data.data_id')
@@ -520,10 +523,12 @@ class RelevamientoController extends Controller
 			->get();
 
 		$pid = $request->project_id;
-		$tid = $request->tool_id;
+		$tid = $request->tool_id;	
 		session(['pid' => $request->project_id]);
 		session(['tid' => $request->tool_id]);
 		session(['toolData' => $toolData]);
+		session(['lat' => $request->lat]);
+		session(['lon' => $request->lon]);
 
 		// dd(session('pid'));
 
@@ -538,17 +543,20 @@ class RelevamientoController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		// dd($request->all());
+		//dd($request->all());
 		$toolData = session('toolData');
 		$pid = session('pid');
 		$tid = session('tid');
-
+		$lat = session('lat');
+		$lon = session('lon');
 		try {
 			$relevamiento = new Relevamiento();
 			$relevamiento->relevamiento_creator = Auth::user()->name;
 			$relevamiento->project_id = $pid;
 			$relevamiento->tool_id = $tid;
 			$relevamiento->user_id = Auth::user()->id;
+			$relevamiento->relevamiento_latitud = $request->lat;
+			$relevamiento->relevamiento_longitud = $request->lon;
 			//$relevamiento->created_at = date("d-m-Y");
 			$relevamiento->save();
 

@@ -5,6 +5,8 @@
 session()->forget('toolData');
 session()->forget('tid');
 session()->forget('pid');
+session()->forget('lat');
+session()->forget('lon');
 ?>
 
 @if (session()->has('success'))

@@ -17,6 +17,8 @@
 	<div class="card">
 		<form action="{{ route('relevamientos.poscreate') }}" method="POST" class="form-horizontal form-create">
 			@csrf
+			<input type="hidden" id="lat" name="lat" value="">
+			<input type="hidden" id="lon" name="lon" value="">
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 
 			<div class="card-body">
@@ -32,7 +34,7 @@
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="form-group row align-items-center">
 					<label for="" class="col-form-label text-md-right col-md-3"><strong>Herramienta</strong></label>
 					<div class="col-md-9 col-xl-7">
@@ -57,4 +59,49 @@
 		</form>
 	</div>
 </div>
+@endsection
+
+@section('footer-scripts')
+
+
+<!-- Import Mapbox GL JS  -->
+<script type="text/javascript">
+	console.log("getting georref");
+//	mapboxgl.accessToken = 'pk.eyJ1Ijoiam9uYXRhbmtpbiIsImEiOiJja3VkNGc5ZXcxNm5yMnFxNnl4aW1vbnFvIn0.xG6ZHnZc21DSsy5MEHZmFQ';
+	$(document).ready(function() {
+
+	var options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+
+	function success(pos) {
+		var crd = pos.coords;
+
+		console.log('Your current position is:');
+		console.log('Latitude : ' + crd.latitude);
+		console.log('Longitude: ' + crd.longitude);
+		console.log('More or less ' + crd.accuracy + ' meters.');
+
+		console.log($("#lat").val());
+		$("#lat").val(crd.latitude);
+		$("#lon").val(crd.longitude);
+		// document.getElementById("lat").value = "jona";
+		console.log($("#lat").val());
+
+	};
+
+	function error(err) {
+		console.warn('ERROR(' + err.code + '): ' + err.message);
+	};
+
+
+		navigator.geolocation.getCurrentPosition(success, error, options);
+
+	});
+
+
+</script>
+
 @endsection

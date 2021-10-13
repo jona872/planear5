@@ -13,15 +13,16 @@
 @endif
 
 @php
-//dd($toolData);
+//dd($lat);
+//dd(session()->get('lon'));
 @endphp
 
 <div class="container-xl">
 	<div class="card">
 		<form action="{{ route('relevamientos.store') }}" method="POST" class="form-horizontal form-create">
 			@csrf
-			<input type="hidden" name="pid" value="{{ $pid }}">
-			<input type="hidden" name="tid" value="{{ $tid }}">
+			<input type="hidden" name="lat" value="{{ session()->get('lat') }}">
+			<input type="hidden" name="lon" value="{{ session()->get('lon') }}">
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 
 			<div class="card-body">
@@ -35,7 +36,6 @@
 					</div>
 			</div>
 			@endfor
-
 	</div> <!-- CARD BODY -->
 
 	<div class="card-footer">
@@ -49,7 +49,3 @@
 </div>
 </div>
 @endsection
-
-<!-- @section('footer-scripts')
-@include('scripts.submitRelevamiento')
-@endsection -->
