@@ -79,7 +79,20 @@
 					<li class="nav-item"><a class="nav-link" href="/projects"><i class="nav-icon icon-layers"></i>Proyectos</a></li>
 					<li class="nav-item"><a class="nav-link" href="/tools"><i class="nav-icon fa fa-book"></i> Herramientas</a></li>
 					<li class="nav-item"><a class="nav-link" href="/relevamientos"><i class="nav-icon icon-puzzle"></i> Relevamientos</a></li>
-					<li class="nav-item"><a class="nav-link" href="/plots"><i class="nav-icon icon-chart"></i> Graficar Datos</a></li>
+					
+					<li class="nav-item nav-dropdown">
+						<a class="nav-link nav-dropdown-toggle" href="/plots"><i class="nav-icon icon-chart"></i> Graficar</a>
+						<ul class="nav-dropdown-items">
+							<li class="nav-item" id="simple">
+								<a class="nav-link"  href="/plots">
+								<i class="nav-icon icon-chart"></i> Grafico Simple </a>
+							</li>
+							<li class="nav-item" id="multiple">
+								<a class="nav-link"  href="/plots/create">
+								<i class="nav-icon icon-chart"></i> Grafico Comparativo </a>
+							</li>
+						</ul>
+					</li>
 					<!-- <li class="nav-item"><a class="nav-link" href="/calcs"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li>
 					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li> -->
 					<!-- <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/bulk-actions"><i class="nav-icon icon-book-open"></i> #6: Bulk Actions</a></li>

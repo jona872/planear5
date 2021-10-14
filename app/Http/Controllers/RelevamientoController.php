@@ -391,7 +391,7 @@ class RelevamientoController extends Controller
 		$grupo['preguntas'] = $q;
 		$grupo['respuestas'] = $r;
 		array_push($grupos,$grupo);
-		dd($grupos);
+		//dd($grupos);
 		return view('relevamientos.exportar', compact('grupos'));
 	}
 

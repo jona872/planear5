@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Tool;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,13 @@ class PlotController extends Controller
         //dd($tools);
 
         return  view('plots.index', compact('projects'));
+    }
+    public function create()
+    {
+        $projects = DB::table('projects')
+            ->select('projects.id', 'projects.project_name')
+            ->get();
+        return view("plots.indexmulti", compact('projects'));
     }
     public function plots2()
     {
@@ -72,6 +80,62 @@ class PlotController extends Controller
         return  view('plots.indexphp', compact('data'));
 
         // return  view('plots.plots2');
+    }
+
+    public function multiplotProcess(Request $request)
+    {
+        //dd( Tool::find($request->tList2)->attributesToArray()['tool_name']  );
+        //dd($request->tList2);
+
+
+        //dd($request_params = $request->all());
+
+        // return view('plots.multiplot');
+        $request_params = $request->all();
+        //dd($request_params = $request->all());
+        $rules = array(
+            'pList' => 'required',
+            'tList' => 'required',
+            'plot_id' => 'required'
+        );
+
+        $messages = [
+            'pList.required' => 'El Proyecto es requerido',
+            'tList.required' => 'La Herramienta es requerida',
+        ];
+
+        $validator = Validator::make($request_params, $rules, $messages);
+
+        if ($validator->passes()) {
+
+            $pid = intval($request->pList);
+            $tid = intval($request->tList);
+            $pid2 = intval($request->pList2);
+            $tid2 = intval($request->tList2);
+
+            $extraConfig1 = (object)[]; // Cast empty array to object
+            $extraConfig2 = (object)[]; // Cast empty array to object
+            $type =  $this->parsePlotType($request->plot_id);
+            $extraConfig1->type = $type;
+            $extraConfig1->title = Tool::find($request->tList)->attributesToArray()['tool_name'];
+            $extraConfig2->type = $type;
+            $extraConfig2->title = Tool::find($request->tList2)->attributesToArray()['tool_name'];
+            $extraConfig = [$extraConfig1,$extraConfig2];
+            switch ($request->plot_id) {
+                case '5':
+                    $data = $this->multiPlot($pid, $pid2, $tid, $tid2, $extraConfig);
+                    return  view('plots.multiplot', compact('data'));
+                    break;
+                case '6':
+                    $data = $this->multiPlot($pid, $pid2, $tid, $tid2, $extraConfig);
+                    return  view('plots.multiplot', compact('data'));
+                    break;
+                default:
+                    return "default";
+                    break;
+            }
+        }
+        return redirect()->back()->with('errors', $validator->messages());
     }
     public function process(Request $request)
     {
@@ -131,9 +195,8 @@ class PlotController extends Controller
         }
         return redirect()->back()->with('errors', $validator->messages());
     }
-    public function linePlot($pid, $tid, $type)
-    {
-    }
+
+
 
     public function simplePlot($pid, $tid, $extraConfig)
     {
@@ -175,6 +238,33 @@ class PlotController extends Controller
         $data['type'] = $extraConfig->type;
         $data['title'] = $extraConfig->title;
         return $data;
+    }
+
+    public function multiPlot($pid, $pid2, $tid, $tid2, $extraConfig)
+    {
+        //dd($extraConfig);
+        $data1 = $this->simplePlot($pid, $tid, $extraConfig['0']);
+        $data2 = $this->simplePlot($pid2, $tid2, $extraConfig['1']);
+        $bgc1 = $this->generateRGB();
+        $bgc2 = $this->generateRGB();
+
+        for ($i=0; $i < $data1['datasets'][0]->backgroundColor; $i++) { 
+            $data1['datasets'][0]->backgroundColor[$i] = "1";
+        }
+
+        foreach ($data2['datasets'][0]->backgroundColor as $key => $value ) {
+            $value = $bgc2;
+        }
+
+        //dd($data1['datasets'][0]->backgroundColor);
+
+        dd($data1);
+
+        $wrapper = [$data1,$data2];
+        $wrapper['type'] = $extraConfig[0]->type;
+        $wrapper['labels'] =  ( count($data1['labels']) > count($data2['labels']) ) ? $data1['labels'] : $data2['labels'];
+    
+        return $wrapper;
     }
 
 

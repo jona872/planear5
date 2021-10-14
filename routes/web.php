@@ -58,6 +58,7 @@ Route::post('/relevamientos/date-search', 'RelevamientoController@dateSearch')->
 
 
 Route::post('/plots/process','PlotController@process')->name('plots.process');
+Route::post('/plots/multiplotProcess','PlotController@multiplotProcess')->name('plots.multiplotProcess');
 Route::get('/exportador','CsvController@index')->name('exportador');
 
 Route::get('/admin','UserController@index')->name('admin');
