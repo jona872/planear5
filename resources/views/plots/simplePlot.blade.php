@@ -17,6 +17,7 @@
         
         console.log("Plot = Pie");
         //fetch data
+        
         var data = <?php echo json_encode($data); ?>;
         // console.log(data.type);
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -27,7 +28,8 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Censo Patogenos Virales'
+                        //text: 'Censo Patogenos Virales'
+                        text: data.plotTitle
                     }
                 },
                 scales: {

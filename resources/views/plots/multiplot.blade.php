@@ -17,7 +17,7 @@
     $(document).ready(function() {
         console.log("Multiplot");
     
-
+        
         var data = <?php echo json_encode($data); ?>;
         console.log(data);
 
@@ -36,7 +36,8 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Censo Patogenos Virales'
+                        //text: 'Censo Patogenos Virales'
+                        text: data['plotTitle']
                     }
                 },
                 scales: {

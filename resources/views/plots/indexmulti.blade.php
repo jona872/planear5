@@ -94,6 +94,16 @@
                     </div>
                 </div>
 
+				<div class="form-group row align-items-center has-success">
+					<label for="plotTitle" class="col-form-label text-md-right col-md-3">
+						<strong> Titulo del grafico </strong>
+					</label>
+					<div class="col-md-9 col-xl-7">
+						<input type="text" id="plotTitle" name="plotTitle" placeholder="Titulo del grafico" class="form-control form-control-success" 
+                        aria-required="true" aria-invalid="false">
+					</div>
+				</div>
+
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary"> <i class="fa fa-arrow-right "></i> Continuar </button>

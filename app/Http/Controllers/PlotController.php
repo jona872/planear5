@@ -40,55 +40,16 @@ class PlotController extends Controller
         foreach ($meses as $key => $month) {
             $data[$month] = $values[$key];
         }
-        // dd($data);
-        // dd($data[$meses]=$values);
-
-        // FIN grafico 1 ================================================================
-
-        // //Grafico 2
-        // // $ejeX = array('0' => 'Enero', '1' => 'Febrero', '2' => 'Marzo', '3' => 'Abril', '4' => 'Mayo');
-        // //$ejeX = array('Hombres', 'Mujeres'); //eje X (preguntas que tiene la herramienta)
-        // $questions = ['Hombre', 'Mujer'];
-        // $ejeX = array();
-        // foreach ($questions as $key => $value) {
-        //     array_push($ejeX, $value);
-        // }
-        // //Genreo mis 2 vectores de respuestas (pueden ser varios)
-        // $answersP1 = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 10]; //genero aleatorio las respuestas SIN PROCESAR
-        // $answersP2 = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 5];
-
-        // $meanP1   = Average::mean($answersP1);
-        // $meanP2   = Average::mean($answersP2);
-        // // $median = Average::median($numbers);
-        // // $values = [random_int(1, 20), random_int(1, 20), random_int(1, 20), random_int(1, 20), 10]; //eje Y
-        // $answersProcesed = [$meanP1, $meanP2];
-        // $values = [];
-        // foreach ($answersProcesed as $key => $value) {
-        //     array_push($values, $value);
-        // }
-        // //dd($values);
-
-        // $data = [];
-        // foreach ($ejeX as $key => $month) {
-        //     $data[$month] = $values[$key];
-        // }
-
-        // FIN grafico 2 ================================================================
-        //dd($data);
-        // dd($data[$meses]=$values);
 
         return  view('plots.indexphp', compact('data'));
-
-        // return  view('plots.plots2');
     }
 
     public function multiplotProcess(Request $request)
     {
         //dd( Tool::find($request->tList2)->attributesToArray()['tool_name']  );
         //dd($request->tList2);
-
-
-        //dd($request_params = $request->all());
+        // dd($request->plotTitle);
+        // dd($request_params = $request->all());
 
         // return view('plots.multiplot');
         $request_params = $request->all();
@@ -96,12 +57,16 @@ class PlotController extends Controller
         $rules = array(
             'pList' => 'required',
             'tList' => 'required',
+            'pList2' => 'required',
+            'tList2' => 'required',
             'plot_id' => 'required'
         );
 
         $messages = [
-            'pList.required' => 'El Proyecto es requerido',
-            'tList.required' => 'La Herramienta es requerida',
+            'pList.required' => 'Ambos proyectos son requeridos',
+            'tList.required' => 'Ambas Herramientas son requeridas',
+            'pList2.required' => 'Ambos proyectos son requeridos',
+            'tList2.required' => 'Ambas Herramientas son requeridas',
         ];
 
         $validator = Validator::make($request_params, $rules, $messages);
@@ -117,10 +82,15 @@ class PlotController extends Controller
             $extraConfig2 = (object)[]; // Cast empty array to object
             $type =  $this->parsePlotType($request->plot_id);
             $extraConfig1->type = $type;
+            $extraConfig1->changeColors = false;
             $extraConfig1->title = Tool::find($request->tList)->attributesToArray()['tool_name'];
             $extraConfig2->type = $type;
+            $extraConfig2->changeColors = false;
             $extraConfig2->title = Tool::find($request->tList2)->attributesToArray()['tool_name'];
-            $extraConfig = [$extraConfig1,$extraConfig2];
+            $extraConfig = [$extraConfig1, $extraConfig2];
+            $extraConfig['plotTitle'] = $request->plotTitle;
+            //dd($extraConfig);
+
             switch ($request->plot_id) {
                 case '5':
                     $data = $this->multiPlot($pid, $pid2, $tid, $tid2, $extraConfig);
@@ -162,36 +132,15 @@ class PlotController extends Controller
             $extraConfig = (object)[]; // Cast empty array to object
             $type =  $this->parsePlotType($request->plot_id);
             $extraConfig->type = $type;
-            $extraConfig->title = $request->tName;
-            switch ($request->plot_id) {
-                case '1':
-                    $data = $this->simplePlot($pid, $tid, $extraConfig);
-                    return  view('plots.simplePlot', compact('data'));
-                    break;
-                case '2':
-                    $data = $this->simplePlot($pid, $tid, $extraConfig);
-                    return  view('plots.simplePlot', compact('data'));
-                    break;
-                case '3':
-                    $data = $this->simplePlot($pid, $tid, $extraConfig);
-                    return  view('plots.simplePlot', compact('data'));
-                    break;
-                case '4':
-                    $data = $this->simplePlot($pid, $tid, $extraConfig);
-                    return  view('plots.simplePlot', compact('data'));
-                    break;
-                case '5':
-                    $data = $this->simplePlot($pid, $tid, $extraConfig);
-                    return  view('plots.simplePlot', compact('data'));
-                    break;
-                case '6':
-                    $data = $this->simplePlot($pid, $tid, $extraConfig);
-                    return  view('plots.simplePlot', compact('data'));
-                    break;
-                default:
-                    return "default";
-                    break;
-            }
+            $extraConfig->title = $request->tName; //aca
+            $extraConfig->plotTitle = $request->plotTitle;
+            $extraConfig->changeColors = true;
+
+            //dd($extraConfig);
+
+            $data = $this->simplePlot($pid, $tid, $extraConfig);
+            //dd($data);
+            return  view('plots.simplePlot', compact('data'));
         }
         return redirect()->back()->with('errors', $validator->messages());
     }
@@ -200,6 +149,7 @@ class PlotController extends Controller
 
     public function simplePlot($pid, $tid, $extraConfig)
     {
+        //dd($extraConfig);
         $columnas = DB::select("SELECT DISTINCT(data.data_question),SUM(answers.answer_name) total from data_answers
                 INNER JOIN answers ON answers.id = data_answers.answer_id
                 INNER JOIN data ON data.id = data_answers.data_id
@@ -223,9 +173,17 @@ class PlotController extends Controller
         $label = $extraConfig->title;
         $bgc = array();
 
-        foreach ($respuestas as $r) {
-            array_push($bgc, $this->generateRGB());
+        if ($extraConfig->changeColors){
+            foreach ($respuestas as $r) {
+                array_push($bgc, $this->generateRGB());
+            }
+        } else {
+            $sameColor = $this->generateRGB();
+            foreach ($respuestas as $r) {
+                array_push($bgc, $sameColor);
+            }
         }
+        
 
         $obj3 = (object)[]; // Cast empty array to object
         $obj3->label = $label;
@@ -236,34 +194,25 @@ class PlotController extends Controller
         $data['datasets'] = [$obj3];
         $data['labels'] = $labels;
         $data['type'] = $extraConfig->type;
-        $data['title'] = $extraConfig->title;
+        $data['plotTitle'] = $extraConfig->plotTitle;
+        //dd($data);
         return $data;
+
     }
 
     public function multiPlot($pid, $pid2, $tid, $tid2, $extraConfig)
     {
-        //dd($extraConfig);
+        //dd($extraConfig['plotTitle']);
+        $extraConfig['0']->plotTitle = $extraConfig['plotTitle'];
+        $extraConfig['1']->plotTitle = $extraConfig['plotTitle'];
         $data1 = $this->simplePlot($pid, $tid, $extraConfig['0']);
         $data2 = $this->simplePlot($pid2, $tid2, $extraConfig['1']);
-        $bgc1 = $this->generateRGB();
-        $bgc2 = $this->generateRGB();
 
-        for ($i=0; $i < $data1['datasets'][0]->backgroundColor; $i++) { 
-            $data1['datasets'][0]->backgroundColor[$i] = "1";
-        }
-
-        foreach ($data2['datasets'][0]->backgroundColor as $key => $value ) {
-            $value = $bgc2;
-        }
-
-        //dd($data1['datasets'][0]->backgroundColor);
-
-        dd($data1);
-
-        $wrapper = [$data1,$data2];
+        $wrapper = [$data1, $data2];
         $wrapper['type'] = $extraConfig[0]->type;
-        $wrapper['labels'] =  ( count($data1['labels']) > count($data2['labels']) ) ? $data1['labels'] : $data2['labels'];
-    
+        $wrapper['labels'] =  (count($data1['labels']) > count($data2['labels'])) ? $data1['labels'] : $data2['labels'];
+        $wrapper['plotTitle'] = $extraConfig['plotTitle'];
+        //dd($wrapper);
         return $wrapper;
     }
 
