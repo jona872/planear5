@@ -100,7 +100,7 @@
 					
 					<li class="nav-item"> </li>
 					<li class="nav-title">Administrativo</li>
-					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin-panel"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>
+					<li class="nav-item"><a class="nav-link" href="/admin-panel"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>
 					
 				</ul>
 
