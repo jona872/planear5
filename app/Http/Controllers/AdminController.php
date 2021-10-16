@@ -13,7 +13,25 @@ class AdminController extends Controller
 {
     public function setAdmin(Request $request)
     {
-        return "set Admin";
+        try {
+            if ($request->val) { //true = lo subo de rango
+                User::find($request->id)->update(['admin' => 1]);
+            } else { // lo hago alumno, admin = 0
+                User::find($request->id)->update(['admin' => 0]);
+            }
+
+            return response()->json([
+                'value'  => [],
+                'status' => 'success',
+                'message' => 'Usuario modificado correctamente!!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
     }
     /**
      * Display a listing of the resource.
@@ -129,21 +147,19 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        try {
+            $p = User::find($id);
+            if ($p) {
+                $p->delete();
+            }
+            return redirect()->route('admin-panel.index')->with('success', 'Usuario eliminado correctamente');
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
 
-            try {
-        		$p = User::find($id);
-        		if ($p) {
-        			$p->delete();
-        		}
-        		return redirect()->route('admni-panel.index')->with('success', 'Usuario eliminado correctamente');
-        	} catch (Exception $e) {
-        		return [
-        			'value'  => [],
-        			'status' => 'error',
-        			'message'   => $e->getMessage()
-
-        		];
-        	}
+            ];
+        }
     }
 }

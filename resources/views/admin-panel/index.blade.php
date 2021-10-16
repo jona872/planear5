@@ -23,7 +23,6 @@
     </ul>
 </div>
 @endif
-
 <div class="row">
     <div class="col">
         <div class="card">
@@ -60,8 +59,9 @@
                         <tbody>
                             <td>{{$u->name }}</td>
                             <td>{{$u->legajo}}</td>
-                            <td><label class="switch switch-3d switch-success">
-                                    <input type="checkbox" class="switch-input" disabled @if ($u->admin) checked @endif >
+                            <td>
+                                <label class="switch switch-3d switch-success">
+                                    <input id="{{ $u->id }}" onclick="switched(this);" type="checkbox" class="switch-input" @if ($u->admin) checked @endif >
                                     <span class="switch-slider"></span>
                                 </label>
                             </td>
@@ -101,4 +101,9 @@
 </div>
 
 
+@endsection
+
+@section('footer-scripts')
+
+@include('scripts.setAdmin')
 @endsection

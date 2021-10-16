@@ -44,6 +44,11 @@ Route::get('/plots4', function () {
 
 
 
+
+//Route::post('/admin-panel/setAdmin', 'AdminController@setAdmin')->name('admin-panel.setAdmin');
+Route::get('/admin-panel/setAdmin', 'AdminController@setAdmin')->name('admin-panel.setAdmin');
+
+
 Auth::routes(['password.request' => false, 'password.reset' => false]);
 
 Route::group(['middleware' => 'auth'], function () {
@@ -89,6 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/cities/getCities/', 'CityController@getCities')->name('cities.getCities');
     Route::post('/data/customize/', 'DataController@customize')->name('data.customize');
 
+    
 
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -99,7 +105,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('relevamientos', 'RelevamientoController');
     Route::resource('plots', 'PlotController');
     Route::resource('calcs', 'CalcController');
-
 
     Route::resource('admin-panel', 'AdminController');
     //
