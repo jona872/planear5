@@ -62,6 +62,6 @@
 @section('footer')
 <a href="tools/create" class="btn btn-sm btn-dark link-secondary"><i class="bi bi-plus-lg"> </i> Agregar Herramienta </a>
 <a href="data" class="btn btn-sm btn-dark link-secondary"><i class="bi bi-plus-lg"> </i> Agregar Campos </a>
-@endsection
+@endsection 
 
 @endsection
