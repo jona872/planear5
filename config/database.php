@@ -46,21 +46,21 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            //stagin
-            'url' => env('DATABASE_URL','mysql://b1a7c5174a6dc4:bce32c73@us-cdbr-iron-east-02.cleardb.net/heroku_cd96154d177618e?reconnect=true'),
-            'host' => env('DB_HOST', 'us-cdbr-iron-east-02.cleardb.net'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'heroku_cd96154d177618e'),
-            'username' => env('DB_USERNAME', 'b1a7c5174a6dc4'),
-            'password' => env('DB_PASSWORD', 'bce32c73'),
-            
-            // // LOCALHOST
-            // 'url' => env('DATABASE_URL'),
-            // 'host' => env('DB_HOST', 'localhost'),
+            // //stagin
+            // 'url' => env('DATABASE_URL','mysql://b1a7c5174a6dc4:bce32c73@us-cdbr-iron-east-02.cleardb.net/heroku_cd96154d177618e?reconnect=true'),
+            // 'host' => env('DB_HOST', 'us-cdbr-iron-east-02.cleardb.net'),
             // 'port' => env('DB_PORT', '3306'),
-            // 'database' => env('DB_DATABASE', 'test'),
-            // 'username' => env('DB_USERNAME', 'root'),
-            // 'password' => env('DB_PASSWORD', ''),
+            // 'database' => env('DB_DATABASE', 'heroku_cd96154d177618e'),
+            // 'username' => env('DB_USERNAME', 'b1a7c5174a6dc4'),
+            // 'password' => env('DB_PASSWORD', 'bce32c73'),
+            
+            // LOCALHOST
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'test'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
 
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',

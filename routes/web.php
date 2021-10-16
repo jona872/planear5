@@ -44,11 +44,6 @@ Route::get('/plots4', function () {
 
 
 
-
-//Route::post('/admin-panel/setAdmin', 'AdminController@setAdmin')->name('admin-panel.setAdmin');
-
-
-
 Auth::routes(['password.request' => false, 'password.reset' => false]);
 
 Route::group(['middleware' => 'auth'], function () {
