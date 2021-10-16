@@ -40,12 +40,12 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('admin-panel.index', compact('users'));
-        // if (Auth::user()->admin) {
-        // } else {
-        //     return redirect()->route('projects.index')->withErrors('Solo docentes pueden acceder al panel!');
-        // }
+        if (Auth::user()->admin) {
+            $users = User::all();
+            return view('admin-panel.index', compact('users'));
+        } else {
+            return redirect()->route('projects.index')->withErrors('Solo docentes pueden acceder al panel!');
+        }
     }
 
     /**
