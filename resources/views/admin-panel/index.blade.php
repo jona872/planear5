@@ -50,7 +50,7 @@
                         <thead>
                             <th>Nombre</th>
                             <th>Legajo</th>
-                            <th>Admin</th>
+                            <th>Docente</th>
                             <th>Email</th>
                             <th>Operaciones</th>
                         </thead>
@@ -61,7 +61,7 @@
                             <td>{{$u->name }}</td>
                             <td>{{$u->legajo}}</td>
                             <td><label class="switch switch-3d switch-success">
-                                    <input type="checkbox" class="switch-input" disabled  @if ($u->admin) checked @endif >
+                                    <input type="checkbox" class="switch-input" disabled @if ($u->admin) checked @endif >
                                     <span class="switch-slider"></span>
                                 </label>
                             </td>
@@ -69,11 +69,11 @@
                             <td>
                                 <div class="row no-gutters">
                                     <div class="col-auto" style="margin: 0 2%">
-                                        <a href="projects/{{$u->id}}/edit" title="Edit" role="button" class="btn btn-sm btn-warning">
+                                        <a href="admin-panel/{{$u->id}}/edit" title="Edit" role="button" class="btn btn-sm btn-warning">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </div>
-                                    <form class="col" action="{{ route('projects.destroy',$u->id) }}" method="POST">
+                                    <form class="col" action="{{ route('admin-panel.destroy',$u->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" title="Borrar" class="btn btn-sm btn-danger">

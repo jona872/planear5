@@ -49,7 +49,7 @@
 			@endif
 			@else
 			<li class="nav-item dropdown">
-				<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+				<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
 					{{ Auth::user()->name }} <span class="caret"></span>
 				</a>
 
@@ -100,7 +100,7 @@
 					@if ( Auth::user()->admin )
 					<li class="nav-item"> </li>
 					<li class="nav-title">Administrativo</li>
-					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>
+					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin-panel"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>
 					@endif
 				</ul>
 
