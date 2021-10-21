@@ -116,6 +116,7 @@ class ProjectController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		//dd($request);
 		$request->validate([
 			'project_name' => 'required',
 		]);
@@ -166,8 +167,6 @@ class ProjectController extends Controller
 	 */
 	public function update(Request $request, Project $Project)
 	{
-		//dd([$request->all(),$Project]);
-
 		$request_params = $request->all();
 		$rules = array(
 			'project_name' => 'required'

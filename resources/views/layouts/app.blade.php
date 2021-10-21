@@ -97,7 +97,7 @@
 					<li class="nav-item"><a class="nav-link" href="/register"><i class="nav-icon icon-graduation"></i> Registrar Docente</a></li> -->
 					<!-- <li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/bulk-actions"><i class="nav-icon icon-book-open"></i> #6: Bulk Actions</a></li>
 					<li class="nav-item"><a class="nav-link" href="http://127.0.0.1:8000/admin/tags"><i class="nav-icon icon-tag"></i> #7: Tags</a></li> -->
-					@if ( Auth::user()->admin )
+					@if ( isset(Auth::user()->admin) and  Auth::user()->admin )
 					<li class="nav-item"> </li>
 					<li class="nav-title">Administrativo</li>
 					<li class="nav-item"><a class="nav-link" href="/admin-panel"><i class="nav-icon icon-user"></i> Administrar Usuarios</a></li>

@@ -51,7 +51,7 @@
 						<strong> Creador </strong>
 					</label>
 					<div class="col-md-9 col-xl-7">
-						<input type="text" id="project_creator" name="project_creator" value="{{ Auth::user()->name }}" readonly class="form-control form-control-success" aria-required="false" aria-invalid="false">
+						<input type="text" id="project_creator" name="project_creator" value="{{ $projects[0]->project_creator  }}" readonly class="form-control form-control-success" aria-required="false" aria-invalid="false">
 					</div>
 				</div>
 

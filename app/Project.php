@@ -18,9 +18,9 @@ class Project extends Model
         'created_at'
     ];
 
-    public function getCreatedAtAttribute($date)
-    {
-        return Carbon::parse($date)->format('d M Y h:i A');
-    }
+    // public function getCreatedAtAttribute($date)
+    // {
+    //     return Carbon::parse($date)->format('d M Y h:i A');
+    // }
     
 }

@@ -14,7 +14,8 @@
 	@endif
 </div>
 @endif
-@if ($errors->any())
+
+@if (session()->has('errors'))
 <div class="alert alert-danger">
 	<ul>
 		@foreach ($errors->all() as $error)

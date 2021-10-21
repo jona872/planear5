@@ -13,6 +13,8 @@ class AdminController extends Controller
 {
     public function setAdmin(Request $request)
     {
+        //return "entro";
+        //dd($request);
         try {
             if ($request->val) { //true = lo subo de rango
                 User::find($request->id)->update(['admin' => 1]);
@@ -106,7 +108,9 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request_params = $request->all();
+        // dd($id);
+        // dd($request->all());
+        $request_params = $request->all(); 
         $rules = array(
             'name' => 'required',
             'email' => 'required',
