@@ -40,6 +40,7 @@
 					</label>
 					<div class="col-md-9 col-xl-7">
 						<input type="text" id="project_creator" name="project_creator" class="form-control form-control-success" aria-required="true" aria-invalid="false" value="{{ Auth::user()->name }}" readonly>
+						<input type="text" id="user_id" name="user_id" class="form-control form-control-success" value="{{ Auth::user()->id }}" hidden>
 					</div>
 				</div>
 

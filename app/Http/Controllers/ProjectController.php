@@ -116,13 +116,28 @@ class ProjectController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//dd($request);
-		$request->validate([
-			'project_name' => 'required',
-		]);
 
-		Project::create($request->all());
-		return redirect()->route('projects.index')->with('success', 'Post created successfully.');
+		$request_params = $request->all();
+		
+		$rules = array(
+			'project_name' => 'required',
+			'city_id' => 'required'
+		);
+
+		$messages = [
+			'project_name.required' => 'El nombre del proyecto es requerido',
+			'city_id.required' => 'La ciudad es requerida',
+		];
+
+		$validator = Validator::make($request_params, $rules, $messages);
+
+		if ($validator->passes()) {
+			Project::create($request->all());
+			return redirect()->route('projects.index')->with('success', 'Proyecto creado correctamente!');
+		}
+		return redirect()->back()->withErrors($validator->messages());
+
+
 	}
 
 	/**
@@ -185,7 +200,7 @@ class ProjectController extends Controller
 				if ($p) {
 					$p->update($request->all());
 				}
-				return redirect()->route('projects.index')->with('success', 'Proyecto editado correctamente');
+				return redirect()->route('projects.index')->with('success', 'Proyecto editado correctamente!');
 			} catch (Exception $e) {
 				return [
 					'value'  => [],
@@ -204,14 +219,14 @@ class ProjectController extends Controller
 	 * @param  \App\Project  $Project
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Project $Project)
+	public function destroy($id)
 	{
 		try {
-			$p = Project::find($Project->id);
+			$p = Project::find($id);
 			if ($p) {
 				$p->delete();
 			}
-			return redirect()->route('projects.index')->with('success', 'project deleted successfully');
+			return redirect()->route('projects.index')->with('success', 'Proyecto eliminado correctamente');
 		} catch (Exception $e) {
 			return [
 				'value'  => [],

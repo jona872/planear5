@@ -86,12 +86,13 @@ class ToolController extends Controller
         $validator = Validator::make($request_params, $rules, $messages);
 
         if ($validator->passes()) {
-            $request['user_id'] = Auth::user()->id;
+            //$request['user_id'] = Auth::user()->id; 
+            $request['user_id'] = $request_params['user_id'];
 
             Tool::create($request->all());
             return redirect()->route('tools.index')->with('success', 'Herramienta creada corractamente');
         }
-        return redirect()->back()->with('errors', $validator->messages());
+        return redirect()->back()->withErrors($validator->messages());
     }
 
     /**
@@ -201,14 +202,14 @@ class ToolController extends Controller
      * @param  \App\Tool  $tool
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tool $tool)
+    public function destroy($id)
     {
         try {
-            $p = Tool::find($tool->id);
+            $p = Tool::find($id);
             if ($p) {
                 $p->delete();
             }
-            return redirect()->route('tools.index')->with('success', 'tool deleted successfully');
+            return redirect()->route('tools.index')->with('success', 'Herramienta eliminada correctamente');
         } catch (Exception $e) {
             return [
                 'value'  => [],

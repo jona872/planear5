@@ -74,9 +74,8 @@ Route::get('/exportador', 'CsvController@index')->name('exportador');
 
 Route::get('create-chart/{type}', 'PlotController@makeChart');
 
-//Route::get('/data/create/','DataController@create')->name('data.create');
-//Route::get('/data/test/','DataController@test')->name('data.test');
 Route::get('data/destroy/{id}', 'DataController@destroy');
+
 
 Route::get('relevamientos/pre-create', 'RelevamientoController@preCreate')->name('relevamientos.pre-create');
 Route::post('relevamientos/pos-create', 'RelevamientoController@posCreate')->name('relevamientos.poscreate');
@@ -88,7 +87,6 @@ Route::get('/admin-panel/setAdmin', 'AdminController@setAdmin')->name('admin-pan
 
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 
 
 Route::resource('projects', 'ProjectController');

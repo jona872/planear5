@@ -7,9 +7,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class CreateUserTest extends TestCase
+class UserTest extends TestCase
 {
-    // use RefreshDatabase;
+    //use RefreshDatabase;
     /** @test */
     public function a_user_can_be_created()
     {
@@ -20,7 +20,7 @@ class CreateUserTest extends TestCase
 
         // ANDANDO OK, TIEMPO =  1.36s
         $userCreado = factory(User::class)->create()->toArray();
-        $this->post('/register', $userCreado);
+        // $this->post('/register', $userCreado);
         $this->assertDatabaseHas('users', $userCreado);
 
         // // ANDANDO OK, TIEMPO = 1.53s
@@ -30,4 +30,18 @@ class CreateUserTest extends TestCase
         // $this->assertNotNull($expectedNew);
         // $this->assertEquals($new['id'], intval($expectedNew->only(['id'])));
     }
+
+        /** @test */
+        public function an_admin_can_edit_user()
+        {
+            // // ANDANDO OK, TIEMPO =  1.36s
+            $userCreado = factory(User::class)->create()->toArray();
+            $this->post('/register', $userCreado);
+            $this->assertDatabaseHas('users', $userCreado);
+    
+            // //dd($userCreado['id']);
+            // $userNotAdmin = factory(User::class)->create()->toArray();
+            // $this->post('/register', $userNotAdmin);
+            // $this->assertDatabaseHas('users', $userNotAdmin);
+        }
 }

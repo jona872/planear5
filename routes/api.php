@@ -25,12 +25,13 @@ use App\Http\Controllers\RelevamientoController;
 
 // Route::get('/proyectos', 'APIController@index');
 // Route::post('/proyecto', 'APIController@crearProyecto');
+Route::post('/login', 'Auth\LoginController@login');
 // ========================================
 
 
 // //UPDATE->PUT-> Form/url encoded postman
 Route::put('/proyecto-editar/{id}', 'ProjectController@update');
-// Route::put('/dato-editar/{id}', 'DataController@update');
+Route::put('/herramienta-editar/{id}', 'ToolController@update');
 
 
 // //PROYECTOS API  
