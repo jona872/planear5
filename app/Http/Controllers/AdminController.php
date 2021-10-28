@@ -16,7 +16,7 @@ class AdminController extends Controller
         //return "entro";
         //dd($request);
         try {
-            if ($request->val) { //true = lo subo de rango
+            if ($request->val == "true") { //true = lo subo de rango
                 User::find($request->id)->update(['admin' => 1]);
             } else { // lo hago alumno, admin = 0
                 User::find($request->id)->update(['admin' => 0]);
