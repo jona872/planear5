@@ -21,23 +21,8 @@ class ToolUnitTest extends TestCase
 
         $response = $this->from('/api/herramientas')->post('/api/herramientas', $data);
         $response->assertSessionHasErrors([
-                'tool_name' => 'El nombre de la herramienta es requerido'
-            ]);
-    }
-    
-
-    //
-    /** @test */
-    public function the_tool_name_is_required_for_updating()
-    {
-        $data = [
-            "tool_name" => null
-        ];
-
-        $response = $this->from('/api/herramientas')->post('/api/herramientas', $data);
-        $response->assertSessionHasErrors([
-                'tool_name' => 'El nombre de la herramienta es requerido'
-            ]);
+            'tool_name' => 'El nombre de la herramienta es requerido'
+        ]);
     }
 
 }

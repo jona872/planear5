@@ -66,7 +66,7 @@ class DataController extends Controller
                     $td->save();
                 }
             }
-            return redirect()->route('tools.index')->withSuccess(['Preguntas agregadas correctamente']);
+            return redirect()->route('tools.index')->with('success','Preguntas agregadas correctamente');
         } catch (Exception $e) {
             return [
                 'value'  => [],
