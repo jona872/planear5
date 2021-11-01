@@ -41,4 +41,5 @@ class UserTest extends TestCase
         $user->refresh();
         $this->assertEquals($data, $user->admin);
     }
+
 }
