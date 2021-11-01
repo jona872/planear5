@@ -9,10 +9,12 @@ use App\User;
 use GuzzleHttp\Promise\Create;
 use Session;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LoginUnitTest extends TestCase
 {
+    //use RefreshDatabase; //Borra todo
     use DatabaseTransactions;
     /** @test
      */
@@ -46,13 +48,12 @@ class LoginUnitTest extends TestCase
     /** @test */
     public function authenticate_a_user_with_valid_credentials()
     {
-        $user = factory(User::class)->create(['email' => 'jona_872@hotmail.com', 'password' => '123456789'])->toArray();
         $credentials = [
-            "email" => "jona_872@hotmail.com",
-            "password" => '123456789'
+            "email" => 'jona_872@hotmail.com',
+            "password" => 'lokiJU22'
         ];
         $response = $this->from('/api/login')->post('/api/login', $credentials);
-        $response->assertSessionHasErrors();
+        $this->assertAuthenticated($guard = null);
     }
 
     /** @test */
@@ -75,7 +76,7 @@ class LoginUnitTest extends TestCase
     public function the_password_is_required_for_authentication()
     {
         $credentials = [
-            "email" => "zaratedev@gmail.com",
+            "email" => "ramdomEmail@gmail.com",
             "password" => ''
         ];
 
