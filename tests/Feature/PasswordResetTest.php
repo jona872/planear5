@@ -35,4 +35,5 @@ class PasswordResetTest extends TestCase
             ->assertSee('E-Mail Address')
             ->assertSee('Send Password Reset Link');
     }
+
 }
