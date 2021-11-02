@@ -74,4 +74,12 @@ class ProjectTest extends TestCase
         $response->assertRedirect('/projects');       
         $response->assertSessionHas('success', 'Proyecto eliminado correctamente');
     }
+
+    /** @test */
+    public function get_all_projects()
+    {
+        $response = $this->get('/api/project-list');
+        $response->assertStatus(200);
+        $this->assertEquals('success', $response['status']);
+    }
 }

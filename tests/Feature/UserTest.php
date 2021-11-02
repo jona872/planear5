@@ -21,7 +21,7 @@ class UserTest extends TestCase
 
         // ANDANDO OK, TIEMPO =  1.36s
         $userCreado = factory(User::class)->create()->toArray();
-        $this->post('/register', $userCreado);
+        // $this->post('/register', $userCreado);
         $this->assertDatabaseHas('users', $userCreado);
     }
 
@@ -41,4 +41,5 @@ class UserTest extends TestCase
         $user->refresh();
         $this->assertEquals($data, $user->admin);
     }
+
 }

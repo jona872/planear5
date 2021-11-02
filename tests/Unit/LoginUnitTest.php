@@ -7,19 +7,30 @@ namespace Tests\Unit;
 use App\Project;
 use App\User;
 use GuzzleHttp\Promise\Create;
+use Session;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LoginUnitTest extends TestCase
 {
+    //use RefreshDatabase; //Borra todo
     use DatabaseTransactions;
     /** @test
      */
-    public function it_visit_page_of_login()
+    public function a_user_can_visit_the_login_page()
     {
         $response = $this->get('/login');
         $response->assertStatus(200);
         $response->assertSee('Login');
+    }
+
+    /** @test */
+    public function a_user_can_request_password_recovery()
+    {
+        $response = $this->get('/password/reset');
+        $response->assertStatus(200);
+        $response->assertSee('email');
     }
 
     /** @test */
@@ -32,6 +43,17 @@ class LoginUnitTest extends TestCase
         ];
         $response = $this->from('/api/login')->post('/api/login', $credentials);
         $response->assertSessionHasErrors();
+    }
+
+    /** @test */
+    public function authenticate_a_user_with_valid_credentials()
+    {
+        $credentials = [
+            "email" => 'jona_872@hotmail.com',
+            "password" => 'lokiJU22'
+        ];
+        $response = $this->from('/api/login')->post('/api/login', $credentials);
+        $this->assertAuthenticated($guard = null);
     }
 
     /** @test */
@@ -54,7 +76,7 @@ class LoginUnitTest extends TestCase
     public function the_password_is_required_for_authentication()
     {
         $credentials = [
-            "email" => "zaratedev@gmail.com",
+            "email" => "ramdomEmail@gmail.com",
             "password" => ''
         ];
 
@@ -62,5 +84,4 @@ class LoginUnitTest extends TestCase
         $response->assertRedirect('');
         $response->assertSessionHasErrors();
     }
-
 }

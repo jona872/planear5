@@ -29,12 +29,14 @@ Route::post('/login', 'Auth\LoginController@login');
 // ========================================
 
 
+Route::get('/project-list', 'ProjectController@getProjects');
+
 // //UPDATE->PUT-> Form/url encoded postman
 Route::put('/proyecto-editar/{id}', 'ProjectController@update');
 Route::put('/herramienta-editar/{id}', 'ToolController@update');
 
 
-// //PROYECTOS API  
+// //RESOURCES API  
 Route::apiResources([
     'paises' => 'CountryController',
     'provincias' => 'ProvinceController',

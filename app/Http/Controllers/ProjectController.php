@@ -26,9 +26,32 @@ class ProjectController extends Controller
 			->select('projects.*', 'cities.city_name')
 			->join('cities', 'projects.city_id', '=', 'cities.id')
 			->get();
-		// dd($projects);
 		return view('projects.index', compact('projects'));
 	}
+
+	public function getProjects()
+	{
+		try {
+			$projects = DB::table('projects')
+				->select('projects.*', 'cities.city_name')
+				->join('cities', 'projects.city_id', '=', 'cities.id')
+				->get();
+
+			return response()->json([
+				'value'  => $projects,
+				'status' => 'success',
+				'message' => 'Post Listed Successfully !!'
+			]);
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
+			];
+		}
+	}
+
+
 	public function search(Request $request)
 	{
 		// dd($request->search);
@@ -118,7 +141,7 @@ class ProjectController extends Controller
 	{
 
 		$request_params = $request->all();
-		
+
 		$rules = array(
 			'project_name' => 'required',
 			'city_id' => 'required'
@@ -136,8 +159,6 @@ class ProjectController extends Controller
 			return redirect()->route('projects.index')->with('success', 'Proyecto creado correctamente!');
 		}
 		return redirect()->back()->withErrors($validator->messages());
-
-
 	}
 
 	/**
