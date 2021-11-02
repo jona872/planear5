@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataAnswer;
+use Exception;
 use Illuminate\Http\Request;
 
 class DataAnswerController extends Controller
@@ -14,7 +15,21 @@ class DataAnswerController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $values = DataAnswer::all();
+            return response()->json([
+                'value'  => $values,
+                'mensaje' => 'DataAnswer controller',
+                'status' => 'success',
+                'message' => 'DataAnswer Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
     }
 
     /**

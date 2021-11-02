@@ -14,7 +14,7 @@ use Tests\TestCase;
 class ProjectTest extends TestCase
 {
     //use RefreshDatabase; //Borra todo
-    use DatabaseTransactions; //Borra solo lo creado actualmente
+    // use DatabaseTransactions; //Borra solo lo creado actualmente
     /** @test */
     public function an_user_can_create_a_project()
     {
@@ -73,13 +73,5 @@ class ProjectTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/projects');       
         $response->assertSessionHas('success', 'Proyecto eliminado correctamente');
-    }
-
-    /** @test */
-    public function get_all_projects()
-    {
-        $response = $this->get('/api/project-list');
-        $response->assertStatus(200);
-        $this->assertEquals('success', $response['status']);
     }
 }

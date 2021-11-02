@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use Exception;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -14,11 +15,39 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $values = Country::all();
-        return response()->json([
-                            'mensaje' => 'country controller',
-                            'value' => $values   
-                        ]);
+        try {
+            $values = Country::all();
+            return response()->json([
+                'value'  => $values,
+                'status' => 'success',
+                'mensaje' => 'country controller',
+                'message' => 'Countries Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getCountries()
+    {
+        try {
+            $country = Country::all();
+            return response()->json([
+                'value'  => $country,
+                'status' => 'success',
+                'message' => 'Countries Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
     }
 
     /**

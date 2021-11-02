@@ -26,7 +26,7 @@ class DataController extends Controller
         $params = $request->all();
         $t = Tool::find($request->tool_id);
         $params['tool_name'] = $t->tool_name;
-        
+
         return view('data.create', compact('params'));
     }
 
@@ -39,7 +39,6 @@ class DataController extends Controller
      */
     public function create()
     {
-        
     }
     public function test()
     {
@@ -66,7 +65,7 @@ class DataController extends Controller
                     $td->save();
                 }
             }
-            return redirect()->route('tools.index')->with('success','Preguntas agregadas correctamente');
+            return redirect()->route('tools.index')->with('success', 'Preguntas agregadas correctamente');
         } catch (Exception $e) {
             return [
                 'value'  => [],
@@ -139,7 +138,7 @@ class DataController extends Controller
             //     Data::destroy($id);
             // }
 
-                
+
             $d = Data::findOrFail($id);
             $d->delete();
             return redirect()->back()->withSuccess(['Success Delete Message here!']);
@@ -153,6 +152,24 @@ class DataController extends Controller
                 'status' => 'error',
                 'message'   => $e->getMessage()
 
+            ];
+        }
+    }
+
+    public function getDatas()
+    {
+        try {
+            $data = Data::all();
+            return response()->json([
+                'value'  => $data,
+                'status' => 'success',
+                'message' => 'Datas Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
             ];
         }
     }

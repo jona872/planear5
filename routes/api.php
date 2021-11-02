@@ -30,6 +30,21 @@ Route::post('/login', 'Auth\LoginController@login');
 
 
 Route::get('/project-list', 'ProjectController@getProjects');
+Route::get('/user-list', 'UserController@getUsers');
+Route::get('/tool-list', 'ToolController@getTools');
+Route::get('/relevamiento-list', 'RelevamientoController@getRelevamientos');
+Route::get('/data-list', 'DataController@getDatas');
+Route::get('/country-list', 'CountryController@index');
+Route::get('/province-list', 'ProvinceController@index');
+Route::get('/city-list', 'CityController@index');
+
+Route::get('/tool-data-list', 'ToolDataController@index');
+Route::get('/data-answer-list', 'DataAnswerController@index');
+Route::get('/answer-list', 'AnswerController@index');
+
+Route::post('/pos-create', 'RelevamientoController@posCreate');
+
+
 
 // //UPDATE->PUT-> Form/url encoded postman
 Route::put('/proyecto-editar/{id}', 'ProjectController@update');

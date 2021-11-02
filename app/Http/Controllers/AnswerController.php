@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use Exception;
 use Illuminate\Http\Request;
 
 class AnswerController extends Controller
@@ -14,7 +15,21 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $values = Answer::all();
+            return response()->json([
+                'value'  => $values,
+                'mensaje' => 'Answer controller',
+                'status' => 'success',
+                'message' => 'Answer Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
     }
 
     /**

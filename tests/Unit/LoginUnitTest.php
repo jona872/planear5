@@ -16,6 +16,7 @@ class LoginUnitTest extends TestCase
 {
     //use RefreshDatabase; //Borra todo
     use DatabaseTransactions;
+
     /** @test
      */
     public function a_user_can_visit_the_login_page()
@@ -34,26 +35,34 @@ class LoginUnitTest extends TestCase
     }
 
     /** @test */
-    public function not_authenticate_a_user_with_invalid_credentials()
+    public function authenticated_a_user_with_valid_credentials()
     {
-        $user = factory(User::class)->create()->toArray();
+        $user = new User;
+        $user->email = "testingEmail@hotmail.com";
+        $user->password = bcrypt("testingpassword");
+        $user->save();
+
+        $this->get('/login')->assertSee('Login');
         $credentials = [
-            "email" => "jona_872@hotmail.com",
-            "password" => 'randomText'
+            "email" => "testingEmail@hotmail.com",
+            "password" => "testingpassword"
         ];
-        $response = $this->from('/api/login')->post('/api/login', $credentials);
-        $response->assertSessionHasErrors();
+
+        $response = $this->post('/api/login', $credentials);
+        $this->assertCredentials($credentials);
     }
 
     /** @test */
-    public function authenticate_a_user_with_valid_credentials()
+    public function not_authenticate_a_user_with_invalid_credentials()
     {
+        $user = factory(User::class)->create(['email' => 'InvalidCredentials@hotmail.com']);
         $credentials = [
-            "email" => 'jona_872@hotmail.com',
-            "password" => 'lokiJU22'
+            'email' => 'InvalidCredentials@hotmail.com',
+            'password' => 'wrongPassword'
         ];
+
         $response = $this->from('/api/login')->post('/api/login', $credentials);
-        $this->assertAuthenticated($guard = null);
+        $this->assertInvalidCredentials($credentials);
     }
 
     /** @test */

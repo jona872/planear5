@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,24 @@ class UserController extends Controller
         }
 
     }
+
+    public function getUsers()
+	{
+		try {
+            $users = User::all();
+			return response()->json([
+				'value'  => $users,
+				'status' => 'success',
+				'message' => 'Users Listed Successfully !!'
+			]);
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
+			];
+		}
+	}
 
 
     public function setAdmin(Request $request){

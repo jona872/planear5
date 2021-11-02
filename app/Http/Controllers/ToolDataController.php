@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ToolData;
+use Exception;
 use Illuminate\Http\Request;
 
 class ToolDataController extends Controller
@@ -14,11 +15,21 @@ class ToolDataController extends Controller
      */
     public function index()
     {
-        $values = ToolData::all();
-        return response()->json([
-            'mensaje' => 'ToolData controller',
-            'value' => $values
-        ]);
+        try {
+            $values = ToolData::all();
+            return response()->json([
+                'value'  => $values,
+                'mensaje' => 'ToolData controller',
+                'status' => 'success',
+                'message' => 'Tools Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
     }
 
     /**
