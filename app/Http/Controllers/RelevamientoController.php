@@ -719,22 +719,22 @@ class RelevamientoController extends Controller
 	 * @param  \App\Relevamiento  $relevamiento
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Relevamiento $relevamiento)
+	public function destroy($id)
 	{
 		try {
 			$answerIds = array();
 			$relevamientos = DB::table('data_answers')
 				->select('data_answers.id as DA_id', 'data_answers.answer_id as answer_id')
-				->where('data_answers.relevamiento_id', $relevamiento->id)
+				->where('data_answers.relevamiento_id', $id)
 				->get();
 
 			foreach ($relevamientos as $r) {
 				array_push($answerIds, $r->answer_id);
 			}
-			DataAnswer::where('relevamiento_id', '=', $relevamiento->id)->delete();
+			DataAnswer::where('relevamiento_id', '=', $id)->delete();
 			Answer::whereIn('id', $answerIds)->delete();
 
-			$p = Relevamiento::find($relevamiento->id);
+			$p = Relevamiento::find($id);
 			if ($p) {
 				$p->delete();
 			}
