@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Province;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProvinceController extends Controller
@@ -14,11 +15,22 @@ class ProvinceController extends Controller
 	 */
 	public function index()
 	{
-		$values = Province::all();
-		return response()->json([
-			'mensaje' => 'province controller',
-			'value' => $values
-		]);
+		try {
+			$values = Province::all();
+			return response()->json([
+				'value'  => $values,
+				'status' => 'success',
+				'message' => 'Provinces Listed Successfully !!',
+				'mensaje' => 'province controller',
+
+			]);
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
+			];
+		}
 	}
 
 	/**

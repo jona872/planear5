@@ -19,8 +19,8 @@ class Relevamiento extends Model
     ];
     // public $timestamps = false;
     
-    public function getCreatedAtAttribute($date)
-    {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
-    }
+    // public function getCreatedAtAttribute($date)
+    // {
+    //     return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
+    // }
 }

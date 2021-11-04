@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\City;
+use Exception;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
@@ -35,12 +36,26 @@ class CityController extends Controller
      */
     public function index()
     {
-        $values = City::all();
-        return response()->json([
-            'mensaje' => 'city controller',
-            'value' => $values
-        ]);
+        try {
+            $values = City::all();
+            return response()->json([
+                'value'  => $values,
+                'status' => 'success',
+                'message' => 'Provinces Listed Successfully !!',
+                'mensaje' => 'city controller'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
+
+
     }
+
+
 
     /**
      * Show the form for creating a new resource.

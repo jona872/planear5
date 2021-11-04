@@ -219,4 +219,21 @@ class ToolController extends Controller
             ];
         }
     }
+    public function getTools()
+    {
+        try {
+            $tools = Tool::all();
+            return response()->json([
+                'value'  => $tools,
+                'status' => 'success',
+                'message' => 'Tools Listed Successfully !!'
+            ]);
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
+    }
 }

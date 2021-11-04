@@ -12,6 +12,7 @@ class UserTest extends TestCase
 {
     //use RefreshDatabase;
     use DatabaseTransactions; //Borra solo lo creado actualmente
+
     /** @test */
     public function a_user_can_be_created()
     {

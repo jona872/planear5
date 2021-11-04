@@ -11,7 +11,6 @@ class ToolUnitTest extends TestCase
     //use RefreshDatabase;
     use DatabaseTransactions;
 
-    //crear tool, recibe tool_name y tool_creator (se completa autmaticamente)
     /** @test */
     public function the_tool_name_is_required_for_creation()
     {

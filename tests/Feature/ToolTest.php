@@ -90,7 +90,8 @@ class ToolTest extends TestCase
 
         $response = $this->post('/api/datos', [
             'tool_id' => $tool->id,
-            'data_question0' => $data['data_question']]);       
+            'data_question0' => $data['data_question']
+        ]);
 
         $response->assertStatus(302);
         $response->assertSessionHas('success', 'Preguntas agregadas correctamente');

@@ -12,6 +12,7 @@ use App\Tool;
 use App\ToolData;
 use Carbon\Carbon;
 use Exception;
+use Validator;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -390,7 +391,7 @@ class RelevamientoController extends Controller
 
 		$grupo['preguntas'] = $q;
 		$grupo['respuestas'] = $r;
-		array_push($grupos,$grupo);
+		array_push($grupos, $grupo);
 		//dd($grupos);
 		return view('relevamientos.exportar', compact('grupos'));
 	}
@@ -465,8 +466,8 @@ class RelevamientoController extends Controller
 		$csv = $this->exportData($grupo);
 		$csv->output($grupo['project_name'] . ' -- ' . $grupo['tool_name'] . '.csv');
 	}
-	
-	
+
+
 	public function exportData($grupo)
 	{
 		//dd($grupo);
@@ -512,27 +513,43 @@ class RelevamientoController extends Controller
 
 	public function posCreate(Request $request)
 	{
-		//dd($request->all());
-		
-		//$request->pid; $request->tid;
-		$toolData = DB::table('data')
-			->join('tools_data', 'data.id', '=', 'tools_data.data_id')
-			->join('tools', 'tools_data.tool_id', '=', 'tools.id')
-			->where('tools.id', $request->tool_id)
-			->select('data.*')
-			->get();
+		$request_params = $request->all();
+		// dd($request_params);
+		$rules = array(
+			'project_id' => 'integer|required',
+			'tool_id' => 'integer|required'
+		);
 
-		$pid = $request->project_id;
-		$tid = $request->tool_id;	
-		session(['pid' => $request->project_id]);
-		session(['tid' => $request->tool_id]);
-		session(['toolData' => $toolData]);
-		session(['lat' => $request->lat]);
-		session(['lon' => $request->lon]);
+		$messages = [
+			'project_id.required' => 'El nombre del projecto es requerido',
+			'project_id.integer' => 'El identificativo debe ser numerico',
+			'tool_id.required' => 'El nombre de la herramienta es requerido',
+			'tool_id.integer' => 'El identificativo debe ser numerico',
+		];
 
-		// dd(session('pid'));
+		$validator = Validator::make($request_params, $rules, $messages);
 
-		return view('relevamientos.posCreate', compact('toolData', 'pid', 'tid'));
+		if ($validator->passes()) {
+
+			//$request->pid; $request->tid;
+			$toolData = DB::table('data')
+				->join('tools_data', 'data.id', '=', 'tools_data.data_id')
+				->join('tools', 'tools_data.tool_id', '=', 'tools.id')
+				->where('tools.id', $request->tool_id)
+				->select('data.*')
+				->get();
+
+			$pid = $request->project_id;
+			$tid = $request->tool_id;
+			session(['pid' => $request->project_id]);
+			session(['tid' => $request->tool_id]);
+			session(['toolData' => $toolData]);
+			session(['lat' => $request->lat]);
+			session(['lon' => $request->lon]);
+
+			return view('relevamientos.posCreate', compact('toolData', 'pid', 'tid'));
+		}
+		return redirect()->back()->withErrors($validator->messages());
 	}
 
 	/**
@@ -702,22 +719,22 @@ class RelevamientoController extends Controller
 	 * @param  \App\Relevamiento  $relevamiento
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Relevamiento $relevamiento)
+	public function destroy($id)
 	{
 		try {
 			$answerIds = array();
 			$relevamientos = DB::table('data_answers')
 				->select('data_answers.id as DA_id', 'data_answers.answer_id as answer_id')
-				->where('data_answers.relevamiento_id', $relevamiento->id)
+				->where('data_answers.relevamiento_id', $id)
 				->get();
 
 			foreach ($relevamientos as $r) {
 				array_push($answerIds, $r->answer_id);
 			}
-			DataAnswer::where('relevamiento_id', '=', $relevamiento->id)->delete();
+			DataAnswer::where('relevamiento_id', '=', $id)->delete();
 			Answer::whereIn('id', $answerIds)->delete();
 
-			$p = Relevamiento::find($relevamiento->id);
+			$p = Relevamiento::find($id);
 			if ($p) {
 				$p->delete();
 			}
@@ -755,67 +772,22 @@ class RelevamientoController extends Controller
 		//$aux = array_chunk($aux, $colCount);
 		return $questions;
 	}
+
+	public function getRelevamientos()
+	{
+		try {
+			$relevamiento = Relevamiento::all();
+			return response()->json([
+				'value'  => $relevamiento,
+				'status' => 'success',
+				'message' => 'Relevamientos Listed Successfully !!'
+			]);
+		} catch (Exception $e) {
+			return [
+				'value'  => [],
+				'status' => 'error',
+				'message'   => $e->getMessage()
+			];
+		}
+	}
 }
-    //EXPORT VIEJO (INDIVIDUALES)
-    // public function export(Request $request)
-    // {
-    //     dd($request);
-    //     dd(session()->get('export'));
-    //     $relevamientos = session()->get('export');
-
-
-    //     $grupos = array();
-    //     //OLD
-    //     //me quedo con los ids de cada proyecto-herramienta de los distintos relevamientos
-    //     // $resu = DB::select("SELECT DISTINCT projects.project_name, tools.tool_name, projects.id as pid, tools.id as tid FROM relevamientos
-    //     // INNER JOIN projects on projects.id = relevamientos.project_id
-    //     // INNER JOIN tools on relevamientos.tool_id = tools.id
-    //     // WHERE tools.tool_name = 'Matadisimos' AND projects.project_name = 'tres'
-    //     // ORDER BY projects.project_name;");
-    //     // dd($resu);
-
-    //     foreach ($relevamientos as $relevamiento) {
-    //         //            dd($relevamiento->id);
-    //         $grupo['project_name'] = $relevamiento->project_name;
-    //         $grupo['tool_name'] = $relevamiento->tool_name;
-    //         $grupo['pid'] = $relevamiento->project_id;
-    //         $grupo['tid'] = $relevamiento->tool_id;
-
-    //         //OLD --> Todas las preguntas que se usaron en la heramienta
-    //         // $preguntas = DB::table('relevamientos')
-    //         //     ->join('projects', 'relevamientos.project_id', '=', 'projects.id')
-    //         //     ->join('tools', 'relevamientos.tool_id', '=', 'tools.id')
-    //         //     ->join('tools_data', 'tools.id', '=', 'tools_data.tool_id')
-    //         //     ->join('data', 'tools_data.data_id', '=', 'data.id')
-    //         //     ->select('data.data_question', 'data.id')
-    //         //     ->where('projects.id', $relevamiento->project_id)
-    //         //     ->where('tools.id', $relevamiento->tool_id)
-    //         //     ->where('relevamientos.id', $relevamiento->id)
-    //         //     ->distinct()
-    //         //     ->get()->toArray();
-    //         $preguntas = DB::select("SELECT answers.answer_name, data.data_question FROM answers
-    //             INNER JOIN data_answers ON data_answers.answer_id = answers.id
-    //             INNER JOIN data on data.id = data_answers.data_id
-    //             WHERE answers.id IN 
-    //                 (SELECT id from answers WHERE id IN 
-    //                     (SELECT answer_id FROM data_answers 
-    //                     WHERE relevamiento_id='.$relevamiento->id.')
-    //                 )");
-    //         //dd($preguntas);
-
-    //         $questions = array();
-    //         $answers = array();
-    //         //aplano las preguntas a un solo array
-    //         foreach ($preguntas as $value) {
-    //             array_push($questions, $value->data_question);
-    //             array_push($answers, $value->answer_name);
-    //         }
-    //         $grupo['preguntas'] = $questions;
-    //         $grupo['respuestas'] = $answers;
-    //         $grupo['colCount'] = count($questions);
-    //         //dd($grupo);            
-    //         array_push($grupos, $grupo);
-    //     }
-    //     //dd($grupos);
-    //     return view('relevamientos.exportar', compact('grupos'));
-    // }
