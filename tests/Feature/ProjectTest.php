@@ -14,7 +14,7 @@ use Tests\TestCase;
 class ProjectTest extends TestCase
 {
     //use RefreshDatabase; //Borra todo
-    use DatabaseTransactions; //Borra solo lo creado actualmente
+    // use DatabaseTransactions; //Borra solo lo creado actualmente
     /** @test */
     public function an_user_can_create_a_project()
     {
