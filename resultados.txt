@@ -1,0 +1,73 @@
+Answer Unit (Tests\Unit\AnswerUnit)
+ [x] The answer name is not required for creation
+ [x] The answer name accpet alfanumeric
+
+Data Unit (Tests\Unit\DataUnit)
+ [x] The question name is not required for creation
+ [x] The question name accpet alfanumeric
+
+Login Unit (Tests\Unit\LoginUnit)
+ [x] A user can visit the login page
+ [x] A user can request password recovery
+ [x] Authenticated a user with valid credentials
+ [x] Not authenticate a user with invalid credentials
+ [x] The email is required for authentication
+ [x] The password is required for authentication
+
+Project Unit (Tests\Unit\ProjectUnit)
+ [x] The project name is required for creation
+ [x] The city id is numeric type
+ [x] The city id is required for creation
+
+Relevamiento Unit (Tests\Unit\RelevamientoUnit)
+ [x] The project name is required for creation
+ [x] The tool name is required for creation
+ [x] The project id need to be numeric
+ [x] The tool id need to be numeric
+
+Tool Unit (Tests\Unit\ToolUnit)
+ [x] The tool name is required for creation
+
+Answer (Tests\Feature\Answer)
+ [x] An user makes a successfull answer creation
+ [x] Data associate successfull
+
+Data (Tests\Feature\Data)
+ [x] An user makes a successfull data creation
+ [x] Data associate successfull
+
+Password Reset (Tests\Feature\PasswordReset)
+ [x] Show password reset request page
+
+Project (Tests\Feature\Project)
+ [x] An user can create a project
+ [x] A user can update a project
+ [x] An user can delete a project
+
+Relevamiento (Tests\Feature\Relevamiento)
+ [x] An user can create a relevamiento
+ [x] An user can delete a relevamiento
+
+Requeset (Tests\Feature\Requeset)
+ [x] Get all users
+ [x] Get all projects
+ [x] Get all tools
+ [x] Get all relevamientos
+ [x] Get all datas
+ [x] Get all countries
+ [x] Get all provinces
+ [x] Get all cities
+ [x] Get all tool data
+ [x] Get all data answers
+ [x] Get all answers
+
+Tool (Tests\Feature\Tool)
+ [x] An user makes a successfull tool creation
+ [x] A user can update a tool
+ [x] An user can delete a tool successfully
+ [x] An user can add data to a tool
+
+User (Tests\Feature\User)
+ [x] A user can be created
+ [x] An admin can edit user
+

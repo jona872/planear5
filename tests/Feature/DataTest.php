@@ -29,15 +29,10 @@ class DataTest extends TestCase
     {
         $user = factory(User::class)->create();
         $tool = factory(Tool::class)->create(['user_id' => $user->id]);
-
         $data = factory(Data::class)->create();
 
         $tool_data = factory(ToolData::class)->create(['tool_id' => $tool->id, 'data_id' => $data->id]);
-
-        //$response = $this->post('/api/', ['data_question0'=> $data->data_question, ]);
-        // $response->assertStatus(302);
-        // $response->assertSessionHas('success', 'Preguntas agregadas correctamente');
-        // $response->assertRedirect('/tools');
         $this->assertDatabaseHas('tools_data', $tool_data->toArray());
     }
+    
 }
