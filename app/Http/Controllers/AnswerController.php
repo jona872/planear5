@@ -50,7 +50,19 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $answer = new Answer();
+            $answer->answer_name = $request->answer_name;
+            $answer->save();
+
+            return redirect()->route('tools.index')->with('success', 'Respuestas agregadas correctamente');
+        } catch (Exception $e) {
+            return [
+                'value'  => [],
+                'status' => 'error',
+                'message'   => $e->getMessage()
+            ];
+        }
     }
 
     /**

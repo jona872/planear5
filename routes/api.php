@@ -60,4 +60,7 @@ Route::apiResources([
     'herramientas' => 'ToolController',
     'proyectos' => 'ProjectController',
     'relevamientos' => 'RelevamientoController',
+    'respuestas' => 'AnswerController',
+    'tool-data' => 'ToolDataController',
+
 ]);

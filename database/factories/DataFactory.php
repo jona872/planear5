@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Data::class, function (Faker $faker) {
     return [
-        //
+        'data_question' => $faker->sentence(5),
     ];
 });
