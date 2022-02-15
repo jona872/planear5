@@ -60,77 +60,71 @@
                 </div>
             </div>
         </div>
+        <div id="map" style="height: 20vw;"> </div>
     </div>
+</div>
+@section('footer')
 
-    <div class="container-xl">
-        <div class="card" style="height: 50%;">
-            <div class="card-body" id="map">
-            </div>
-        </div>
-    </div>
+<a class="btn btn-danger" href="{{ route('projects.index') }}"> <i class="fa fa-arrow-left"></i> Volver </a>
 
-    @section('footer')
-
-    <a class="btn btn-danger" href="{{ route('projects.index') }}"> <i class="fa fa-arrow-left"></i> Volver </a>
-
-    @endsection
+@endsection
 
 
 
 
-    @endsection
+@endsection
 
-    @section('footer-scripts')
+@section('footer-scripts')
 
 
-    <!-- Import Mapbox GL JS  -->
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
+<!-- Import Mapbox GL JS  -->
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
 
-    <script type="text/javascript">
-        console.log("Show proyect");
-        var project = <?php echo json_encode($project); ?>;
-        console.log(project);
+<script type="text/javascript">
+    console.log("Show proyect");
+    var project = <?php echo json_encode($project); ?>;
+    console.log(project);
 
-        mapboxgl.accessToken = 'pk.eyJ1Ijoiam9uYXRhbmtpbiIsImEiOiJja3VkNGc5ZXcxNm5yMnFxNnl4aW1vbnFvIn0.xG6ZHnZc21DSsy5MEHZmFQ';
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9uYXRhbmtpbiIsImEiOiJja3VkNGc5ZXcxNm5yMnFxNnl4aW1vbnFvIn0.xG6ZHnZc21DSsy5MEHZmFQ';
 
-        const map = new mapboxgl.Map({
-            container: 'map', // HTML container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [project['project_longitud'], project['project_latitud']], // starting position [lng, lat]
-            zoom: 13 // starting zoom
+    const map = new mapboxgl.Map({
+        container: 'map', // HTML container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [project['project_longitud'], project['project_latitud']], // starting position [lng, lat]
+        zoom: 13 // starting zoom
+    });
+    const popup = new mapboxgl.Popup().setHTML(
+        // "<h3>Proyecto</h3> <p>"+project['project_longitud']+"; "+project['project_longitud']+"</p>"
+        "<h3>" + project['city_name'] + "</h3> <p>" + project['project_latitud'] + "; " + project['project_longitud'] + "</p>"
+    );
+
+    map.on('load', () => {
+
+        const marker = new mapboxgl.Marker()
+            .setLngLat([project['project_longitud'], project['project_latitud']])
+            .setPopup(popup)
+            .addTo(map);
+
+        map.addSource('single-point', {
+            type: 'geojson',
+            data: {
+                type: 'FeatureCollection',
+                features: []
+            }
         });
-        const popup = new mapboxgl.Popup().setHTML(
-            // "<h3>Proyecto</h3> <p>"+project['project_longitud']+"; "+project['project_longitud']+"</p>"
-            "<h3>" + project['city_name'] + "</h3> <p>" + project['project_latitud'] + "; " + project['project_longitud'] + "</p>"
-        );
-
-        map.on('load', () => {
-
-            const marker = new mapboxgl.Marker()
-                .setLngLat([project['project_longitud'], project['project_latitud']])
-                .setPopup(popup)
-                .addTo(map);
-
-            map.addSource('single-point', {
-                type: 'geojson',
-                data: {
-                    type: 'FeatureCollection',
-                    features: []
-                }
-            });
-            map.addLayer({
-                id: 'point',
-                source: 'single-point',
-                type: 'circle',
-                paint: {
-                    'circle-radius': 10,
-                    'circle-color': '#448ee4'
-                }
-            });
-
+        map.addLayer({
+            id: 'point',
+            source: 'single-point',
+            type: 'circle',
+            paint: {
+                'circle-radius': 10,
+                'circle-color': '#448ee4'
+            }
         });
-    </script>
+
+    });
+</script>
 
 
-    @endsection
+@endsection
