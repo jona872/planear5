@@ -13,16 +13,16 @@
 @endif
 
 @php
-//dd($lat);
-//dd(session()->get('lon'));
+//dd($relevamiento_latitud);
+// dd(session()->get('relevamiento_longitud')); -->
 @endphp
 
 <div class="container-xl">
 	<div class="card">
 		<form action="{{ route('relevamientos.store') }}" method="POST" class="form-horizontal form-create">
 			@csrf
-			<input type="hidden" name="lat" value="{{ session()->get('lat') }}">
-			<input type="hidden" name="lon" value="{{ session()->get('lon') }}">
+			<input type="hidden" name="relevamiento_latitud" value="{{ session()->get('relevamiento_latitud') }}">
+			<input type="hidden" name="relevamiento_longitud" value="{{ session()->get('relevamiento_longitud') }}">
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 
 			<div class="card-body">

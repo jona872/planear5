@@ -17,8 +17,9 @@
 	<div class="card">
 		<form action="{{ route('relevamientos.poscreate') }}" method="POST" class="form-horizontal form-create">
 			@csrf
-			<input type="hidden" id="lat" name="lat" value="">
-			<input type="hidden" id="lon" name="lon" value="">
+			<input type="hidden" id="relevamiento_latitud" name="relevamiento_latitud" value="">
+			<input type="hidden" id="relevamiento_longitud" name="relevamiento_longitud" value="">
+			
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 
 			<div class="card-body">
@@ -46,7 +47,7 @@
 						</select>
 					</div>
 				</div>
-
+				<div id="map" style="height: 25vw;"> </div>
 			</div>
 
 			<div class="card-footer">
@@ -58,50 +59,57 @@
 			</div>
 		</form>
 	</div>
+
 </div>
+
 @endsection
 
 @section('footer-scripts')
 
 
 <!-- Import Mapbox GL JS  -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css' rel='stylesheet' />
+
 <script type="text/javascript">
-	console.log("getting georref");
-//	mapboxgl.accessToken = 'pk.eyJ1Ijoiam9uYXRhbmtpbiIsImEiOiJja3VkNGc5ZXcxNm5yMnFxNnl4aW1vbnFvIn0.xG6ZHnZc21DSsy5MEHZmFQ';
 	$(document).ready(function() {
+		mapboxgl.accessToken = 'pk.eyJ1Ijoiam9uYXRhbmtpbiIsImEiOiJja3VkNGc5ZXcxNm5yMnFxNnl4aW1vbnFvIn0.xG6ZHnZc21DSsy5MEHZmFQ';
+		const map = new mapboxgl.Map({
+			container: 'map', // container ID
+			style: 'mapbox://styles/mapbox/streets-v11', // style URL
+			center: [-61.51051676003347, -30.727283408601465], // starting position
+			zoom: 3 // starting zoom
+		});
 
-	var options = {
-		enableHighAccuracy: true,
-		timeout: 5000,
-		maximumAge: 0
-	};
+		const marker = new mapboxgl.Marker({
+				draggable: true
+			})
+			.setLngLat([0, 0])
+			.addTo(map);
 
-	function success(pos) {
-		var crd = pos.coords;
+		function onDragEnd() {
+			const lngLat = marker.getLngLat();			
+			document.getElementById("relevamiento_latitud").value = JSON.stringify(lngLat.lat);
+			document.getElementById('relevamiento_longitud').value = JSON.stringify(lngLat.lng);
+		}
+		marker.on('dragend', onDragEnd);
 
-		console.log('Your current position is:');
-		console.log('Latitude : ' + crd.latitude);
-		console.log('Longitude: ' + crd.longitude);
-		console.log('More or less ' + crd.accuracy + ' meters.');
+		map.on('click', (e) => {
+			marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);			
+			document.getElementById("relevamiento_latitud").value = JSON.stringify(e.lngLat.lat);
+			document.getElementById('relevamiento_longitud').value = JSON.stringify(e.lngLat.lng);
+		});
 
-		console.log($("#lat").val());
-		$("#lat").val(crd.latitude);
-		$("#lon").val(crd.longitude);
-		// document.getElementById("lat").value = "jona";
-		console.log($("#lat").val());
-
-	};
-
-	function error(err) {
-		console.warn('ERROR(' + err.code + '): ' + err.message);
-	};
-
-
-		navigator.geolocation.getCurrentPosition(success, error, options);
-
+		const geocoder = new MapboxGeocoder({
+			accessToken: mapboxgl.accessToken,
+			marker: false,
+			mapboxgl: mapboxgl
+		});
+		map.addControl(geocoder);
 	});
-
-
 </script>
 
 @endsection
