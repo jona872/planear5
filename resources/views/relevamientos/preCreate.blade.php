@@ -19,7 +19,7 @@
 			@csrf
 			<input type="hidden" id="relevamiento_latitud" name="relevamiento_latitud" value="">
 			<input type="hidden" id="relevamiento_longitud" name="relevamiento_longitud" value="">
-			
+
 			<div class="card-header"><i class="fa fa-plus"></i> Agregar Relevamiento </div>
 
 			<div class="card-body">
@@ -71,8 +71,8 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
 
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css' rel='stylesheet' />
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -84,6 +84,18 @@
 			zoom: 4 // starting zoom
 		});
 
+		// Wait until the map has finished loading.
+		map.on('load', () => {
+			map.addSource('single-point', {
+				type: 'geojson',
+				data: {
+					type: 'FeatureCollection',
+					features: []
+				}
+			});
+
+		});
+
 		const marker = new mapboxgl.Marker({
 				draggable: true
 			})
@@ -91,14 +103,14 @@
 			.addTo(map);
 
 		function onDragEnd() {
-			const lngLat = marker.getLngLat();			
+			const lngLat = marker.getLngLat();
 			document.getElementById("relevamiento_latitud").value = JSON.stringify(lngLat.lat);
 			document.getElementById('relevamiento_longitud').value = JSON.stringify(lngLat.lng);
 		}
 		marker.on('dragend', onDragEnd);
 
 		map.on('click', (e) => {
-			marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);			
+			marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
 			document.getElementById("relevamiento_latitud").value = JSON.stringify(e.lngLat.lat);
 			document.getElementById('relevamiento_longitud').value = JSON.stringify(e.lngLat.lng);
 		});
@@ -109,6 +121,19 @@
 			mapboxgl: mapboxgl
 		});
 		map.addControl(geocoder);
+
+		// Add geolocate control to the map.
+		map.addControl(
+			new mapboxgl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true
+				},
+				// When active the map will receive updates to the device's location as it changes.
+				trackUserLocation: true,
+				// Draw an arrow next to the location dot to indicate which direction the device is heading.
+				showUserHeading: true,
+			})
+		);
 	});
 </script>
 

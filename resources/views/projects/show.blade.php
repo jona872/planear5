@@ -118,7 +118,7 @@
             source: 'single-point',
             type: 'circle',
             paint: {
-                'circle-radius': 10,
+                'circle-radius': 2,
                 'circle-color': '#448ee4'
             }
         });
