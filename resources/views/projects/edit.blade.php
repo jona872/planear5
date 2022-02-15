@@ -69,7 +69,9 @@
 					</div>
 				</div>
 
+				<!-- <div id="map" style="height: 20vw;"> </div>	 -->
 			</div>
+			<div id="map" style="height: 20vw;"> </div>
 
 			<div class="card-footer text-center">
 				<a class="btn btn-danger" href="{{ route('projects.index') }}">
@@ -79,8 +81,63 @@
 
 				</button>
 			</div>
+
 		</form>
 	</div>
 </div>
+
+@endsection
+
+
+@section('footer-scripts')
+
+
+<!-- Import Mapbox GL JS  -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css' rel='stylesheet' />
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var project = <?php echo json_encode($projects[0]); ?>;
+		mapboxgl.accessToken = 'pk.eyJ1Ijoiam9uYXRhbmtpbiIsImEiOiJja3VkNGc5ZXcxNm5yMnFxNnl4aW1vbnFvIn0.xG6ZHnZc21DSsy5MEHZmFQ';
+		const map = new mapboxgl.Map({
+			container: 'map', // container ID
+			style: 'mapbox://styles/mapbox/streets-v11', // style URL
+			center: [project['project_longitud'], project['project_latitud']], // starting position [lng, lat]
+			zoom: 13 // starting zoom	
+		});
+
+		const marker = new mapboxgl.Marker({
+				draggable: true
+			})
+			.setLngLat([project['project_longitud'], project['project_latitud']])
+			.addTo(map);
+
+		function onDragEnd() {
+			const lngLat = marker.getLngLat();
+			document.getElementById("project_latitud").value = JSON.stringify(lngLat.lat);
+			document.getElementById('project_longitud').value = JSON.stringify(lngLat.lng);
+		}
+		marker.on('dragend', onDragEnd);
+
+		map.on('click', (e) => {
+			marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
+			document.getElementById("project_latitud").value = JSON.stringify(e.lngLat.lat);
+			document.getElementById('project_longitud').value = JSON.stringify(e.lngLat.lng);
+		});
+
+		const geocoder = new MapboxGeocoder({
+			accessToken: mapboxgl.accessToken,
+			marker: false,
+			mapboxgl: mapboxgl
+		});
+		map.addControl(geocoder);
+	});
+</script>
 
 @endsection

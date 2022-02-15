@@ -102,8 +102,8 @@
 		const map = new mapboxgl.Map({
 			container: 'map', // container ID
 			style: 'mapbox://styles/mapbox/streets-v11', // style URL
-			center: [-61.51051676003347, -30.727283408601465], // starting position
-			zoom: 3 // starting zoom
+			center: [-66.63303284626454, -38.48190604350612], // starting position
+			zoom: 4 // starting zoom
 		});
 
 		const marker = new mapboxgl.Marker({
