@@ -14,7 +14,7 @@
         <div class="card-header"><i class="fa fa-plus"></i> Detalle del Proyecto </div>
 
         <div class="card-body">
-    
+
             <div class="form-group row align-items-center has-success">
                 <label for="creator" class="col-form-label text-md-right col-md-3">
                     <strong> Nombre del Proyecto </strong>
@@ -61,15 +61,17 @@
             </div>
         </div>
     </div>
-</div>
-<div class="card" id="map"></div>
-</div>
 
+<div class="container-xl">
+    <div class="card" style="height: 50%;">
+        <div class="card-body" id="map">
+        </div>
+    </div>
+</div>
 
 @section('footer')
 
-<a class="btn btn-danger" href="{{ route('projects.index') }}">
-    <i class="fa fa-arrow-left"></i> Volver</a>
+<a class="btn btn-danger" href="{{ route('projects.index') }}"> <i class="fa fa-arrow-left"></i> Volver </a>
 
 @endsection
 
@@ -100,7 +102,7 @@
     });
     const popup = new mapboxgl.Popup().setHTML(
         // "<h3>Proyecto</h3> <p>"+project['project_longitud']+"; "+project['project_longitud']+"</p>"
-        "<h3>"+project['city_name']+"</h3> <p>"+project['project_latitud']+"; "+project['project_longitud']+"</p>"
+        "<h3>" + project['city_name'] + "</h3> <p>" + project['project_latitud'] + "; " + project['project_longitud'] + "</p>"
     );
 
     map.on('load', () => {
@@ -129,5 +131,6 @@
 
     });
 </script>
+
 
 @endsection
