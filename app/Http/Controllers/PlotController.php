@@ -46,6 +46,7 @@ class PlotController extends Controller
 
     public function multiplotProcess(Request $request)
     {
+        //dd($request->all());
         //dd( Tool::find($request->tList2)->attributesToArray()['tool_name']  );
         //dd($request->tList2);
         // dd($request->plotTitle);

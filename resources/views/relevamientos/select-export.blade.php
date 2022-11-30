@@ -18,9 +18,13 @@
 							<option value=""> Seleccione Proyecto </option>
 							@foreach($projects ?? '' as $project)
 							<option value="{{ $project->id }}">{{ $project->project_name }}</option>
-							<input hidden name="pName" value="{{ $project->project_name }}" />
+							
 							@endforeach
 						</select>
+
+
+
+
 
 					</div>
 				</div>

@@ -14,7 +14,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-
+ 
         console.log("Plot = doughnut");
         //fetch data
         var data = <?php echo json_encode($data); ?>;

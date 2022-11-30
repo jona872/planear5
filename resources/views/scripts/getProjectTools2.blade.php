@@ -13,7 +13,8 @@
                 dataType: "json",
                 processData: true,
                 success: function(result) {
-                    console.log(result.value);
+                    //console.log(result.value);
+                    $('#tList').empty();
                     var model = $('#tList');
                     $.each(result.value, function(index, element) {
                         model.append("<option value='" + element.id + "'>" + element.tool_name + "</option>");
@@ -38,7 +39,8 @@
                 dataType: "json",
                 processData: true,
                 success: function(result) {
-                    console.log(result.value);
+                    //console.log(result.value);
+                    $('#tList2').empty();
                     var model = $('#tList2');
                     $.each(result.value, function(index, element) {
                         model.append("<option value='" + element.id + "'>" + element.tool_name + "</option>");

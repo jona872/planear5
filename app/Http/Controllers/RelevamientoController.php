@@ -342,6 +342,11 @@ class RelevamientoController extends Controller
 			->where('tools.id', intval($request->tList))
 			->select('relevamientos.id', 'projects.project_name', 'tools.tool_name')
 			->get();
+			
+			
+		$request['pName'] = $relevamientos[0]->tool_name;
+		$request['tName'] = $relevamientos[0]->project_name;
+		
 
 		$ids = array();
 		foreach ($relevamientos as $key => $value) {
@@ -370,7 +375,7 @@ class RelevamientoController extends Controller
 			->select('answers.answer_name')
 			->orderBy('answers.id')
 			->get();
-		// dd($respuestas);
+		//dd($respuestas);
 		$r = array();
 		foreach ($respuestas as $key => $value) {
 			array_push($r, $value->answer_name);
